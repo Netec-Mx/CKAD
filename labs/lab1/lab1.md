@@ -161,7 +161,7 @@ Comprobarás Git y utilizarás `sparse-checkout` para obtener únicamente el dir
 
   ```bash
   cd Desktop
-  git clone --filter=blob:none --no-checkout <URL_DEL_REPOSITORIO> ckad-course && cd ckad-course && git sparse-checkout init --cone && git sparse-checkout set ckad-labs .gitattributes && git checkout
+  git clone --filter=blob:none --no-checkout https://github.com/Netec-Mx/CKAD.git ckad-course && cd ckad-course && git sparse-checkout init --cone && git sparse-checkout set ckad-labs .gitattributes && git checkout
   ```
 
   > **Salida esperada:** Git crea `ckad-course`, configura `sparse-checkout` y realiza el checkout mostrando `ckad-labs`, `.gitattributes` y los metadatos internos administrados por Git, sin incorporar los demás directorios del repositorio al espacio de trabajo.

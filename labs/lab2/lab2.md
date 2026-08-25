@@ -40,6 +40,9 @@ next: /lab3/lab3/
 
 <!-- Aquí comienzan las instrucciones paso a paso de la práctica -->
 
+> **Nota:** Ejecuta todos los comandos de esta práctica desde **Git Bash**. Inicia ubicado en la raíz local de `ckad-labs`; cuando una tarea requiera cambiar de directorio, el propio paso lo indicará explícitamente.
+{: .lab-note .info .compact}
+
 ## 🔎 Tarea 1. Explorar el clúster y la API con kubectl — 7 min
 
 Antes de crear recursos revisarás el contexto activo, la topología disponible y las capacidades expuestas por la API de Kubernetes. También utilizarás las herramientas de ayuda incorporadas en kubectl para descubrir recursos, campos y opciones sin depender de documentación externa.
@@ -118,7 +121,7 @@ Utilizarás comandos de descubrimiento incluidos en kubectl para identificar rec
   {: .lab-note .info .compact}
 
   ```bash
-  kubectl get --help | grep -A 12 "Output options"
+  kubectl get --help | grep -A 2 -- "--output"
   ```
 
   > **Salida esperada:** Se muestra la sección de opciones de salida o líneas relacionadas con formatos disponibles para representar los recursos consultados.
@@ -231,7 +234,7 @@ Utilizarás kubectl como generador de manifiestos para reducir el tiempo necesar
 
 Crearás un workspace local exclusivo para esta práctica y utilizarás `--dry-run=client` junto con `-o yaml` para generar una definición de Pod sin enviar todavía ningún objeto al API Server.
 
-- {% include step_label.html %} Crea el directorio local `workspace/lab2` desde la raíz de `ckad-labs` y accede a él para mantener separados los archivos generados durante esta práctica.
+- {% include step_label.html %} Desde la raíz local de `ckad-labs`, crea el directorio `workspace/lab2` y accede a él; a partir de este paso permanecerás ubicado en `ckad-labs/workspace/lab2` durante el resto de la práctica.
 
   > **Nota:** `workspace` representa el área de trabajo local del participante. Los archivos creados aquí no necesitan enviarse nuevamente al repositorio público del curso.
   {: .lab-note .info .compact}
@@ -257,7 +260,7 @@ Crearás un workspace local exclusivo para esta práctica y utilizarás `--dry-r
 
 - {% include step_label.html %} Ejecuta nuevamente la generación y redirige la salida hacia `web-pod.yaml` para disponer de una definición declarativa editable en el workspace local.
 
-  > **Advertencia:** El operador `>` reemplaza el contenido del archivo si ya existe. Verifica que te encuentras en `workspace/lab2` antes de ejecutarlo para no sobrescribir accidentalmente otro manifiesto.
+  > **Advertencia:** El operador `>` reemplaza el contenido del archivo si ya existe. Continúa ubicado en `ckad-labs/workspace/lab2` antes de ejecutarlo para no sobrescribir accidentalmente otro manifiesto.
   {: .lab-note .warning .compact}
 
   ```bash
@@ -493,5 +496,3 @@ Utilizarás el mismo manifiesto declarativo para eliminar el objeto que represen
 {% include task-result.html title="Tarea finalizada" content=r5 %}
 
 {% include support-prompt.html task="tarea5" %}
-
----

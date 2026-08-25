@@ -7,9 +7,6 @@ duration: "50 minutos"
 objective:
   - Diseñar, desplegar y diagnosticar un Pod que utilice un sidecar nativo para procesar continuamente información generada por la aplicación principal, compartiendo datos mediante un volumen emptyDir y utilizando herramientas de kubectl para inspeccionar estados, logs, reinicios y comportamiento multicontenedor.
 prerequisites:
-  - Haber completado la Práctica 1 Preparación del entorno CKAD.
-  - Haber completado la Práctica 2 Gestión básica con kubectl y YAML.
-  - Haber completado la Práctica 3 Construcción y ejecución de una aplicación en Pod.
   - Haber completado la Práctica 4 Diseño de Pod con init container.
   - Disponer del clúster kind denominado ckad con Kubernetes 1.36.1 y el contexto kubectl kind-ckad activo.
   - Trabajar desde Visual Studio Code utilizando Git Bash dentro del directorio local ckad-labs.
@@ -64,16 +61,28 @@ Crearás el directorio local de trabajo y comprobarás que kubectl continúa con
   > **Salida esperada:** La ruta mostrada termina en `/ckad-labs/workspace/lab5`.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Comprueba el contexto activo de kubectl y verifica la versión del servidor para confirmar que utilizarás el clúster `ckad` compatible con sidecars nativos.
+- {% include step_label.html %} Comprueba el contexto activo de kubectl para confirmar que los recursos de la práctica se crearán en el clúster `ckad` del curso.
 
-  > **Importante:** El contexto esperado es `kind-ckad` y el clúster del curso utiliza Kubernetes 1.36.1, versión en la que los sidecar containers nativos están disponibles de forma estable.
+  > **Importante:** El contexto esperado es `kind-ckad`. Si aparece otro contexto, selecciónalo antes de continuar para evitar crear recursos en un clúster diferente.
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl config current-context && kubectl version
+  kubectl config current-context
   ```
 
-  > **Salida esperada:** Se muestra `kind-ckad` como contexto activo y la información de versión del cliente y servidor Kubernetes.
+  > **Salida esperada:** El comando devuelve exactamente `kind-ckad`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Consulta las versiones del cliente y del servidor Kubernetes para confirmar que el clúster utiliza una versión compatible con sidecar containers nativos.
+
+  > **Nota:** El clúster del curso utiliza Kubernetes 1.36.1. Los sidecar containers nativos son una funcionalidad estable en esta versión y se definen mediante `restartPolicy: Always` dentro de `initContainers`.
+  {: .lab-note .info .compact}
+
+  ```bash
+  kubectl version
+  ```
+
+  > **Salida esperada:** Se muestra la información del cliente y del servidor; la versión del servidor corresponde a Kubernetes `v1.36.1`.
   {: .lab-note .output .compact}
 
 - {% include step_label.html %} Crea el namespace `lab5` para mantener aislados todos los recursos utilizados durante el ejercicio.
@@ -178,7 +187,7 @@ Agregarás un contenedor dentro de `initContainers` con `restartPolicy: Always`.
 
 - {% include step_label.html %} Configura el sidecar para esperar la creación del archivo y después seguir continuamente las nuevas líneas escritas por la aplicación.
 
-  > **Nota:** El bucle inicial evita que `tail` termine antes de que la aplicación cree `app.log`; después `tail -F` mantiene el proceso observando el archivo.
+  > **Nota:** El bucle inicial evita que `tail` termine antes de que la aplicación cree `app.log`; después `tail -f` mantiene el proceso observando el archivo mientras la aplicación continúa escribiendo eventos.
   {: .lab-note .info .compact}
 
   ```bash
@@ -190,11 +199,11 @@ Agregarás un contenedor dentro de `initContainers` con `restartPolicy: Always`.
             echo "Sidecar iniciado; esperando app.log..."
             while [ ! -f /var/log/shared/app.log ]; do sleep 1; done
             echo "app.log detectado; iniciando seguimiento."
-            tail -F /var/log/shared/app.log
+            tail -f /var/log/shared/app.log
   EOF
   ```
 
-  > **Salida esperada:** El sidecar contiene un comando que espera `/var/log/shared/app.log` y posteriormente ejecuta `tail -F`.
+  > **Salida esperada:** El sidecar contiene un comando que espera `/var/log/shared/app.log` y posteriormente ejecuta `tail -f`.
   {: .lab-note .output .compact}
 
 - {% include step_label.html %} Monta `shared-logs` en `/var/log/shared` dentro del sidecar para darle acceso al archivo que generará la aplicación principal.
@@ -259,10 +268,10 @@ Agregarás un contenedor productor que escribirá eventos periódicos en el volu
   > **Salida esperada:** El contenedor `app` contiene un bucle que genera eventos numerados cada tres segundos.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Monta el mismo volumen en la aplicación y valida todo el manifiesto contra el API Server sin crear todavía el Pod.
+- {% include step_label.html %} Monta el volumen `shared-logs` en `/var/log/shared` dentro de la aplicación para que pueda escribir los eventos en el mismo almacenamiento observado por el sidecar.
 
-  > **Advertencia:** La validación server-side confirma que `restartPolicy: Always` es aceptado para el sidecar y que la estructura YAML completa es válida antes del despliegue.
-  {: .lab-note .warning .compact}
+  > **Importante:** El nombre del volumen debe coincidir exactamente con `shared-logs`; ambos contenedores utilizarán el mismo `emptyDir` mediante esta referencia.
+  {: .lab-note .important .compact}
 
   ```bash
   cat >> sidecar-pod.yaml <<'EOF'
@@ -270,6 +279,17 @@ Agregarás un contenedor productor que escribirá eventos periódicos en el volu
           - name: shared-logs
             mountPath: /var/log/shared
   EOF
+  ```
+
+  > **Salida esperada:** El contenedor `app` contiene un `volumeMount` denominado `shared-logs` en `/var/log/shared`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Valida el manifiesto completo contra el API Server mediante un dry-run antes de crear el Pod real.
+
+  > **Advertencia:** No continúes si Kubernetes devuelve un error de validación. Esta comprobación confirma que `restartPolicy: Always` es aceptado para el sidecar y que la estructura YAML es válida.
+  {: .lab-note .warning .compact}
+
+  ```bash
   kubectl apply --dry-run=server -f sidecar-pod.yaml
   ```
 
@@ -303,16 +323,28 @@ Aplicarás el manifiesto y observarás la transición hasta que el contenedor pr
   > **Salida esperada:** Kubernetes responde `pod/sidecar-demo created`.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Espera hasta que el Pod alcance la condición `Ready` y comprueba posteriormente su estado resumido.
+- {% include step_label.html %} Espera hasta que el Pod alcance la condición `Ready` para confirmar que la aplicación principal inició mientras el sidecar nativo permanece activo.
 
-  > **Importante:** Aunque el sidecar se define dentro de `initContainers`, permanece activo. El Pod debe terminar mostrando la aplicación principal lista mientras el sidecar continúa ejecutándose.
+  > **Importante:** Aunque el sidecar se define dentro de `initContainers`, permanece ejecutándose durante la vida del Pod. No continúes si se alcanza el timeout; utiliza `kubectl describe` para diagnosticar el estado.
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl wait --for=condition=Ready pod/sidecar-demo -n lab5 --timeout=60s && kubectl get pod sidecar-demo -n lab5
+  kubectl wait --for=condition=Ready pod/sidecar-demo -n lab5 --timeout=60s
   ```
 
-  > **Salida esperada:** kubectl confirma la condición y `sidecar-demo` aparece en estado `Running`.
+  > **Salida esperada:** kubectl responde `pod/sidecar-demo condition met`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Consulta el estado resumido del Pod después de alcanzar la condición Ready para comprobar que permanece ejecutándose.
+
+  > **Nota:** El valor `READY` representa los contenedores de aplicación listos; el sidecar nativo continúa registrado dentro de los estados de init containers.
+  {: .lab-note .info .compact}
+
+  ```bash
+  kubectl get pod sidecar-demo -n lab5
+  ```
+
+  > **Salida esperada:** `sidecar-demo` aparece en estado `Running` y el contenedor principal se muestra listo.
   {: .lab-note .output .compact}
 
 - {% include step_label.html %} Consulta el Pod en formato ampliado para identificar la dirección IP y el nodo donde Kubernetes ejecuta el workload.
@@ -384,11 +416,11 @@ Inspeccionarás el archivo desde ambos contenedores para demostrar que el mecani
 
 - {% include step_label.html %} Lee las últimas líneas de `app.log` desde el contenedor principal para observar los eventos producidos por la aplicación.
 
-  > **Nota:** El archivo aumenta continuamente mientras `app` permanece activo, por lo que los valores exactos y el número de evento serán diferentes en cada ejecución.
+  > **Nota:** El archivo aumenta continuamente mientras `app` permanece activo. `MSYS_NO_PATHCONV=1` evita que Git Bash transforme la ruta Linux `/var/log/shared/app.log` en una ruta de Windows antes de enviarla al contenedor.
   {: .lab-note .info .compact}
 
   ```bash
-  kubectl exec -n lab5 sidecar-demo -c app -- tail -n 5 /var/log/shared/app.log
+  MSYS_NO_PATHCONV=1 kubectl exec -n lab5 sidecar-demo -c app -- tail -n 5 /var/log/shared/app.log
   ```
 
   > **Salida esperada:** Se muestran cinco eventos recientes con timestamp UTC y valores como `application-event-1`, `application-event-2` o posteriores.
@@ -396,11 +428,11 @@ Inspeccionarás el archivo desde ambos contenedores para demostrar que el mecani
 
 - {% include step_label.html %} Lee el mismo archivo desde `log-sidecar` para confirmar que ambos contenedores observan el contenido almacenado en `shared-logs`.
 
-  > **Importante:** Los dos comandos acceden a rutas equivalentes dentro de contenedores diferentes, pero el contenido procede del mismo volumen `emptyDir`.
+  > **Importante:** Los dos comandos acceden al mismo archivo desde contenedores diferentes. `MSYS_NO_PATHCONV=1` conserva la ruta Linux sin conversiones automáticas de Git Bash.
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl exec -n lab5 sidecar-demo -c log-sidecar -- tail -n 5 /var/log/shared/app.log
+  MSYS_NO_PATHCONV=1 kubectl exec -n lab5 sidecar-demo -c log-sidecar -- tail -n 5 /var/log/shared/app.log
   ```
 
   > **Salida esperada:** Se muestran eventos equivalentes a los observados desde `app`, confirmando que ambos contenedores acceden al mismo archivo.
@@ -448,11 +480,11 @@ Distinguirás la salida estándar de la aplicación y del sidecar, observando c�
 
 - {% include step_label.html %} Sigue durante aproximadamente diez segundos los logs del sidecar para observar cómo aparecen nuevos eventos mientras la aplicación continúa escribiendo información.
 
-  > **Advertencia:** `kubectl logs -f` permanece conectado continuamente; utilizamos `timeout` para detener automáticamente el seguimiento y evitar dejar procesos activos en Git Bash.
+  > **Advertencia:** `kubectl logs -f` permanece conectado continuamente; `timeout 10s` detiene automáticamente el seguimiento después de aproximadamente diez segundos. Al finalizar por timeout, Git Bash recupera el prompt y no queda un proceso de seguimiento activo.
   {: .lab-note .warning .compact}
 
   ```bash
-  timeout 10s kubectl logs sidecar-demo -n lab5 -c log-sidecar -f || true
+  timeout 10s kubectl logs sidecar-demo -n lab5 -c log-sidecar -f
   ```
 
   > **Salida esperada:** Durante varios segundos aparecen nuevos eventos generados por `app`; después el seguimiento termina automáticamente y Git Bash recupera el prompt.
@@ -467,7 +499,7 @@ Distinguirás la salida estándar de la aplicación y del sidecar, observando c�
 
 ## 🛠️ Tarea 5. Diagnosticar un fallo del sidecar y limpiar — 13 min
 
-Introducirás un fallo controlado únicamente en el sidecar para observar sus reinicios mientras la aplicación principal continúa trabajando. Después utilizarás estado y logs anteriores para encontrar la causa, restaurarás el manifiesto funcional y limpiarás el namespace.
+Introducirás un fallo controlado únicamente en el sidecar para observar sus reinicios mientras la aplicación principal continúa trabajando. Después utilizarás estado y logs del sidecar para encontrar la causa, restaurarás el manifiesto funcional y limpiarás el namespace.
 
 ### Tarea 5.1. Provocar un fallo controlado en el sidecar
 
@@ -485,33 +517,81 @@ Guardarás una copia conocida como funcional y modificarás el comando del sidec
   > **Salida esperada:** Se crea `sidecar-pod-working.yaml` en el workspace actual.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Sustituye temporalmente el comando `tail -F` por una secuencia que informa un error y termina con código `1`, provocando reinicios únicamente en el sidecar.
+- {% include step_label.html %} Sustituye temporalmente el comando `tail -f` por una secuencia que informa un error y termina con código `1`, provocando reinicios únicamente en el sidecar.
 
   > **Advertencia:** El cambio es deliberadamente defectuoso. No lo reutilices fuera de este escenario de diagnóstico; el sidecar comenzará a reiniciarse por su `restartPolicy: Always`.
   {: .lab-note .warning .compact}
 
   ```bash
-  sed -i 's#tail -F /var/log/shared/app.log#echo "ERROR: sidecar simulation failed"; sleep 2; exit 1#' sidecar-pod.yaml
+  sed -i 's#tail -f /var/log/shared/app.log#echo "ERROR: sidecar simulation failed"; sleep 2; exit 1#' sidecar-pod.yaml
   ```
 
   > **Salida esperada:** `sidecar-pod.yaml` contiene ahora el mensaje `ERROR: sidecar simulation failed` seguido por `exit 1`.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Recrea el Pod con la configuración defectuosa, espera varios segundos y consulta los reinicios del sidecar junto con el estado de la aplicación principal.
+- {% include step_label.html %} Elimina el Pod funcional para permitir que Kubernetes cree una nueva instancia utilizando el manifiesto defectuoso.
 
-  > **Importante:** El objetivo es comprobar que un sidecar reiniciable puede fallar y reiniciarse mientras la aplicación principal continúa ejecutándose dentro del mismo Pod.
+  > **Advertencia:** Elimina únicamente `sidecar-demo` dentro de `lab5`; no elimines el namespace ni el clúster durante el escenario de diagnóstico.
+  {: .lab-note .warning .compact}
+
+  ```bash
+  kubectl delete pod sidecar-demo -n lab5 --wait=true
+  ```
+
+  > **Salida esperada:** Kubernetes responde `pod "sidecar-demo" deleted`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Aplica el manifiesto defectuoso para crear nuevamente `sidecar-demo` con el fallo controlado en `log-sidecar`.
+
+  > **Importante:** La aplicación principal debe poder iniciar aunque el sidecar termine con código `1` y sea reiniciado por Kubernetes.
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl delete pod sidecar-demo -n lab5 --wait=true && kubectl apply -f sidecar-pod.yaml && sleep 10 && kubectl get pod sidecar-demo -n lab5 && kubectl get pod sidecar-demo -n lab5 -o jsonpath='AppReady={.status.containerStatuses[0].ready} SidecarRestarts={.status.initContainerStatuses[0].restartCount}{"\n"}'
+  kubectl apply -f sidecar-pod.yaml
   ```
 
-  > **Salida esperada:** El Pod continúa existiendo, `AppReady=true` y `SidecarRestarts` muestra uno o más reinicios.
+  > **Salida esperada:** Kubernetes responde `pod/sidecar-demo created`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Espera diez segundos para permitir que el sidecar falle y sea reiniciado varias veces antes de consultar su estado.
+
+  > **Nota:** La espera es intencional para que el contador de reinicios tenga tiempo de incrementarse y el escenario sea observable.
+  {: .lab-note .info .compact}
+
+  ```bash
+  sleep 10
+  ```
+
+  > **Salida esperada:** El comando finaliza después de aproximadamente diez segundos y Git Bash recupera el prompt.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Consulta el estado general del Pod para comprobar que la aplicación principal continúa ejecutándose durante los reinicios del sidecar.
+
+  > **Nota:** El Pod puede mostrar un estado relacionado con la inicialización o no estar completamente Ready mientras el sidecar se reinicia; el diagnóstico detallado se realizará en el siguiente paso.
+  {: .lab-note .info .compact}
+
+  ```bash
+  kubectl get pod sidecar-demo -n lab5
+  ```
+
+  > **Salida esperada:** El Pod `sidecar-demo` continúa existiendo y el contador de reinicios aumenta mientras el sidecar defectuoso se recupera repetidamente.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Extrae el estado Ready de la aplicación y el contador de reinicios del sidecar para comprobar que el fallo permanece aislado al proceso auxiliar.
+
+  > **Importante:** `AppReady=true` confirma que el contenedor principal sigue operativo, mientras `SidecarRestarts` debe mostrar al menos un reinicio.
+  {: .lab-note .important .compact}
+
+  ```bash
+  kubectl get pod sidecar-demo -n lab5 -o jsonpath='AppReady={.status.containerStatuses[0].ready} SidecarRestarts={.status.initContainerStatuses[0].restartCount}{"\n"}'
+  ```
+
+  > **Salida esperada:** Se muestra `AppReady=true` y `SidecarRestarts` con un valor igual o mayor que `1`.
   {: .lab-note .output .compact}
 
 ### Tarea 5.2. Diagnosticar, restaurar y limpiar
 
-Utilizarás la descripción y los logs previos del sidecar para localizar la causa del fallo. Finalmente restaurarás el manifiesto funcional, comprobarás que ambos procesos se estabilizan y eliminarás el namespace.
+Utilizarás la descripción y los logs del sidecar para localizar la causa del fallo. Finalmente restaurarás el manifiesto funcional, comprobarás que ambos procesos se estabilizan y eliminarás el namespace.
 
 - {% include step_label.html %} Examina el Pod y localiza el estado, código de salida, contador de reinicios y eventos asociados específicamente con `log-sidecar`.
 
@@ -525,28 +605,100 @@ Utilizarás la descripción y los logs previos del sidecar para localizar la cau
   > **Salida esperada:** `log-sidecar` muestra reinicios y una terminación anterior con código distinto de cero; el contenedor `app` aparece ejecutándose.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Recupera los logs de la instancia anterior del sidecar para identificar el mensaje generado justo antes de que Kubernetes lo reiniciara.
+- {% include step_label.html %} Consulta los logs actuales del sidecar para identificar el mensaje de error emitido antes de cada terminación controlada.
 
-  > **Importante:** `--previous` es especialmente útil cuando un contenedor ya fue reiniciado, porque permite consultar la salida de la ejecución anterior en lugar de limitarse al proceso actual.
+  > **Importante:** Se consultan los logs de la instancia actual porque son suficientes para identificar el fallo y evitan depender de la disponibilidad de logs históricos del runtime. El sidecar imprime el mismo mensaje en cada reinicio.
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl logs sidecar-demo -n lab5 -c log-sidecar --previous
+  kubectl logs sidecar-demo -n lab5 -c log-sidecar
   ```
 
   > **Salida esperada:** Los logs contienen `ERROR: sidecar simulation failed`, permitiendo identificar directamente la causa introducida en el manifiesto.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Restaura el manifiesto funcional, recrea el Pod, espera hasta que la aplicación esté Ready, valida los dos procesos y elimina finalmente el namespace `lab5`.
+- {% include step_label.html %} Restaura el manifiesto funcional copiando la versión guardada sobre `sidecar-pod.yaml` antes de recrear el Pod.
 
-  > **Advertencia:** La limpieza final elimina solamente los objetos Kubernetes. Conserva ambos archivos YAML dentro de `workspace/lab5` como referencia del escenario funcional y del ejercicio realizado.
+  > **Importante:** Esta operación elimina del manifiesto el fallo controlado y recupera exactamente la configuración que funcionaba antes del ejercicio de troubleshooting.
+  {: .lab-note .important .compact}
+
+  ```bash
+  cp sidecar-pod-working.yaml sidecar-pod.yaml
+  ```
+
+  > **Salida esperada:** El comando finaliza sin errores y `sidecar-pod.yaml` vuelve a contener el comando funcional del sidecar.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Elimina el Pod defectuoso para detener sus reinicios y permitir la creación de una instancia limpia con la configuración restaurada.
+
+  > **Advertencia:** Elimina únicamente `sidecar-demo`; el namespace se conservará hasta completar las validaciones finales.
   {: .lab-note .warning .compact}
 
   ```bash
-  cp sidecar-pod-working.yaml sidecar-pod.yaml && kubectl delete pod sidecar-demo -n lab5 --wait=true && kubectl apply -f sidecar-pod.yaml && kubectl wait --for=condition=Ready pod/sidecar-demo -n lab5 --timeout=60s && sleep 5 && kubectl get pod sidecar-demo -n lab5 && kubectl get pod sidecar-demo -n lab5 -o jsonpath='AppReady={.status.containerStatuses[0].ready} SidecarRunning={.status.initContainerStatuses[0].ready} SidecarRestarts={.status.initContainerStatuses[0].restartCount}{"\n"}' && kubectl delete namespace lab5 --wait=true
+  kubectl delete pod sidecar-demo -n lab5 --wait=true
   ```
 
-  > **Salida esperada:** El Pod restaurado aparece `Running`, `AppReady=true`, `SidecarRunning=true`, el sidecar nuevo permanece estable y Kubernetes termina respondiendo `namespace "lab5" deleted`.
+  > **Salida esperada:** Kubernetes responde `pod "sidecar-demo" deleted`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Crea nuevamente el Pod utilizando el manifiesto funcional restaurado.
+
+  > **Nota:** El nuevo Pod inicia con contadores de reinicio propios y ya no contiene la terminación deliberada con `exit 1`.
+  {: .lab-note .info .compact}
+
+  ```bash
+  kubectl apply -f sidecar-pod.yaml
+  ```
+
+  > **Salida esperada:** Kubernetes responde `pod/sidecar-demo created`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Espera hasta que el Pod restaurado alcance la condición `Ready` antes de evaluar sus estados finales.
+
+  > **Importante:** No continúes con la limpieza si se alcanza el timeout; revisa primero el Pod con `kubectl describe` para confirmar la causa.
+  {: .lab-note .important .compact}
+
+  ```bash
+  kubectl wait --for=condition=Ready pod/sidecar-demo -n lab5 --timeout=60s
+  ```
+
+  > **Salida esperada:** kubectl responde `pod/sidecar-demo condition met`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Consulta el estado general del Pod restaurado para comprobar que la aplicación se encuentra ejecutándose normalmente.
+
+  > **Nota:** Una vez alcanzada la condición Ready no es necesario introducir una espera artificial adicional; Kubernetes ya confirmó que el Pod cumple su condición de disponibilidad.
+  {: .lab-note .info .compact}
+
+  ```bash
+  kubectl get pod sidecar-demo -n lab5
+  ```
+
+  > **Salida esperada:** `sidecar-demo` aparece en estado `Running`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Valida de forma independiente que la aplicación y el sidecar estén listos y que el sidecar restaurado no haya requerido reinicios.
+
+  > **Importante:** Al tratarse de un Pod nuevo y funcional, el resultado esperado es `AppReady=true`, `SidecarRunning=true` y `SidecarRestarts=0`.
+  {: .lab-note .important .compact}
+
+  ```bash
+  kubectl get pod sidecar-demo -n lab5 -o jsonpath='AppReady={.status.containerStatuses[0].ready} SidecarRunning={.status.initContainerStatuses[0].ready} SidecarRestarts={.status.initContainerStatuses[0].restartCount}{"\n"}'
+  ```
+
+  > **Salida esperada:** Se muestra `AppReady=true SidecarRunning=true SidecarRestarts=0`.
+  {: .lab-note .output .compact}
+
+- {% include step_label.html %} Elimina el namespace `lab5` únicamente después de completar todas las validaciones y confirmar que el escenario restaurado funciona correctamente.
+
+  > **Advertencia:** Esta es la limpieza final de la práctica. Conserva `sidecar-pod.yaml` y `sidecar-pod-working.yaml` dentro de `workspace/lab5` como material de revisión.
+  {: .lab-note .warning .compact}
+
+  ```bash
+  kubectl delete namespace lab5 --wait=true
+  ```
+
+  > **Salida esperada:** Kubernetes responde `namespace "lab5" deleted`.
   {: .lab-note .output .compact}
 
 {% capture r5 %}{{ results[4] }}{% endcapture %}

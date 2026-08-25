@@ -43,6 +43,9 @@ next: /lab4/lab4/
 
 <!-- Aquí comienzan las instrucciones paso a paso de la práctica -->
 
+> **Nota:** Ejecuta todos los comandos de esta práctica desde **Git Bash**. Inicia ubicado en la raíz local de `ckad-labs`; cuando una tarea requiera cambiar de directorio, el propio paso lo indicará explícitamente.
+{: .lab-note .info .compact}
+
 ## 🔎 Tarea 1. Preparar la aplicación y su definición de contenedor — 7 min
 
 Prepararás un workspace exclusivo para la práctica, crearás una aplicación web estática mínima y definirás el Dockerfile que permitirá empaquetarla como una imagen reproducible. También revisarás los archivos antes de comenzar el proceso de construcción.
@@ -51,7 +54,7 @@ Prepararás un workspace exclusivo para la práctica, crearás una aplicación w
 
 Crearás el directorio local de trabajo y generarás una página HTML sencilla que permita identificar claramente la versión ejecutada dentro del contenedor y posteriormente dentro de Kubernetes.
 
-- {% include step_label.html %} Crea el directorio `workspace/lab3/app` desde la raíz de `ckad-labs` y accede a él para mantener separados el código y los archivos generados durante esta práctica.
+- {% include step_label.html %} Desde la raíz local de `ckad-labs`, crea el directorio `workspace/lab3/app` y accede a él; a partir de este paso permanecerás ubicado en `ckad-labs/workspace/lab3/app` durante el resto de la práctica.
 
   > **Nota:** El directorio `workspace` representa el espacio de trabajo local del participante y no necesita enviarse nuevamente al repositorio público del curso.
   {: .lab-note .info .compact}
@@ -189,9 +192,11 @@ Utilizarás Docker para empaquetar la aplicación con el tag `ckad-lab3:v1` y co
   > **Nota:** kind ejecuta nodos Kubernetes como contenedores Linux; la arquitectura puede variar según el equipo, pero debe ser compatible con el Docker Engine utilizado.
   {: .lab-note .info .compact}
 
+  {%raw%}
   ```bash
   docker image inspect ckad-lab3:v1 --format 'OS={{.Os}} Architecture={{.Architecture}}'
   ```
+  {%endraw%}
 
   > **Salida esperada:** Se muestra `OS=linux` junto con una arquitectura compatible, normalmente `amd64` o `arm64`.
   {: .lab-note .output .compact}
@@ -212,7 +217,7 @@ Ejecutarás un contenedor temporal desde la imagen recién construida, comprobar
   > **Salida esperada:** Docker devuelve el identificador del nuevo contenedor y este queda ejecutándose en segundo plano.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Solicita la página desde Git Bash utilizando `curl` y verifica que el contenido corresponde a la versión `v1` construida en la imagen.
+- {% include step_label.html %} Solicita la página utilizando `curl` y verifica que el contenido corresponde a la versión `v1` construida en la imagen.
 
   > **Nota:** Esta prueba demuestra que el servidor NGINX y el archivo HTML funcionan correctamente antes de introducir variables adicionales relacionadas con Kubernetes.
   {: .lab-note .info .compact}
@@ -249,11 +254,11 @@ Transferirás la imagen construida localmente hacia los nodos del clúster kind 
 
 ### Tarea 3.1. Incorporar la imagen al clúster kind
 
-Validarás que el clúster correcto continúa disponible, cargarás la imagen en sus nodos y comprobarás directamente desde uno de ellos que el runtime de contenedores puede localizarla.
+Validarás que el clúster correcto continúa disponible, importarás la imagen directamente en el runtime de cada nodo y comprobarás que todos los nodos puedan localizarla antes de crear el Pod.
 
 - {% include step_label.html %} Comprueba que kind reconoce el clúster `ckad` antes de transferir la imagen local hacia sus nodos.
 
-  > **Nota:** El nombre del clúster es necesario porque `kind load docker-image` debe saber a qué conjunto de nodos transferir la imagen.
+  > **Nota:** El nombre del clúster permite obtener exactamente los nodos pertenecientes a `ckad` antes de importar la imagen en el runtime interno de cada uno.
   {: .lab-note .info .compact}
 
   ```bash
@@ -263,28 +268,34 @@ Validarás que el clúster correcto continúa disponible, cargarás la imagen en
   > **Salida esperada:** La lista contiene el clúster `ckad`.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Carga `ckad-lab3:v1` dentro del clúster kind para que los nodos puedan utilizar la imagen sin depender de un registry externo.
+- {% include step_label.html %} Importa `ckad-lab3:v1` directamente en el runtime `containerd` de cada nodo del clúster `ckad` para que Kubernetes pueda utilizar la imagen sin depender de un registry externo.
 
-  > **Importante:** Docker Desktop y los nodos kind no comparten automáticamente el mismo almacén de imágenes. `kind load docker-image` copia explícitamente la imagen local al clúster.
+  > **Importante:** Docker Desktop y los nodos kind no comparten automáticamente el mismo almacén de imágenes. La importación se realiza directamente con `ctr` dentro de cada nodo para mantener compatibilidad con el runtime utilizado por la imagen `kindest/node:v1.36.1`.
   {: .lab-note .important .compact}
 
   ```bash
-  kind load docker-image ckad-lab3:v1 --name ckad
+  for node in $(kind get nodes --name ckad); do
+    echo "Cargando ckad-lab3:v1 en $node..."
+    docker save ckad-lab3:v1 | docker exec -i "$node" ctr -n k8s.io images import -
+  done
   ```
 
-  > **Salida esperada:** kind informa que la imagen `ckad-lab3:v1` fue cargada correctamente en los nodos del clúster `ckad`.
+  > **Salida esperada:** Se procesa la imagen en `ckad-control-plane`, `ckad-worker` y `ckad-worker2` sin errores; cada importación muestra una referencia correspondiente a `docker.io/library/ckad-lab3:v1`.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Consulta las imágenes conocidas por el runtime del nodo `ckad-worker` y filtra la imagen cargada para verificar que realmente se encuentra disponible dentro de kind.
+- {% include step_label.html %} Consulta las imágenes conocidas por el runtime de todos los nodos y confirma que `ckad-lab3:v1` quedó disponible en cada uno antes de permitir que Kubernetes programe el Pod.
 
-  > **Advertencia:** Utiliza `docker exec` únicamente para inspección del nodo. No elimines imágenes ni modifiques manualmente el runtime interno de los nodos kind.
+  > **Advertencia:** Utiliza `docker exec` únicamente para inspeccionar el runtime de los nodos. No elimines imágenes ni modifiques otros recursos internos del clúster kind.
   {: .lab-note .warning .compact}
 
   ```bash
-  docker exec ckad-worker crictl images | grep ckad-lab3
+  for node in $(kind get nodes --name ckad); do
+    echo "=== $node ==="
+    docker exec "$node" crictl images | grep ckad-lab3
+  done
   ```
 
-  > **Salida esperada:** Se muestra una entrada correspondiente a `ckad-lab3` con el tag `v1`.
+  > **Salida esperada:** Para `ckad-control-plane`, `ckad-worker` y `ckad-worker2` se muestra una entrada de `docker.io/library/ckad-lab3` con el tag `v1`.
   {: .lab-note .output .compact}
 
 ### Tarea 3.2. Crear el manifiesto y desplegar el Pod
@@ -457,16 +468,20 @@ Actualizarás el código local para identificar una nueva versión, reconstruir�
   > **Salida esperada:** Docker finaliza correctamente y crea la imagen `ckad-lab3:v2`.
   {: .lab-note .output .compact}
 
-- {% include step_label.html %} Carga la nueva imagen dentro del clúster `ckad` y confirma que ambos tags de la aplicación permanecen disponibles localmente.
+- {% include step_label.html %} Importa la nueva imagen `ckad-lab3:v2` en el runtime de todos los nodos del clúster `ckad` y confirma que ambos tags permanecen disponibles en Docker local.
 
-  > **Advertencia:** Cargar una imagen nueva en kind no actualiza automáticamente Pods existentes. Un Pod que ya está ejecutando `v1` continuará usando esa versión hasta que sea reemplazado.
+  > **Advertencia:** Importar una imagen nueva en los nodos no actualiza automáticamente Pods existentes. Un Pod que ya está ejecutando `v1` continuará usando esa versión hasta que sea reemplazado.
   {: .lab-note .warning .compact}
 
   ```bash
-  kind load docker-image ckad-lab3:v2 --name ckad && docker image ls ckad-lab3
+  for node in $(kind get nodes --name ckad); do
+    echo "Cargando ckad-lab3:v2 en $node..."
+    docker save ckad-lab3:v2 | docker exec -i "$node" ctr -n k8s.io images import -
+  done
+  docker image ls ckad-lab3
   ```
 
-  > **Salida esperada:** kind informa que `ckad-lab3:v2` fue cargada y Docker muestra al menos los tags `v1` y `v2`.
+  > **Salida esperada:** La imagen `ckad-lab3:v2` se importa sin errores en `ckad-control-plane`, `ckad-worker` y `ckad-worker2`; después Docker muestra al menos los tags locales `v1` y `v2`.
   {: .lab-note .output .compact}
 
 ### Tarea 5.2. Reemplazar el Pod, validar v2 y limpiar
@@ -491,7 +506,13 @@ Actualizarás el manifiesto local para apuntar a la nueva imagen y recrearás el
   {: .lab-note .warning .compact}
 
   ```bash
-  kubectl delete pod ckad-web -n lab3 --wait=true && kubectl apply -f ../pod.yaml && kubectl wait --for=condition=Ready pod/ckad-web -n lab3 --timeout=60s
+  kubectl delete pod ckad-web -n lab3 --wait=true
+  ```
+  ```bash
+  kubectl apply -f ../pod.yaml
+  ```
+  ```bash
+  kubectl wait --for=condition=Ready pod/ckad-web -n lab3 --timeout=60s
   ```
 
   > **Salida esperada:** El Pod anterior es eliminado, Kubernetes crea nuevamente `ckad-web` y `kubectl wait` confirma que la nueva instancia está `Ready`.
@@ -503,7 +524,13 @@ Actualizarás el manifiesto local para apuntar a la nueva imagen y recrearás el
   {: .lab-note .info .compact}
 
   ```bash
-  kubectl get pod ckad-web -n lab3 -o jsonpath='Image={.spec.containers[0].image}{"\n"}' && kubectl exec -n lab3 ckad-web -- wget -qO- http://127.0.0.1/ | grep 'Version:' && kubectl delete namespace lab3 --wait=true
+  kubectl get pod ckad-web -n lab3 -o jsonpath='Image={.spec.containers[0].image}{"\n"}'
+  ```
+  ```bash
+  kubectl exec -n lab3 ckad-web -- wget -qO- http://127.0.0.1/ | grep 'Version:'
+  ```
+  ```bash
+  kubectl delete namespace lab3 --wait=true
   ```
 
   > **Salida esperada:** Se muestra `Image=ckad-lab3:v2`, la respuesta HTML contiene `Version: v2` y Kubernetes finaliza indicando `namespace "lab3" deleted`.

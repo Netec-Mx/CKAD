@@ -43,6 +43,9 @@ next: /lab5/lab5/
 
 <!-- Aquí comienzan las instrucciones paso a paso de la práctica -->
 
+> **Nota:** Ejecuta todos los comandos de esta práctica desde **Git Bash**. Inicia ubicado en la raíz local de `ckad-labs`; cuando una tarea requiera cambiar de directorio, el propio paso lo indicará explícitamente.
+{: .lab-note .info .compact}
+
 ## 🔎 Tarea 1. Preparar el escenario y el volumen compartido — 6 min
 
 Prepararás un workspace exclusivo y un namespace para aislar los recursos del laboratorio. Después crearás una primera estructura YAML que permita identificar el volumen efímero que compartirán el init container y el contenedor principal.
@@ -51,7 +54,7 @@ Prepararás un workspace exclusivo y un namespace para aislar los recursos del l
 
 Crearás el directorio local de trabajo, confirmarás que kubectl apunta al clúster correcto y crearás un namespace independiente para evitar mezclar recursos con otras prácticas.
 
-- {% include step_label.html %} Crea el directorio local `workspace/lab4`, accede a él y confirma la ruta desde la que trabajarás durante toda la práctica.
+- {% include step_label.html %} Desde la raíz local de `ckad-labs`, crea el directorio `workspace/lab4` y accede a él; a partir de este paso permanecerás ubicado en `ckad-labs/workspace/lab4` durante el resto de la práctica.
 
   > **Nota:** Los manifiestos generados en `workspace/lab4` permanecerán únicamente en tu estación local y podrán utilizarse posteriormente como material de repaso.
   {: .lab-note .info .compact}
@@ -381,7 +384,7 @@ Inspeccionarás el volumen desde el contenedor NGINX y comprobarás que la infor
   {: .lab-note .info .compact}
 
   ```bash
-  kubectl exec -n lab4 init-web -c web -- ls -l /usr/share/nginx/html
+  MSYS_NO_PATHCONV=1 kubectl exec -n lab4 init-web -c web -- ls -l /usr/share/nginx/html
   ```
 
   > **Salida esperada:** Se muestra el archivo `index.html` dentro del directorio de contenido de NGINX.
@@ -393,7 +396,7 @@ Inspeccionarás el volumen desde el contenedor NGINX y comprobarás que la infor
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl exec -n lab4 init-web -c web -- cat /usr/share/nginx/html/index.html
+  MSYS_NO_PATHCONV=1 kubectl exec -n lab4 init-web -c web -- cat /usr/share/nginx/html/index.html
   ```
 
   > **Salida esperada:** El HTML contiene `CKAD Lab 4`, `Contenido preparado por init-content` y `Estado: initialization completed`.
@@ -484,7 +487,7 @@ Guardarás una copia funcional, modificarás temporalmente el comando del init c
   {: .lab-note .warning .compact}
 
   ```bash
-  sed -i '/echo "Inicializando contenido..."/a\          exit 1' init-web.yaml
+  sed -i '/echo "Inicializando contenido..."/a\            exit 1' init-web.yaml
   ```
 
   > **Salida esperada:** `init-web.yaml` contiene ahora una línea `exit 1` dentro del bloque de comandos de `init-content`.
@@ -496,7 +499,10 @@ Guardarás una copia funcional, modificarás temporalmente el comando del init c
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl delete pod init-web -n lab4 --wait=true && kubectl apply -f init-web.yaml && sleep 8 && kubectl get pod init-web -n lab4
+  kubectl delete pod init-web -n lab4 --wait=true
+  ```
+  ```bash
+  kubectl apply -f init-web.yaml && sleep 8 && kubectl get pod init-web -n lab4
   ```
 
   > **Salida esperada:** El Pod permanece en un estado de inicialización con un valor semejante a `Init:Error` o `Init:CrashLoopBackOff` en lugar de alcanzar `Running`.
@@ -524,10 +530,10 @@ Analizarás el fallo utilizando tres fuentes de evidencia, restaurarás el manif
   {: .lab-note .important .compact}
 
   ```bash
-  kubectl logs init-web -n lab4 -c init-content --previous 2>/dev/null || kubectl logs init-web -n lab4 -c init-content
+  kubectl logs init-web -n lab4 -c init-content
   ```
 
-  > **Salida esperada:** Los logs muestran `Inicializando contenido...` pero no `Archivo generado correctamente.`, confirmando que el proceso finaliza antes de completar su trabajo.
+  > **Salida esperada:** Se muestra `Inicializando contenido...` pero no `Archivo generado correctamente.`, confirmando que el proceso finaliza antes de completar su trabajo.
   {: .lab-note .output .compact}
 
 - {% include step_label.html %} Restaura el manifiesto funcional, recrea el Pod, espera hasta que esté Ready, confirma el resultado y elimina finalmente el namespace `lab4`.
@@ -536,7 +542,16 @@ Analizarás el fallo utilizando tres fuentes de evidencia, restaurarás el manif
   {: .lab-note .warning .compact}
 
   ```bash
-  cp init-web-working.yaml init-web.yaml && kubectl delete pod init-web -n lab4 --wait=true && kubectl apply -f init-web.yaml && kubectl wait --for=condition=Ready pod/init-web -n lab4 --timeout=60s && kubectl get pod init-web -n lab4 && kubectl delete namespace lab4 --wait=true
+  cp init-web-working.yaml init-web.yaml
+  ```
+  ```bash
+  kubectl delete pod init-web -n lab4 --wait=true && sleep 10 && kubectl apply -f init-web.yaml
+  ```
+  ```bash
+  kubectl wait --for=condition=Ready pod/init-web -n lab4 --timeout=60s && kubectl get pod init-web -n lab4
+  ```
+  ```bash
+  kubectl delete namespace lab4 --wait=true
   ```
 
   > **Salida esperada:** El Pod restaurado alcanza `Running` con `1/1` Ready y posteriormente Kubernetes responde `namespace "lab4" deleted`.

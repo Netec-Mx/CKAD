@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 7 de Couchbase Server.
+    Práctica 7 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé la estructura de trabajo de Kustomize creando los directorios
+    base, overlays/dev y overlays/prod dentro de workspace/lab7.
+    Validé el contexto kind-ckad, comprobé que kubectl incluye una versión
+    integrada de Kustomize y creé los namespaces lab7-dev y lab7-prod.
+    También consulté la ayuda de kubectl kustomize para reconocer cómo
+    renderizar configuraciones a partir de un kustomization.yaml.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 7 de Couchbase Server.
+    Práctica 7 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Construí una base reutilizable para Kustomize formada por un Deployment
+    web y un Service web. El Deployment utiliza NGINX y obtiene APP_MODE
+    desde un ConfigMap denominado web-config. Registré ambos recursos en
+    base/kustomization.yaml y agregué configMapGenerator para generar
+    web-config con APP_MODE=base. Después utilicé kubectl kustomize base
+    para renderizar los objetos y observar el sufijo hash generado para
+    el ConfigMap.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 7 de Couchbase Server.
+    Práctica 7 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé el overlay de desarrollo reutilizando ../../base.
+    Configuré namespace lab7-dev, namePrefix dev-, label environment=dev
+    con propagación hacia selectores y dos réplicas para el Deployment web.
+    Rendericé la personalización en dev-rendered.yaml para comprobar las
+    transformaciones antes del despliegue y posteriormente utilicé
+    kubectl apply -k overlays/dev. Finalmente validé el rollout de dev-web
+    y los recursos etiquetados con environment=dev.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 7 de Couchbase Server.
+    Práctica 7 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Construí el overlay de producción utilizando la misma base que
+    desarrollo. Configuré namespace lab7-prod, namePrefix prod-,
+    environment=prod, tres réplicas y una transformación images para NGINX.
+    Rendericé prod-rendered.yaml, comparé sus diferencias frente a
+    desarrollo y desplegué la variante mediante kubectl apply -k.
+    Finalmente confirmé que prod-web alcanzara disponibilidad con tres Pods.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,17 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 7 de Couchbase Server.
+    Práctica 7 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Resolví un reto de consolidación creando por mi cuenta un overlay QA
+    sin duplicar Deployment ni Service. El overlay debía reutilizar
+    ../../base, utilizar namespace lab7-qa, prefijo qa-, label
+    environment=qa propagado a selectores y dos réplicas para web.
+    Rendericé la solución con kubectl kustomize, validé nombres, namespace,
+    labels y réplicas, desplegué el ambiente QA y comprobé Deployment,
+    Pods, Service y ConfigMap. Finalmente eliminé los namespaces dev,
+    prod y qa conservando los archivos locales.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

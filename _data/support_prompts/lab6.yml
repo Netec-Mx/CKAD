@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 6 de Couchbase Server.
+    Práctica 6 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé el entorno para trabajar con almacenamiento Kubernetes.
+    Creé workspace/lab6, validé el contexto kind-ckad, comprobé que
+    ckad-control-plane, ckad-worker y ckad-worker2 estuvieran Ready y
+    creé el namespace lab6. Después exploré PersistentVolumes,
+    PersistentVolumeClaims y StorageClasses mediante kubectl
+    api-resources y kubectl get storageclass, y utilicé kubectl explain
+    para consultar la definición de emptyDir.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 6 de Couchbase Server.
+    Práctica 6 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé un Pod denominado ephemeral-demo que utiliza un volumen emptyDir
+    montado en /data. Validé el manifiesto con dry-run server-side,
+    desplegué el Pod y escribí session.txt dentro del volumen.
+    Después confirmé que el archivo existía, eliminé completamente el Pod,
+    lo recreé utilizando el mismo manifiesto y comprobé que session.txt
+    ya no existía, demostrando que emptyDir está ligado al ciclo de vida
+    de la instancia del Pod.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +41,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 6 de Couchbase Server.
+    Práctica 6 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Preparé almacenamiento persistente local dentro del nodo ckad-worker
+    creando /mnt/lab6-data. Definí un PersistentVolume denominado lab6-pv
+    de 100Mi, ReadWriteOnce, persistentVolumeReclaimPolicy Retain,
+    storageClassName vacío y nodeAffinity hacia ckad-worker.
+    Después creé un PersistentVolumeClaim lab6-pvc que solicita 50Mi y
+    referencia explícitamente lab6-pv. Validé y apliqué ambos manifiestos
+    y comprobé que PV y PVC alcanzaran el estado Bound.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +59,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 6 de Couchbase Server.
+    Práctica 6 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Consumí lab6-pvc desde un Pod denominado persistent-a, comprobando
+    que Kubernetes lo programó en ckad-worker debido a la nodeAffinity
+    del PersistentVolume local. Escribí persistent.txt dentro de /data
+    y confirmé su contenido. Después eliminé únicamente persistent-a,
+    verifiqué que PV y PVC permanecieran Bound y desplegué persistent-b
+    utilizando el mismo claim. Finalmente recuperé desde el segundo Pod
+    los datos escritos por el primero.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +77,16 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 6 de Couchbase Server.
+    Práctica 6 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Comparé directamente la configuración del Pod con emptyDir y del Pod
+    que consume almacenamiento mediante PersistentVolumeClaim. Utilicé
+    JSONPath para identificar los volúmenes y consulté capacidad,
+    reclaimPolicy, nodeAffinity y fase de lab6-pv. Después eliminé los
+    Pods, eliminé lab6-pvc y esperé que lab6-pv cambiara a Released por
+    su política Retain. Finalmente eliminé manualmente el PV, borré
+    /mnt/lab6-data dentro de ckad-worker y eliminé el namespace lab6.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

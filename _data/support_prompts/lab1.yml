@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 1 de Couchbase Server.
+    Práctica 1 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Validé la estación de trabajo Windows antes de desplegar Kubernetes.
+    Consulté la versión de Windows, comprobé funcionalmente WSL2 ejecutando
+    Ubuntu, revisé la versión instalada de WSL y confirmé que una distribución
+    utiliza WSL2. También actualicé WSL cuando fue necesario y verifiqué que
+    Docker Desktop utiliza el backend WSL2 y trabaja con contenedores Linux,
+    dejando disponible el Docker Engine que posteriormente utilizará kind.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 1 de Couchbase Server.
+    Práctica 1 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Preparé el repositorio de laboratorios del curso utilizando Git y
+    sparse-checkout. Verifiqué la versión de Git, cloné únicamente la
+    estructura necesaria del repositorio y limité el checkout al directorio
+    ckad-labs y al archivo .gitattributes. Después revisé la estructura del
+    laboratorio, los archivos disponibles en setup y la política de finales
+    de línea LF utilizada para evitar problemas al ejecutar scripts Bash
+    desde entornos Linux.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 1 de Couchbase Server.
+    Práctica 1 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Instalé y validé las herramientas de línea de comandos utilizadas durante
+    las prácticas Kubernetes. Instalé o actualicé kubectl mediante winget,
+    identifiqué el ejecutable utilizado por Git Bash, comprobé la versión del
+    cliente y revisé los contextos existentes. Después instalé kind, verifiqué
+    su ubicación y versión y confirmé que Docker expone un runtime basado en
+    contenedores Linux compatible con la creación de nodos Kubernetes.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 1 de Couchbase Server.
+    Práctica 1 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Preparé y desplegué el clúster Kubernetes multinodo utilizado durante el
+    curso. Revisé el archivo setup/kind-config.yaml, confirmé que define un
+    nodo Control Plane y dos Worker Nodes y descargué anticipadamente la
+    imagen kindest/node:v1.36.1. Después creé con kind el clúster denominado
+    ckad, comprobé los contenedores Docker correspondientes a sus tres nodos
+    y verifiqué que kubectl utiliza el contexto kind-ckad.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,16 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 1 de Couchbase Server.
+    Práctica 1 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Realicé la validación final del entorno Kubernetes. Comprobé la
+    comunicación con el API Server mediante kubectl cluster-info, confirmé
+    que el Control Plane y los dos Worker Nodes están en estado Ready y
+    revisé los Pods fundamentales del namespace kube-system. Finalmente creé
+    el namespace temporal ckad-validation, desplegué una carga BusyBox para
+    comprobar que Kubernetes puede programar y ejecutar Pods y eliminé el
+    namespace de validación sin destruir el clúster ckad.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

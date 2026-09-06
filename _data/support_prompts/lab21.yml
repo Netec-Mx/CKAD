@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 21 de Couchbase Server.
+    Práctica 21 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab21, validé el contexto kind-ckad y creé el
+    namespace lab21. Después creé log-demo para generar mensajes INFO
+    periódicos en stdout. Consulté sus líneas recientes mediante
+    kubectl logs, utilicé kubectl describe para revisar estado,
+    condiciones y eventos asociados al Pod y consulté los eventos del
+    namespace ordenados cronológicamente. Así distinguí evidencia de
+    aplicación de evidencia generada por Kubernetes.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 21 de Couchbase Server.
+    Práctica 21 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Resolví un reto creando api-logger para generar repetidamente mensajes
+    INFO, WARNING y ERROR y recuperé una muestra útil para identificar
+    los últimos WARNING y ERROR y su orden relativo. Después construí
+    app-with-sidecar con dos contenedores denominados app y sidecar,
+    cada uno generando mensajes diferentes, y aprendí a consultar de
+    forma independiente los logs de cada contenedor sin mezclar sus
+    salidas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +41,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 21 de Couchbase Server.
+    Práctica 21 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé crash-app como un Deployment cuyo contenedor escribe
+    START crash-app y ERROR simulated failure antes de terminar con
+    código 1. Observé cómo Kubernetes reiniciaba el contenedor y revisé
+    restartCount y lastState. Después consulté los logs de la ejecución
+    actual y utilicé kubectl logs --previous para recuperar específicamente
+    la salida de la instancia inmediatamente anterior.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 21 de Couchbase Server.
+    Práctica 21 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Creé broken-app utilizando deliberadamente la imagen inexistente
+    nginx:lab21-image-does-not-exist. Analicé su estado y eventos para
+    identificar ErrImagePull o ImagePullBackOff y comprendí por qué un
+    contenedor que nunca inició puede no tener logs de aplicación útiles.
+    Después seguí un flujo de diagnóstico con estado, describe y eventos
+    y corregí el recurso para utilizar nginx:1.31.4-alpine3.24-slim,
+    verificando que finalmente quedara Running y Ready.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +76,16 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 21 de Couchbase Server.
+    Práctica 21 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé una última vez los Pods y Deployments después de completar
+    las consultas de logs, los reinicios de crash-app y la corrección
+    de broken-app. Después eliminé el namespace lab21 cuando ya no
+    necesitaba conservar estados, eventos o logs como evidencia.
+    Finalmente confirmé que el namespace había desaparecido y conservé
+    los archivos locales dentro de workspace/lab21 como referencia para
+    prácticas posteriores de troubleshooting.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

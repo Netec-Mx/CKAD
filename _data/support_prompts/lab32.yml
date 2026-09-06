@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 32 de Couchbase Server.
+    Práctica 32 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab32, confirmé kind-ckad y verifiqué que los Pods
+    principales de Argo CD, Crossplane y Strimzi continuaran Running.
+    Después creé en GitHub el repositorio público ckad-integrador-lab32,
+    lo cloné localmente y preparé los directorios infra y app.
+    Esta separación permitirá utilizar dos Applications distintas de
+    Argo CD para infraestructura y workloads.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 32 de Couchbase Server.
+    Práctica 32 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé lab32-infra y definí infra/vpc.yaml para una VPC real con
+    CIDR 10.32.0.0/16 administrada por Crossplane. Después construí
+    kafka-nodepool.yaml con un nodo KRaft controller/broker,
+    kafka.yaml con Kafka 4.3.0 y topic.yaml con el Topic orders de
+    tres particiones. Los manifiestos se validaron sin aplicar directamente
+    la infraestructura, porque Argo CD será quien entregue estos recursos
+    a Kubernetes.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 32 de Couchbase Server.
+    Práctica 32 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Definí app/namespace.yaml para lab32-app y construí
+    orders-consumer como Deployment. Su initContainer espera el bootstrap
+    Service de Kafka antes de iniciar kafka-console-consumer.sh dentro del
+    grupo lab32-workers. Después creé orders-producer-v1 como Job que
+    envía cinco pedidos al Topic orders. Validé ambos recursos con
+    dry-run antes de publicarlos en Git.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 32 de Couchbase Server.
+    Práctica 32 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Revisé los archivos nuevos con git status, agregué únicamente infra
+    y app al staging area y confirmé que no se incluyeran credenciales.
+    Después creé el commit Add integrated GitOps platform y ejecuté
+    git push origin main. Finalmente confirmé desde GitHub que los siete
+    manifiestos de infraestructura y aplicación estaban publicados como
+    estado deseado inicial.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,85 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 32 de Couchbase Server.
+    Práctica 32 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Accedí a Argo CD y creé la Application lab32-infra apuntando al
+    directorio infra del repositorio. Después ejecuté Sync.
+    Argo CD creó los Custom Resources y, a partir de ellos, Strimzi
+    comenzó a reconciliar lab32-kafka mientras Crossplane comenzó a crear
+    ckad-integrador-lab32 en AWS. Esperé explícitamente que Kafka y la VPC
+    alcanzaran condición Ready antes de continuar con la aplicación.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 32 de CKAD.
+
+    Creé una segunda Application denominada lab32-app apuntando al
+    directorio app del mismo repositorio. Después ejecuté Sync para que
+    Argo CD creara el Namespace, Deployment consumer y Job producer.
+    Esperé el rollout de orders-consumer y la condición Complete de
+    orders-producer-v1, comprobando que la capa de aplicación se desplegó
+    después de que Kafka ya estuviera disponible.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea7:
+  title: "Explicar la Tarea 7 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 7 de la
+    Práctica 32 de CKAD.
+
+    Verifiqué que orders-producer-v1 hubiera completado y que
+    orders-consumer permaneciera Running y Ready. Después revisé los logs
+    del consumer y confirmé la presencia de order-2001 a order-2005.
+    También recuperé desde status.atProvider.id el ID de la VPC y utilicé
+    AWS CLI para comprobar que existía realmente en AWS con CIDR
+    10.32.0.0/16. Finalmente confirmé en Argo CD que lab32-infra y
+    lab32-app estuvieran sincronizadas.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea8:
+  title: "Explicar la Tarea 8 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 8 de la
+    Práctica 32 de CKAD.
+
+    Creé un nuevo Job orders-producer-v2 en lugar de modificar el Job
+    existente, porque el Pod template de un Job contiene campos inmutables.
+    El nuevo recurso publica order-2006. Agregué el manifiesto a Git,
+    creé un commit y lo publiqué. Argo CD detectó lab32-app OutOfSync y,
+    después de sincronizar, creó el nuevo Job. Finalmente confirmé que
+    orders-producer-v2 completó y que el consumer activo recibió order-2006.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea9:
+  title: "Explicar la Tarea 9 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 9 de la
+    Práctica 32 de CKAD.
+
+    Ejecuté la limpieza integral respetando dependencias. Primero eliminé
+    lab32-app mediante Cascade para detener consumer y Jobs. Después
+    eliminé lab32-infra también mediante Cascade, provocando la eliminación
+    de Kafka, KafkaTopic, KafkaNodePool y del Managed Resource VPC.
+    Esperé que Crossplane eliminara la VPC real de AWS y confirmé mediante
+    AWS CLI que el ID ya no existía. Finalmente verifiqué que Argo CD,
+    Crossplane y Strimzi continuaran operativos como plataforma compartida.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

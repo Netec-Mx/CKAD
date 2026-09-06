@@ -5,9 +5,13 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 25 de Couchbase Server.
+    Práctica 25 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab25, validé kind-ckad y creé lab25.
+    Después desplegué demo-external con dos réplicas NGINX y un Service
+    NodePort que publica 30080. Inspeccioné el objeto activo para distinguir
+    ClusterIP, Service port, targetPort y nodePort y comprender que NodePort
+    conserva la exposición interna y agrega un puerto publicado en los nodos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +21,13 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 25 de Couchbase Server.
+    Práctica 25 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé web-public con tres réplicas NGINX y después un Service NodePort
+    con port 8080, targetPort 80 y nodePort 30081. Validé directamente
+    los tres niveles de puerto desde el recurso Kubernetes, comprendiendo
+    que el cliente interno utiliza port, el backend escucha en targetPort
+    y el cliente externo puede entrar mediante nodePort.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +37,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 25 de Couchbase Server.
+    Práctica 25 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé internal-client dentro de Kubernetes y validé web-public mediante
+    DNS y port 8080. Después inspeccioné la red Docker kind y comprobé que
+    los nodos ckad-control-plane, ckad-worker y ckad-worker2 pertenecían a
+    ella. Utilicé contenedores Docker temporales, externos a Kubernetes,
+    para acceder a ckad-control-plane:30081 y ckad-worker:30081,
+    demostrando el funcionamiento del NodePort desde fuera del clúster.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +54,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 25 de Couchbase Server.
+    Práctica 25 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Construí shop con Pods app=shop y un Service NodePort defectuoso que
+    seleccionaba app=shop-web, utilizaba port 8080, targetPort 8080 y
+    nodePort 30082. Primero diagnostiqué la ausencia de endpoints y corregí
+    únicamente el selector. Después comprobé que el acceso seguía fallando
+    porque NGINX escucha en 80. Corregí solamente targetPort a 80 y validé
+    acceso externo mediante ckad-control-plane:30082.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +71,32 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 25 de Couchbase Server.
+    Práctica 25 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Diseñé public-api con tres réplicas y un Service NodePort con
+    port=8080, targetPort=80 y nodePort=30083. Validé sus EndpointSlices,
+    comprobé acceso interno desde internal-client y acceso externo desde
+    un contenedor Docker conectado a la red kind. Finalmente expliqué la
+    ruta cliente externo, nodo:30083, Service, selección de endpoints,
+    targetPort 80 y NGINX.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 25 de CKAD.
+
+    Revisé Deployments, Pods, Services y EndpointSlices después de validar
+    web-public, shop y public-api. Después eliminé el namespace lab25,
+    liberando los NodePorts utilizados por la práctica. Confirmé que el
+    namespace había desaparecido y conservé los manifiestos locales dentro
+    de workspace/lab25 para repasar posteriormente la configuración de
+    exposición externa.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

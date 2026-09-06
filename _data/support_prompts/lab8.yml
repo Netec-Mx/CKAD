@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 8 de Couchbase Server.
+    Práctica 8 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab8, confirmé el contexto kind-ckad y creé el
+    namespace lab8. Después exploré el recurso Deployment mediante
+    kubectl api-resources y kubectl explain. Revisé específicamente
+    spec.replicas y la estructura recursiva de spec para identificar
+    selector, template y strategy, comprendiendo cómo el Deployment
+    define el número deseado de Pods y la plantilla utilizada para crearlos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 8 de Couchbase Server.
+    Práctica 8 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Generé deployment.yaml para un Deployment web con tres réplicas
+    utilizando nginx:1.31.4-alpine3.24-slim. Revisé el manifiesto en
+    Visual Studio Code, agregué containerPort: 80 y validé el objeto
+    mediante dry-run server-side. Después lo apliqué, esperé que completara
+    su rollout y consulté Deployment, ReplicaSet y Pods para reconocer la
+    relación jerárquica entre los tres tipos de objetos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,13 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 8 de Couchbase Server.
+    Práctica 8 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Escalé el Deployment web de tres a cuatro réplicas mediante
+    kubectl scale y comprobé que Kubernetes creó automáticamente el cuarto
+    Pod. Después identifiqué uno de los Pods administrados, lo eliminé sin
+    modificar Deployment ni ReplicaSet y observé cómo el controlador creó
+    una réplica nueva para recuperar el estado deseado de cuatro Pods.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +55,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 8 de Couchbase Server.
+    Práctica 8 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Consulté la imagen activa del Deployment y utilicé kubectl set image
+    para cambiarla de nginx:1.31.4-alpine3.24-slim a
+    nginx:1.31.4-alpine3.24. Esperé que Kubernetes completara el
+    RollingUpdate y después revisé los ReplicaSets, el historial del
+    rollout y la imagen efectiva de todos los Pods. Así comprobé cómo un
+    cambio en spec.template produce una nueva revisión y reemplaza
+    progresivamente las réplicas anteriores.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +73,16 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 8 de Couchbase Server.
+    Práctica 8 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Resolví un reto creando un segundo Deployment denominado api dentro
+    de lab8 sin modificar web. El nuevo Deployment debía tener dos réplicas,
+    imagen nginx:1.31.4-alpine3.24-slim, label app=api, contenedor nginx
+    y containerPort 80. Validé que tuviera dos Pods Ready y eliminé
+    deliberadamente uno de ellos para comprobar que el Deployment recuperara
+    automáticamente la réplica. Finalmente confirmé el estado de ambos
+    Deployments y eliminé el namespace lab8.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

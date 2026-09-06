@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 11 de Couchbase Server.
+    Práctica 11 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab11, validé el contexto kind-ckad y creé el
+    namespace lab11. Después estudié cómo Service.spec.selector determina
+    qué Pods reciben tráfico y cómo Deployment.spec.selector relaciona
+    cada controlador con sus propias réplicas. Finalmente creé un Pod
+    cliente basado en BusyBox para realizar todas las pruebas HTTP
+    utilizando el mismo nombre DNS del Service durante la estrategia
+    blue/green.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 11 de Couchbase Server.
+    Práctica 11 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Construí la versión Blue mediante el Deployment web-blue con tres
+    réplicas y los labels app=web y version=blue. Cada Pod sirve el texto
+    VERSION BLUE mediante NGINX. Después creé un Service ClusterIP
+    denominado web cuyo selector utiliza app=web y version=blue.
+    Comprobé desde el Pod cliente que http://web respondía VERSION BLUE,
+    demostrando que el Service actúa como punto estable de acceso.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 11 de Couchbase Server.
+    Práctica 11 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Resolví un reto creando web-green con tres réplicas, imagen NGINX,
+    labels app=web y version=green y contenido HTTP VERSION GREEN.
+    Manteniendo intactos web-blue y el Service web, validé que existieran
+    simultáneamente tres Pods Blue y tres Pods Green. Después confirmé
+    que el selector del Service todavía utilizaba version=blue y que las
+    solicitudes del cliente seguían respondiendo VERSION BLUE.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 11 de Couchbase Server.
+    Práctica 11 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Realicé el cutover de Blue hacia Green manteniendo el mismo Service
+    web y ambos Deployments activos. Cambié únicamente el mecanismo de
+    selección para que web utilizara los Pods version=green y comprobé
+    desde el cliente que la respuesta cambiaba a VERSION GREEN.
+    Posteriormente simulé un incidente y recuperé Blue mediante la misma
+    técnica, sin eliminar Green ni recrear el Service, verificando que
+    http://web volviera a responder VERSION BLUE.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,14 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 11 de Couchbase Server.
+    Práctica 11 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Después de validar completamente el escenario blue/green, eliminé el
+    namespace lab11 para retirar web-blue, web-green, el Service web y
+    el Pod cliente. Finalmente confirmé mediante kubectl que el namespace
+    ya no existía, conservando los manifiestos locales dentro de
+    workspace/lab11 para utilizarlos posteriormente como material de repaso.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

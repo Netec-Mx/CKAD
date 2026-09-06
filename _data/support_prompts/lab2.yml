@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 2 de Couchbase Server.
+    Práctica 2 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Exploré el clúster y la API de Kubernetes utilizando kubectl.
+    Validé que el contexto activo fuera kind-ckad, consulté la información
+    general del clúster, revisé nodos y namespaces y utilicé kubectl
+    api-resources para descubrir recursos disponibles. También utilicé
+    kubectl explain para consultar el esquema de un Pod y revisé la ayuda
+    integrada de kubectl para identificar opciones de salida.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 2 de Couchbase Server.
+    Práctica 2 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Administré recursos Kubernetes utilizando comandos imperativos.
+    Creé el namespace lab2 y un Pod denominado web-imperative mediante
+    kubectl run con la imagen nginx:1.28-alpine. Esperé hasta que el Pod
+    alcanzara la condición Ready, consulté su información con kubectl get
+    y kubectl describe, revisé sus eventos y finalmente eliminé únicamente
+    el Pod imperativo antes de continuar con el enfoque declarativo.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 2 de Couchbase Server.
+    Práctica 2 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Generé y analicé un manifiesto YAML utilizando kubectl como herramienta
+    de creación rápida. Preparé workspace/lab2 y utilicé kubectl run con
+    --dry-run=client y -o yaml para generar un Pod denominado web-yaml
+    sin crearlo inicialmente en Kubernetes. Guardé la definición en
+    web-pod.yaml y analicé apiVersion, kind, metadata, namespace, spec,
+    definición del contenedor e imagen configurada.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +56,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 2 de Couchbase Server.
+    Práctica 2 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Administré declarativamente un Pod mediante el manifiesto web-pod.yaml.
+    Utilicé kubectl apply para crear el recurso, esperé su condición Ready
+    y consulté el YAML almacenado en el API Server. Después modifiqué el
+    manifiesto local agregando el label environment: training, utilicé
+    kubectl diff para revisar el cambio antes de aplicarlo y ejecuté
+    nuevamente kubectl apply para actualizar el objeto existente.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +73,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 2 de Couchbase Server.
+    Práctica 2 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Consulté y filtré información del Pod mediante diferentes mecanismos
+    de kubectl. Utilicé salida wide, expresiones JSONPath y un selector
+    basado en el label environment=training. Después eliminé declarativamente
+    el Pod utilizando su manifiesto YAML, eliminé el namespace lab2 y
+    comprobé que los tres nodos del clúster ckad permanecieran en estado
+    Ready, conservando únicamente los archivos locales de trabajo.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

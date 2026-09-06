@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 20 de Couchbase Server.
+    Práctica 20 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab20, validé el contexto kind-ckad y creé el
+    namespace lab20. Después estudié la estructura de livenessProbe,
+    readinessProbe y startupProbe mediante kubectl explain.
+    Construí probe-demo con NGINX y una readiness probe HTTP sobre
+    la ruta / y el puerto 80. Finalmente observé cómo el Pod podía estar
+    Running antes de alcanzar 1/1 Ready.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 20 de Couchbase Server.
+    Práctica 20 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Resolví un reto creando web-ready con dos réplicas NGINX, un Service
+    ClusterIP y una readiness probe HTTP sobre /. Validé inicialmente que
+    ambas réplicas estuvieran Ready y que existieran EndpointSlices.
+    Después provoqué que una sola réplica dejara de responder a la
+    comprobación sin detener NGINX, observando un Pod que continuaba
+    Running pero mostraba 0/1 Ready mientras la otra réplica seguía
+    disponible.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 20 de Couchbase Server.
+    Práctica 20 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé health-app con BusyBox y una liveness probe exec que comprueba
+    /tmp/healthy. El contenedor crea inicialmente ese archivo, lo elimina
+    después de aproximadamente 15 segundos y mantiene vivo el proceso
+    principal. La probe detectó el fallo y Kubernetes reinició el
+    contenedor. Después utilicé describe, restartCount y kubectl logs
+    --previous para relacionar los reinicios con los fallos de liveness.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 20 de Couchbase Server.
+    Práctica 20 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Construí slow-api para simular una aplicación que tarda aproximadamente
+    20 segundos en iniciar. Configuré una startup probe sobre /tmp/started
+    con una ventana suficiente para completar el arranque, una readiness
+    probe sobre /tmp/ready y una liveness probe sobre /tmp/started.
+    Observé la transición del Pod y confirmé finalmente
+    Phase=Running, Ready=true y Restarts=0, además de comprobar que las
+    tres probes estaban presentes en el objeto activo.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 20 de Couchbase Server.
+    Práctica 20 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé los Deployments, Pods y Services después de completar los
+    escenarios de readiness, liveness y startup. Posteriormente eliminé
+    el namespace lab20 una vez terminadas las observaciones de condiciones,
+    reinicios, eventos y endpoints. Finalmente confirmé que el namespace
+    había desaparecido y conservé los manifiestos locales dentro de
+    workspace/lab20 para repaso.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

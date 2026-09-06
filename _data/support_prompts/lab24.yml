@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 24 de Couchbase Server.
+    Práctica 24 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab24, validé kind-ckad y creé el namespace lab24.
+    Después desplegué demo-web con dos réplicas identificadas mediante
+    app=demo-web y un Service ClusterIP cuyo selector utiliza esa misma
+    label. Consulté el Service y los EndpointSlices para comprender que el
+    Service no contiene Pods, sino que selecciona dinámicamente backends
+    a partir de labels.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 24 de Couchbase Server.
+    Práctica 24 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé backend con tres réplicas NGINX y después un Service backend
+    ClusterIP. Configuré port=8080 para el consumidor y targetPort=80
+    para el puerto real de los Pods. Validé directamente el objeto activo
+    mediante JSONPath para distinguir Type, ClusterIP, Port y TargetPort,
+    comprendiendo que el puerto del Service y el del backend pueden ser
+    diferentes.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 24 de Couchbase Server.
+    Práctica 24 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé un Pod client en el mismo namespace y utilicé DNS interno para
+    alcanzar backend mediante backend:8080 y backend.lab24:8080.
+    Después consulté la ClusterIP, los EndpointSlices y las IP de los Pods
+    backend. Comparé estas direcciones para comprobar que Kubernetes
+    publica como endpoints las réplicas seleccionadas por el Service,
+    mientras la ClusterIP permanece como dirección virtual estable.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +56,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 24 de Couchbase Server.
+    Práctica 24 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Construí catalog con Pods etiquetados app=catalog y un Service
+    defectuoso que inicialmente seleccionaba app=catalog-api y dirigía
+    tráfico hacia targetPort 8080. Primero demostré que no había endpoints
+    por el selector incorrecto. Después corregí únicamente el selector,
+    observé la aparición de endpoints y diagnostiqué un segundo fallo:
+    NGINX escucha en 80, no en 8080. Finalmente corregí targetPort y validé
+    acceso mediante catalog:9000.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,31 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 24 de Couchbase Server.
+    Práctica 24 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Diseñé api con tres réplicas y un Service api-internal ClusterIP con
+    port 8080 y targetPort 80. Después creé frontend-client y comprobé
+    que los EndpointSlices correspondieran a los Pods api. Finalmente
+    ejecuté una solicitud hacia http://api-internal:8080 y expliqué la
+    cadena frontend-client, DNS, Service, ClusterIP, EndpointSlice,
+    targetPort y NGINX.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 24 de CKAD.
+
+    Revisé Deployments, Pods, Services y EndpointSlices después de
+    completar las pruebas de backend, catalog y api-internal.
+    Eliminé el namespace lab24 una vez terminadas todas las validaciones,
+    confirmé que había desaparecido y conservé los manifiestos locales
+    dentro de workspace/lab24 como referencia de Services ClusterIP.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 31 de Couchbase Server.
+    Práctica 31 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab31, validé kind-ckad y creé el namespace kafka.
+    Después revisé conceptualmente el flujo Producer -> Topic ->
+    Partitions -> Consumer y analicé cómo un Consumer Group distribuye
+    particiones entre sus miembros. Finalmente confirmé que el namespace
+    todavía no contenía workloads de Kafka o Strimzi antes de la
+    instalación.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 31 de Couchbase Server.
+    Práctica 31 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Instalé Strimzi Cluster Operator mediante su manifiesto oficial,
+    esperé el rollout del Deployment y confirmé que su Pod estuviera
+    Running. Después revisé los CRDs kafka.strimzi.io y utilicé
+    kubectl api-resources para comprobar específicamente que Kubernetes
+    reconociera los recursos Kafka y KafkaTopic que utilizaría en las
+    tareas posteriores.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 31 de Couchbase Server.
+    Práctica 31 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Definí kafka-nodepool.yaml con un solo nodo que desempeña los roles
+    controller y broker y utiliza almacenamiento ephemeral.
+    Después creé kafka.yaml con Kafka 4.3.0 en modo KRaft, listener
+    interno plain en 9092 y factores de replicación iguales a 1.
+    Apliqué primero el KafkaNodePool y luego Kafka y esperé hasta que
+    ckad-kafka alcanzara condición Ready.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +56,13 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 31 de Couchbase Server.
+    Práctica 31 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Comprobé el Service bootstrap ckad-kafka-kafka-bootstrap y creé un
+    KafkaTopic denominado orders con tres particiones y replication
+    factor 1. La label strimzi.io/cluster asoció el Topic con ckad-kafka.
+    Después esperé la condición Ready y utilicé kubectl get kafkatopic
+    para comprobar que las tres particiones estaban disponibles.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +72,66 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 31 de Couchbase Server.
+    Práctica 31 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Validé primero los EndpointSlices del bootstrap Service y después
+    ejecuté kafka-console-producer.sh dentro de un Pod temporal basado en
+    la imagen oficial de Strimzi para Kafka 4.3.0. Publiqué tres records:
+    order-1001, order-1002 y order-1003. Cada línea introducida se envió
+    como un record independiente al Topic orders y finalmente cerré el
+    producer con Ctrl+C.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 31 de CKAD.
+
+    Ejecuté kafka-console-consumer.sh con --from-beginning para leer los
+    mensajes existentes del Topic orders y confirmé la presencia de
+    order-1001, order-1002 y order-1003 sin asumir un orden global entre
+    particiones. Manteniendo el consumer activo, abrí otra terminal,
+    ejecuté un producer adicional y publiqué order-1004. Observé cómo el
+    consumer recibió el evento en tiempo real.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea7:
+  title: "Explicar la Tarea 7 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 7 de la
+    Práctica 31 de CKAD.
+
+    Utilicé kafka-topics.sh para describir orders y confirmar las
+    particiones 0, 1 y 2. Después inicié orders-worker-a y
+    orders-worker-b dentro del mismo Consumer Group orders-workers.
+    Finalmente ejecuté kafka-consumer-groups.sh --describe para observar
+    cómo Kafka distribuía las tres particiones entre los dos miembros
+    activos, comprendiendo que una partición se asigna a un solo miembro
+    del mismo grupo a la vez.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea8:
+  title: "Explicar la Tarea 8 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 8 de la
+    Práctica 31 de CKAD.
+
+    Finalicé los dos consumers del grupo, eliminé sus Pods y después
+    eliminé el KafkaTopic orders. Posteriormente eliminé el recurso Kafka
+    ckad-kafka y finalmente el KafkaNodePool dual-role.
+    Conservé el namespace kafka y Strimzi Cluster Operator para reutilizar
+    el operador en el mini-proyecto integrador posterior.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

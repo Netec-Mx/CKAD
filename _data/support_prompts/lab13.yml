@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 13 de Couchbase Server.
+    Práctica 13 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab13, confirmé el contexto kind-ckad y creé el
+    namespace lab13. Después validé Helm mediante helm version y revisé
+    su ayuda para identificar comandos como install, upgrade, history,
+    rollback, template y uninstall. Finalmente creé la estructura mínima
+    web-chart/templates y distinguí conceptualmente entre chart, que es
+    el paquete reutilizable, y release, que es una instancia instalada
+    de ese chart.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 13 de Couchbase Server.
+    Práctica 13 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Construí manualmente web-chart mediante Chart.yaml, values.yaml y
+    templates para Deployment y Service. Utilicé objetos Helm como
+    .Release.Name, .Chart.Name y .Values para parametrizar nombres,
+    labels, réplicas, imagen y propiedades del Service. Después rendericé
+    el chart con helm template para revisar el YAML generado y finalmente
+    instalé la release web-release dentro de lab13 mediante helm install.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 13 de Couchbase Server.
+    Práctica 13 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Resolví un reto actualizando web-release sin desinstalarla y sin
+    modificar directamente los templates. Cambié los valores para utilizar
+    tres réplicas, nginx:1.31.4-alpine3.24, Service ClusterIP y puerto
+    8080. Después validé la release mediante helm status, consulté las
+    revisiones mediante helm history, revisé los overrides mediante
+    helm get values y comprobé en Kubernetes que Deployment y Service
+    reflejaran la nueva configuración.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 13 de Couchbase Server.
+    Práctica 13 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Generé deliberadamente una nueva revisión de web-release utilizando
+    la imagen inexistente nginx:lab13-image-does-not-exist. Conservé la
+    release y su historial para observar Pods con ErrImagePull o
+    ImagePullBackOff. Después consulté helm history para identificar la
+    última revisión funcional y ejecuté un rollback mediante Helm, sin
+    modificar directamente el Deployment. Finalmente confirmé que el
+    rollback quedó registrado como una revisión adicional.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +76,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 13 de Couchbase Server.
+    Práctica 13 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Una vez terminadas las validaciones de instalación, upgrade, revisión
+    defectuosa y rollback, desinstalé web-release mediante helm uninstall.
+    Después utilicé helm list para comprobar que ya no existía una release
+    activa con ese nombre, eliminé el namespace lab13 y confirmé que había
+    desaparecido. Conservé localmente web-chart y cualquier archivo de
+    values creado durante la práctica.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

@@ -1,256 +1,273 @@
-
 lab1:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** La estación Windows queda validada con WSL2 operativo, Docker Desktop usando contenedores Linux y el runtime disponible para kind."
+    - "**Resultado esperado:** El repositorio del curso queda disponible mediante sparse-checkout, con ckad-labs como espacio de trabajo y los archivos de setup correctamente identificados."
+    - "**Resultado esperado:** kubectl y kind quedan instalados y accesibles desde Git Bash, con versiones compatibles y Docker preparado como runtime Linux."
+    - "**Resultado esperado:** El clúster ckad queda creado con Kubernetes 1.36.1, un nodo Control Plane, dos Worker Nodes y el contexto kind-ckad activo."
+    - "**Resultado esperado:** El clúster queda validado con sus tres nodos Ready, los componentes de kube-system operativos y una carga temporal desplegada y eliminada correctamente."
 
 lab2:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El clúster queda correctamente identificado mediante kubectl, con el contexto kind-ckad activo y las herramientas de descubrimiento de la API disponibles para consultar recursos y campos."
+    - "**Resultado esperado:** El participante crea, inspecciona y elimina un Pod mediante comandos imperativos dentro del namespace lab2, utilizando get, describe y wait para validar su estado."
+    - "**Resultado esperado:** Se genera y analiza un manifiesto YAML para un Pod mediante dry-run, identificando correctamente apiVersion, kind, metadata, spec, namespace, contenedor e imagen."
+    - "**Resultado esperado:** El Pod queda administrado declarativamente mediante kubectl apply y kubectl diff, incorporando correctamente el label environment=training al recurso existente."
+    - "**Resultado esperado:** El recurso se consulta mediante salida wide, JSONPath y selectores por labels, y todos los objetos Kubernetes de la práctica son eliminados sin afectar el clúster ckad."
 
 lab3:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace contiene una aplicación web estática y un Dockerfile reproducible basado en NGINX, preparados correctamente para construir la primera versión de la imagen."
+    - "**Resultado esperado:** La imagen ckad-lab3:v1 queda construida y validada mediante Docker, comprobando arquitectura, sistema operativo y respuesta HTTP antes de utilizar Kubernetes."
+    - "**Resultado esperado:** La imagen ckad-lab3:v1 queda disponible en los nodos del clúster kind y se prepara un manifiesto de Pod con imagePullPolicy IfNotPresent dentro del namespace lab3."
+    - "**Resultado esperado:** El Pod ckad-web queda ejecutándose correctamente con la imagen v1, permitiendo consultar estado, eventos y logs y acceder a la aplicación mediante port-forward."
+    - "**Resultado esperado:** La aplicación se actualiza a ckad-lab3:v2, el Pod es recreado con la nueva imagen, se valida Version: v2 y se eliminan los recursos Kubernetes de la práctica."
 
 lab4:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-
+    - "**Resultado esperado:** El workspace y namespace lab4 quedan preparados y el manifiesto inicial define correctamente un volumen emptyDir denominado web-content."
+    - "**Resultado esperado:** El manifiesto define un init container que genera contenido y un contenedor NGINX que comparte el mismo volumen, validándose correctamente mediante dry-run."
+    - "**Resultado esperado:** El Pod init-web alcanza el estado Running después de completar exitosamente init-content, cuyo estado Completed y ExitCode=0 pueden comprobarse mediante logs y JSONPath."
+    - "**Resultado esperado:** El contenedor principal accede al archivo generado por el init container mediante web-content y la aplicación responde correctamente mediante port-forward."
+    - "**Resultado esperado:** Se reproduce y diagnostica un fallo del init container, se confirma que el contenedor principal permanece bloqueado, se restaura la configuración funcional y se elimina el namespace lab4."
 lab5:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab5 quedan preparados y el manifiesto base define correctamente el volumen emptyDir shared-logs para el escenario multicontenedor."
+    - "**Resultado esperado:** El manifiesto define correctamente un sidecar nativo mediante initContainers con restartPolicy Always y una aplicación principal que comparte el volumen shared-logs."
+    - "**Resultado esperado:** El Pod sidecar-demo queda ejecutándose con la aplicación y el sidecar activos simultáneamente, pudiendo consultar sus estados independientes mediante describe y JSONPath."
+    - "**Resultado esperado:** La aplicación y el sidecar acceden al mismo archivo app.log mediante emptyDir y sus flujos de logs pueden consultarse y seguirse independientemente con kubectl logs."
+    - "**Resultado esperado:** Se provoca y diagnostica un fallo aislado del sidecar, se comprueba que la aplicación principal continúa operativa, se restaura el Pod funcional y se elimina el namespace lab5."
 
 lab6:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab6 quedan preparados, con el clúster validado y los principales recursos de almacenamiento identificados mediante kubectl."
+    - "**Resultado esperado:** Se demuestra que los datos almacenados en un volumen emptyDir desaparecen cuando el Pod es eliminado y recreado."
+    - "**Resultado esperado:** Se crea un PersistentVolume local asociado a ckad-worker y un PersistentVolumeClaim que queda correctamente enlazado en estado Bound."
+    - "**Resultado esperado:** Un segundo Pod recupera correctamente los datos escritos por un Pod anterior utilizando el mismo PVC, demostrando persistencia independiente del ciclo de vida del Pod."
+    - "**Resultado esperado:** Se comparan los ciclos de vida de emptyDir, PV y PVC, se observa el estado Released producido por Retain y se eliminan de forma controlada todos los recursos de almacenamiento."
 
 lab7:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace queda organizado en base y overlays, Kustomize está disponible desde kubectl y los namespaces de desarrollo y producción quedan preparados."
+    - "**Resultado esperado:** La base reutilizable contiene Deployment, Service y un ConfigMap generado mediante configMapGenerator, pudiendo renderizarse correctamente con kubectl kustomize."
+    - "**Resultado esperado:** El overlay de desarrollo aplica namespace, prefijo, label y dos réplicas sin modificar la base, y queda desplegado correctamente en lab7-dev."
+    - "**Resultado esperado:** El overlay de producción reutiliza la misma base con namespace, prefijo, labels, tres réplicas e imagen personalizada, quedando desplegado correctamente en lab7-prod."
+    - "**Resultado esperado:** Se construye y valida de forma autónoma un overlay QA que reutiliza la base y cumple namespace, prefijo, labels, selectores y dos réplicas antes de limpiar los tres ambientes."
 
 lab8:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab8 quedan preparados y se reconocen los campos principales de Deployment relacionados con réplicas, selectores, estrategia y plantilla de Pods."
+    - "**Resultado esperado:** El Deployment web queda creado con tres réplicas y se identifica correctamente la jerarquía Deployment → ReplicaSet → Pods."
+    - "**Resultado esperado:** El Deployment se escala a cuatro réplicas y Kubernetes demuestra reconciliación automática creando un Pod de reemplazo después de eliminar manualmente una réplica."
+    - "**Resultado esperado:** La imagen del Deployment se actualiza mediante RollingUpdate, se genera una nueva revisión y los cuatro Pods terminan utilizando la nueva imagen."
+    - "**Resultado esperado:** Se crea de forma autónoma un segundo Deployment api con dos réplicas y se valida que el controlador recupere automáticamente una réplica eliminada antes de limpiar lab8."
 
 lab9:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El Deployment web queda creado con cuatro réplicas y se identifica correctamente su estrategia RollingUpdate junto con maxSurge y maxUnavailable."
+    - "**Resultado esperado:** Se completa un RollingUpdate funcional, generando una nueva revisión y dejando cuatro Pods ejecutando la nueva imagen."
+    - "**Resultado esperado:** Se relacionan las revisiones del historial del Deployment con sus ReplicaSets y se identifica cuál revisión mantiene las réplicas activas."
+    - "**Resultado esperado:** Se reproduce una actualización defectuosa por una imagen inexistente, se diagnostica el fallo y se recupera correctamente la última versión funcional mediante rollback."
+    - "**Resultado esperado:** Se resuelve de forma autónoma un escenario de actualización y recuperación, manteniendo cuatro réplicas disponibles y el historial de revisiones antes de limpiar lab9."
 
 lab10:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab10 quedan preparados y se reconocen las propiedades completions, parallelism, backoffLimit y template de un Job."
+    - "**Resultado esperado:** El Job simple-job completa correctamente una ejecución finita y sus Pods y logs permanecen disponibles para inspección."
+    - "**Resultado esperado:** Se ejecuta un Job con cuatro completions y parallelism dos, y se reproduce un Job fallido cuyo backoffLimit controla los reintentos antes de alcanzar Failed."
+    - "**Resultado esperado:** El CronJob report-cronjob queda programado cada minuto con concurrencyPolicy Forbid e historial limitado, creando correctamente Jobs y Pods de ejecución periódica."
+    - "**Resultado esperado:** Se resuelven de forma autónoma un Job de tres completions y un CronJob programado cada cinco minutos, validando sus propiedades antes de limpiar el namespace lab10."
 
 lab11:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab11 quedan preparados, se comprende el uso de selectores para dirigir tráfico y existe un cliente interno para validar el Service."
+    - "**Resultado esperado:** La versión Blue queda desplegada con tres réplicas y el Service web dirige correctamente el tráfico hacia los Pods identificados con version=blue."
+    - "**Resultado esperado:** La versión Green queda desplegada con tres réplicas sin afectar Blue, demostrando que ambas versiones pueden coexistir mientras el Service continúa apuntando a Blue."
+    - "**Resultado esperado:** Se realiza el cutover de Blue hacia Green modificando el selector del Service y posteriormente se recupera Blue sin eliminar ninguna de las dos versiones."
+    - "**Resultado esperado:** Los recursos de la estrategia blue/green son eliminados mediante el namespace lab11 después de completar y validar todas las operaciones de conmutación."
 
 lab12:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab12 quedan preparados y se comprende cómo Stable y Canary pueden compartir un Service manteniendo Deployments independientes."
+    - "**Resultado esperado:** Stable queda desplegado con cuatro réplicas y Canary con una réplica detrás del mismo Service, permitiendo observar respuestas provenientes de ambas versiones."
+    - "**Resultado esperado:** Canary aumenta a dos réplicas mientras Stable conserva cuatro, modificando la exposición relativa sin cambiar el Service ni eliminar ninguna versión."
+    - "**Resultado esperado:** Canary se promueve temporalmente a cuatro réplicas frente a dos Stable y posteriormente se recupera Stable con cuatro réplicas frente a una Canary."
+    - "**Resultado esperado:** El namespace lab12 y todos los recursos del escenario Canary son eliminados después de completar las pruebas de incremento, promoción y recuperación."
 
 lab13:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab13 quedan preparados, Helm está disponible y se crea la estructura mínima del chart web-chart."
+    - "**Resultado esperado:** El chart contiene metadata, values y templates para Deployment y Service, se renderiza correctamente y se instala como la release web-release."
+    - "**Resultado esperado:** La release se actualiza mediante valores sin modificar los templates, quedando con tres réplicas, nueva imagen y Service en el puerto 8080."
+    - "**Resultado esperado:** Se genera una revisión defectuosa, se diagnostican los Pods con error de imagen y se recupera una revisión funcional mediante rollback registrado en el historial."
+    - "**Resultado esperado:** La release web-release se desinstala correctamente y el namespace lab13 se elimina después de completar todas las validaciones de Helm."
 
 lab14:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab14 quedan preparados y se comprende la estructura de ConfigMap, incluyendo data y binaryData."
+    - "**Resultado esperado:** Se crean ConfigMaps desde literales y archivos y una aplicación consume configuración mediante configMapKeyRef y envFrom."
+    - "**Resultado esperado:** El Deployment api consume todas sus variables desde api-config y adopta un valor actualizado después de recrear sus contenedores."
+    - "**Resultado esperado:** config-reader consume config.properties mediante un volumen ConfigMap y se observa la actualización eventual del archivo proyectado."
+    - "**Resultado esperado:** Los ConfigMaps y workloads de lab14 son revisados y eliminados mediante el namespace, conservando los archivos locales del laboratorio."
 
 lab15:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab15 quedan preparados y se comprende la estructura de Secret, incluyendo la diferencia entre data, stringData y codificación base64."
+    - "**Resultado esperado:** Se crea db-secret y una aplicación consume sus credenciales mediante secretKeyRef y envFrom sin incluir directamente los valores sensibles en el Pod template."
+    - "**Resultado esperado:** payments-secret es consumido por un Deployment de dos réplicas y sus credenciales pueden rotarse recreando los contenedores sin modificar la imagen."
+    - "**Resultado esperado:** file-secret se monta como volumen en secret-reader y sus claves aparecen como archivos cuya proyección puede actualizarse de forma eventual."
+    - "**Resultado esperado:** Los Secrets y workloads de lab15 son revisados y eliminados mediante el namespace después de completar todas las pruebas de consumo y rotación."
 
 lab16:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab16 quedan preparados y se comprende la relación entre ServiceAccount, Role, RoleBinding e impersonación mediante kubectl auth can-i."
+    - "**Resultado esperado:** inventory-sa queda autorizado únicamente para get y list sobre Pods dentro de lab16, mientras las operaciones de creación y eliminación permanecen denegadas."
+    - "**Resultado esperado:** inventory-client utiliza explícitamente inventory-sa y conserva únicamente los permisos concedidos por las reglas RBAC asociadas a esa identidad."
+    - "**Resultado esperado:** inventory-sa queda corregido para permitir únicamente get y list sobre ConfigMaps en lab16, sin acceso a Pods, Secrets ni recursos equivalentes de otros namespaces."
+    - "**Resultado esperado:** Los ServiceAccounts, Roles, RoleBindings y Pods de lab16 son revisados y eliminados mediante el namespace, conservando los manifiestos locales."
 
 lab17:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab17 quedan preparados y se comprende la relación entre requests, limits y la clasificación QoS calculada por Kubernetes."
+    - "**Resultado esperado:** El Deployment api queda configurado con requests y limits explícitos de CPU y memoria, y sus Pods son clasificados como Burstable."
+    - "**Resultado esperado:** cpu-burner permanece ejecutándose bajo un límite de CPU y memory-hog demuestra un fallo de memoria identificado mediante la razón OOMKilled."
+    - "**Resultado esperado:** memory-hog queda redimensionado para ejecutarse estable y critical-api obtiene la clase QoS Guaranteed al igualar requests y limits de CPU y memoria."
+    - "**Resultado esperado:** Los workloads de lab17 son revisados y eliminados después de completar las pruebas de CPU, memoria, OOMKilled y clases QoS."
 
 lab18:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab18 quedan preparados y un Pod guiado ejecuta correctamente su proceso con UID 1000, GID 3000 y sin escalación de privilegios."
+    - "**Resultado esperado:** api-secure ejecuta como usuario no root con UID 10001 y GID 3000, privileged=false y allowPrivilegeEscalation=false."
+    - "**Resultado esperado:** api-secure elimina todas las Linux capabilities, utiliza seccomp RuntimeDefault y protege su root filesystem manteniendo /tmp escribible mediante emptyDir."
+    - "**Resultado esperado:** legacy-api es auditado y corregido hasta cumplir de forma simultánea identidad no root, mínimo privilegio, drop ALL, root filesystem read-only, emptyDir y seccomp RuntimeDefault."
+    - "**Resultado esperado:** Los Pods endurecidos de lab18 son revisados y eliminados mediante el namespace, conservando los manifiestos locales para comparar sus configuraciones."
 
 lab19:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab19 quedan preparados y el CRD AppConfig se registra correctamente en el API Server con condición Established."
+    - "**Resultado esperado:** Se descubre AppConfig mediante la API del clúster y se crea frontend respetando el esquema training.ckad.io/v1 y sus restricciones."
+    - "**Resultado esperado:** frontend es inspeccionado y actualizado hasta replicas=5, environment=staging y featureEnabled=false sin modificar el CRD."
+    - "**Resultado esperado:** Se reconstruye de forma autónoma la definición de AppConfig desde el API Server y se crea backend utilizando únicamente descubrimiento de recursos y esquema."
+    - "**Resultado esperado:** Las instancias AppConfig namespaced y posteriormente el CRD cluster-scoped son eliminados correctamente, conservando los manifiestos locales."
 
 lab20:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab20 quedan preparados y probe-demo demuestra la diferencia entre un Pod Running y un contenedor considerado Ready."
+    - "**Resultado esperado:** web-ready utiliza readiness HTTP en dos réplicas y se demuestra que un Pod puede permanecer Running pero quedar fuera de disponibilidad al pasar a Ready=False."
+    - "**Resultado esperado:** health-app utiliza una liveness probe que provoca reinicios controlados y el diagnóstico relaciona restartCount, eventos y logs de la ejecución anterior."
+    - "**Resultado esperado:** slow-api combina startup, readiness y liveness de forma que supera un arranque aproximado de 20 segundos y termina Running, Ready y con cero reinicios."
+    - "**Resultado esperado:** Los workloads, Services y Pods de lab20 son revisados y eliminados después de completar las pruebas de las tres clases de probes."
 
 lab21:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab21 quedan preparados y se distingue la evidencia proporcionada por kubectl logs, describe y los eventos del namespace."
+    - "**Resultado esperado:** Se analizan mensajes INFO, WARNING y ERROR y se recuperan de forma independiente los logs de contenedores app y sidecar dentro de un Pod multicontenedor."
+    - "**Resultado esperado:** crash-app genera reinicios controlados y se diferencian correctamente los logs de la ejecución actual y de la ejecución anterior mediante --previous."
+    - "**Resultado esperado:** broken-app es diagnosticado como un fallo de descarga de imagen mediante estado y eventos y posteriormente queda corregido con una imagen funcional."
+    - "**Resultado esperado:** Los workloads de lab21 son revisados y eliminados después de completar todas las consultas de logs, eventos y diagnóstico de causa raíz."
 
 lab22:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace lab22 quedan preparados y se aplica un método sistemático de troubleshooting basado en síntoma, evidencia, causa raíz, corrección mínima y validación."
+    - "**Resultado esperado:** Se diagnostican y corrigen un Deployment con imagen inexistente y un proceso con reinicios continuos utilizando estado, eventos, logs y logs de la ejecución anterior."
+    - "**Resultado esperado:** Se corrigen una referencia inválida de ConfigMap y una readiness probe defectuosa, demostrando la diferencia entre un proceso Running y un Pod Ready."
+    - "**Resultado esperado:** Se diagnostica una aplicación multicapa cuyo Service carece de backends por un selector incorrecto y se recupera la comunicación extremo a extremo mediante EndpointSlices y DNS."
+    - "**Resultado esperado:** Los recursos de troubleshooting de lab22 son revisados y eliminados después de completar todos los diagnósticos, conservando localmente los manifiestos defectuosos y corregidos."
 
 lab23:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** Metrics Server queda disponible en el clúster kind y kubectl top nodes puede consultar métricas de CPU y memoria de los tres nodos."
+    - "**Resultado esperado:** idle-app y web-app proporcionan una línea base de consumo mediante métricas reales obtenidas con kubectl top pods y kubectl top nodes."
+    - "**Resultado esperado:** cpu-load genera una carga de CPU claramente superior a los workloads inactivos y se diferencia el consumo observado de sus requests y limits declarados."
+    - "**Resultado esperado:** memory-load mantiene una carga de memoria observable sin OOMKilled y se compara su consumo real con request y limit configurados."
+    - "**Resultado esperado:** Se identifican los mayores consumidores de CPU y memoria del namespace y se emite un diagnóstico que distingue consumo, request, limit e inestabilidad."
+    - "**Resultado esperado:** Los workloads de lab23 son eliminados mediante el namespace mientras Metrics Server permanece instalado como infraestructura compartida del clúster."
 
 lab24:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** Se comprende cómo un Service ClusterIP selecciona Pods mediante labels y cómo Kubernetes representa sus backends mediante EndpointSlices."
+    - "**Resultado esperado:** El Deployment backend queda expuesto internamente mediante un Service ClusterIP con port 8080 y targetPort 80."
+    - "**Resultado esperado:** Un cliente interno accede a backend mediante DNS y se relacionan la ClusterIP, los EndpointSlices y las IP de las tres réplicas."
+    - "**Resultado esperado:** Se diagnostican y corrigen de forma independiente un selector incompatible y un targetPort incorrecto en el Service catalog."
+    - "**Resultado esperado:** api-internal publica correctamente tres réplicas de api y frontend-client demuestra conectividad extremo a extremo utilizando DNS y ClusterIP."
+    - "**Resultado esperado:** Todos los recursos de lab24 son eliminados mediante el namespace después de finalizar las pruebas de Services, DNS y EndpointSlices."
 
 lab25:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** demo-external demuestra la relación entre ClusterIP, port, targetPort y nodePort mediante un Service NodePort publicado en 30080."
+    - "**Resultado esperado:** web-public queda desplegado con tres réplicas y expuesto mediante NodePort 30081, port 8080 y targetPort 80."
+    - "**Resultado esperado:** web-public responde tanto internamente mediante DNS como desde clientes Docker externos al clúster utilizando el NodePort de los nodos kind."
+    - "**Resultado esperado:** Se corrigen de forma independiente el selector y targetPort defectuosos de shop hasta recuperar acceso externo mediante NodePort 30082."
+    - "**Resultado esperado:** public-api queda expuesto completamente mediante NodePort 30083 y se demuestra acceso interno, externo y la ruta completa del tráfico."
+    - "**Resultado esperado:** Los Services NodePort y workloads de lab25 son eliminados y sus puertos quedan liberados, conservando los manifiestos locales."
 
 lab26:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** Gateway API y Traefik quedan instalados y disponibles para procesar recursos Ingress y Gateway API mediante sus respectivas clases."
+    - "**Resultado esperado:** El backend web queda publicado mediante Ingress por el hostname web.lab26.local y responde externamente a través de Traefik."
+    - "**Resultado esperado:** Un único Ingress publica frontend y api bajo apps.lab26.local utilizando routing por path hacia Services diferentes."
+    - "**Resultado esperado:** El routing de apps se migra a Gateway y HTTPRoute utilizando Gateway API sin modificar los Services existentes."
+    - "**Resultado esperado:** platform.lab26.local publica tres backends mediante HTTPRoute y se comprenden las diferencias arquitectónicas entre Ingress y Gateway API."
+    - "**Resultado esperado:** Los recursos namespaced de lab26 son eliminados mientras Traefik y las CRDs de Gateway API permanecen instalados como infraestructura compartida."
 
 lab27:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El clúster temporal ckad-netpol queda creado con Kubernetes 1.36.1, Calico operativo y los tres nodos Ready sin modificar el clúster principal ckad."
+    - "**Resultado esperado:** web queda aislado mediante default deny y solamente allowed-client recupera acceso mediante una política basada en podSelector."
+    - "**Resultado esperado:** El tráfico hacia web puede autorizarse desde namespaces etiquetados team=trusted mientras clientes de namespaces no confiables permanecen bloqueados."
+    - "**Resultado esperado:** backend queda accesible únicamente desde Pods role=frontend y mediante TCP/80, mientras role=monitor permanece bloqueado."
+    - "**Resultado esperado:** lab27-prod implementa una matriz mínima donde frontend puede alcanzar backend y backend puede alcanzar database, bloqueando flujos no autorizados."
+    - "**Resultado esperado:** El clúster temporal ckad-netpol es eliminado y el contexto regresa a kind-ckad con el clúster principal todavía operativo."
 
 lab28:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** Se establece un flujo sistemático de diagnóstico comprobando cliente, Pods, Service, EndpointSlices y acceso funcional antes de analizar escenarios defectuosos."
+    - "**Resultado esperado:** Se diagnostican errores de DNS por nombre de Service incorrecto y por uso de nombres cortos entre namespaces, recuperando la comunicación con nombres apropiados."
+    - "**Resultado esperado:** Se identifica un Service catalog sin endpoints por un selector incorrecto y se recupera la conectividad corrigiendo únicamente la selección de Pods."
+    - "**Resultado esperado:** Se diagnostican de forma secuencial un targetPort incorrecto y una readiness probe defectuosa hasta recuperar payments:8080 con un backend Ready."
+    - "**Resultado esperado:** Se localiza por segmentos un fallo entre api y database, se corrige únicamente el targetPort defectuoso y se recupera la arquitectura extremo a extremo."
+    - "**Resultado esperado:** Los namespaces lab28 y lab28-backend son eliminados después de completar todos los diagnósticos, conservando los manifiestos locales."
 
 lab29:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El repositorio público ckad-argocd-lab29 queda creado en GitHub, clonado dentro del workspace y preparado como fuente declarativa para Argo CD."
+    - "**Resultado esperado:** La aplicación queda definida mediante ConfigMap, Deployment y Service dentro de manifests, validándose localmente sin desplegarla directamente con kubectl apply."
+    - "**Resultado esperado:** Los tres manifiestos quedan versionados mediante Git, publicados en la rama main y visibles desde GitHub."
+    - "**Resultado esperado:** Argo CD v3.5.0 queda instalado en el namespace argocd, con sus componentes principales Running y el CRD applications.argoproj.io registrado."
+    - "**Resultado esperado:** Se accede a la interfaz de Argo CD y se crea la Application ckad-gitops-demo apuntando al repositorio, path manifests y namespace lab29-app."
+    - "**Resultado esperado:** La Application se sincroniza manualmente, queda Synced y Healthy y Kubernetes contiene ConfigMap, Deployment, Pods y Service creados por Argo CD."
+    - "**Resultado esperado:** Un cambio de v1 a v2 realizado únicamente en Git provoca OutOfSync y, tras una nueva sincronización, la aplicación converge correctamente a Version: v2."
+    - "**Resultado esperado:** La Application y sus recursos administrados son eliminados mediante Cascade, mientras Argo CD y el repositorio Git permanecen disponibles."
 
 lab30:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace queda preparado, kind-ckad confirmado y las herramientas Helm y AWS CLI quedan validadas junto con la identidad AWS activa."
+    - "**Resultado esperado:** Crossplane v2.3.4 queda instalado en crossplane-system con sus componentes principales Running y Ready."
+    - "**Resultado esperado:** El Provider AWS EC2 v2.7.1 queda instalado, Healthy y registra la API namespaced VPC del grupo ec2.aws.m.upbound.io."
+    - "**Resultado esperado:** Las credenciales AWS quedan entregadas al provider mediante un Secret y ClusterProviderConfig sin exponer claves dentro de los manifiestos."
+    - "**Resultado esperado:** Crossplane crea una VPC real en us-west-2 con CIDR 10.30.0.0/16 y el Managed Resource alcanza condición Ready."
+    - "**Resultado esperado:** enableDnsHostnames cambia de false a true desde Kubernetes y Crossplane reconcilia la modificación sobre la misma VPC en AWS."
+    - "**Resultado esperado:** Se comparan spec, status y el recurso externo real para relacionar estado deseado, estado observado y condiciones de reconciliación."
+    - "**Resultado esperado:** La VPC es eliminada desde Kubernetes y desaparece también de AWS, mientras Crossplane y el Provider permanecen instalados."
 
 lab31:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El workspace y namespace kafka quedan preparados y se comprenden Producer, Topic, Partition, Consumer y Consumer Group antes del despliegue."
+    - "**Resultado esperado:** Strimzi Cluster Operator queda instalado y Ready, y Kubernetes reconoce las APIs Kafka, KafkaNodePool y KafkaTopic."
+    - "**Resultado esperado:** El clúster ckad-kafka queda desplegado en modo KRaft con un nodo controller/broker y Kafka 4.3.0 alcanza condición Ready."
+    - "**Resultado esperado:** El Topic orders queda creado con tres particiones y replication factor 1 y alcanza condición Ready."
+    - "**Resultado esperado:** Se publican correctamente tres eventos iniciales en orders mediante un producer interactivo."
+    - "**Resultado esperado:** Los eventos existentes se consumen desde el inicio y un cuarto evento se observa en tiempo real mediante un consumer activo."
+    - "**Resultado esperado:** Se validan las tres particiones de orders y un Consumer Group con dos miembros distribuye las particiones entre ambos consumidores."
+    - "**Resultado esperado:** Los consumers, Topic, clúster Kafka y KafkaNodePool son eliminados, mientras Strimzi Cluster Operator permanece instalado."
 
 lab32:
   results:
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
-    - "**Resultado esperado:** MODIFICAR AQUI EL TEXTO DE LA DESCRIPCION DEL RESULTADO ESPERADO"
+    - "**Resultado esperado:** El entorno integrador queda validado con Argo CD, Crossplane y Strimzi operativos y el repositorio ckad-integrador-lab32 preparado con directorios infra y app."
+    - "**Resultado esperado:** La capa infra contiene una VPC administrada por Crossplane, un KafkaNodePool, un clúster Kafka y el Topic orders completamente definidos de forma declarativa."
+    - "**Resultado esperado:** La capa app contiene Namespace, Deployment consumer con initContainer y un Job producer capaz de publicar cinco pedidos en Kafka."
+    - "**Resultado esperado:** Los siete manifiestos quedan versionados y publicados en GitHub, estableciendo el repositorio como fuente declarativa del mini-proyecto."
+    - "**Resultado esperado:** Argo CD sincroniza lab32-infra y Crossplane y Strimzi reconcilian respectivamente la VPC real en AWS y el clúster Kafka hasta condición Ready."
+    - "**Resultado esperado:** Argo CD sincroniza lab32-app y el Deployment consumer queda disponible mientras orders-producer-v1 completa correctamente su ejecución."
+    - "**Resultado esperado:** El consumer recibe los cinco pedidos, la VPC real es validada mediante AWS CLI y ambas Applications aparecen sincronizadas en Argo CD."
+    - "**Resultado esperado:** Un segundo Job agregado mediante Git provoca OutOfSync y, tras Sync, publica order-2006, que es recibido por el consumer activo."
+    - "**Resultado esperado:** Las capas app e infra son eliminadas en orden, Crossplane retira la VPC de AWS y Argo CD, Crossplane y Strimzi permanecen operativos."

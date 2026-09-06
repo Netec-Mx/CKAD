@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 19 de Couchbase Server.
+    Práctica 19 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab19, validé el contexto kind-ckad y creé el
+    namespace lab19. Después registré el CRD
+    appconfigs.training.ckad.io utilizando apiextensions.k8s.io/v1.
+    El recurso AppConfig quedó definido con API group training.ckad.io,
+    versión v1, scope Namespaced, short name acfg y un esquema OpenAPI
+    que controla replicas, environment y featureEnabled. Finalmente esperé
+    la condición Established del CRD.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 19 de Couchbase Server.
+    Práctica 19 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Utilicé las capacidades de descubrimiento del API Server para identificar
+    API group, versión, kind, plural, short name y scope de AppConfig.
+    También descubrí mediante el esquema los campos requeridos y sus
+    restricciones. Después creé frontend dentro de lab19 con replicas=3,
+    environment=production y featureEnabled=true y confirmé que kubectl
+    mostraba las columnas adicionales definidas por el CRD.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 19 de Couchbase Server.
+    Práctica 19 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Inspeccioné frontend directamente desde Kubernetes para recuperar
+    apiVersion, kind, namespace y los campos personalizados de spec.
+    Utilicé JSONPath para consultar environment y después actualicé el
+    mismo Custom Resource para utilizar replicas=5, environment=staging
+    y featureEnabled=false. Finalmente validé los tres valores mediante
+    una consulta estructurada sin modificar ni recrear el CRD.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 19 de Couchbase Server.
+    Práctica 19 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Simulé llegar a un clúster donde AppConfig ya existía pero no disponía
+    de documentación externa. Reconstruí API group, versión, plural,
+    short name, scope y esquema directamente desde Kubernetes.
+    Después creé backend con replicas=2, environment=development y
+    featureEnabled=true sin copiar frontend. Finalmente utilicé el short
+    name acfg y una salida custom-columns para validar ambas instancias.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 19 de Couchbase Server.
+    Práctica 19 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé frontend y backend antes de la limpieza. Eliminé el namespace
+    lab19 para retirar las instancias AppConfig, comprendiendo que el CRD
+    continuaba registrado porque es cluster-scoped. Después eliminé
+    explícitamente appconfigs.training.ckad.io y confirmé que tanto el
+    namespace como el CustomResourceDefinition habían desaparecido,
+    conservando los manifiestos locales.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

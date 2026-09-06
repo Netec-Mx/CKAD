@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 26 de Couchbase Server.
+    Práctica 26 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab26, validé kind-ckad y creé lab26.
+    Después instalé las CRDs Standard de Gateway API v1.6.1 y Traefik
+    mediante Helm chart 41.2.0. Habilité los providers de Kubernetes
+    Ingress y Gateway API y publiqué el puerto HTTP del controller mediante
+    NodePort 30084. Finalmente revisé los Pods de Traefik, IngressClass y
+    GatewayClass para comprobar que ambos modelos podían utilizar el mismo
+    controller.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 26 de Couchbase Server.
+    Práctica 26 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé el backend web con dos réplicas NGINX y un Service ClusterIP.
+    Después construí un Ingress networking.k8s.io/v1 con
+    ingressClassName traefik, host web.lab26.local, path / y backend
+    web:80. Validé la publicación desde un contenedor Docker externo
+    conectado a la red kind enviando explícitamente el header Host hacia
+    ckad-control-plane:30084.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 26 de Couchbase Server.
+    Práctica 26 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Construí frontend y api como backends independientes, cada uno con
+    Deployment y Service ClusterIP y respuestas distinguibles.
+    Después creé un único Ingress apps para apps.lab26.local con routing
+    Prefix: / hacia frontend y /api hacia api. Validé externamente ambas
+    rutas utilizando el mismo NodePort de Traefik y revisé el Ingress
+    activo para relacionar cada path con su Service y puerto.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 26 de Couchbase Server.
+    Práctica 26 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Migré conceptualmente el modelo Ingress hacia Gateway API.
+    Relacioné IngressClass con GatewayClass, el punto de entrada con
+    Gateway y host, paths y backends con HTTPRoute. Después implementé
+    lab26-gateway y apps-gateway para apps-gw.lab26.local reutilizando
+    frontend y api. Revisé las condiciones del Gateway y HTTPRoute y
+    confirmé externamente que / y /api producían las mismas respuestas
+    que el routing anterior.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,33 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 26 de Couchbase Server.
+    Práctica 26 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Diseñé tres backends denominados portal, api-v2 y metrics y los
+    publiqué mediante Gateway API bajo platform.lab26.local.
+    Construí reglas para /, /api y /metrics mediante HTTPRoute,
+    validé condiciones, parent Gateway y backendRefs y comprobé las tres
+    rutas desde un cliente Docker externo. Finalmente comparé el modelo
+    Ingress con Gateway API y expliqué la separación entre GatewayClass,
+    Gateway, HTTPRoute y Services.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 26 de CKAD.
+
+    Revisé Deployments, Pods, Services, Ingress, Gateway y HTTPRoute antes
+    de limpiar el laboratorio. Eliminé únicamente el namespace lab26 y
+    confirmé que desapareció. Traefik, Gateway API CRDs, IngressClass y
+    GatewayClass permanecieron instalados como infraestructura compartida
+    del clúster. Los manifiestos locales se conservaron en workspace/lab26
+    para comparar ambos modelos de publicación.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

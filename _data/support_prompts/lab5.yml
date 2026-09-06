@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 5 de Couchbase Server.
+    Práctica 5 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé el escenario para un Pod multicontenedor con sidecar nativo.
+    Creé workspace/lab5, validé el contexto kind-ckad y comprobé las
+    versiones del cliente y servidor Kubernetes para confirmar compatibilidad
+    con sidecar containers nativos. Después creé el namespace lab5 y el
+    manifiesto sidecar-pod.yaml, configurando restartPolicy: Always para
+    el Pod y un volumen emptyDir denominado shared-logs. También utilicé
+    kubectl explain para revisar la definición del volumen.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,16 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 5 de Couchbase Server.
+    Práctica 5 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Diseñé un Pod con un sidecar nativo y una aplicación principal.
+    Definí log-sidecar dentro de initContainers con restartPolicy: Always,
+    configurándolo para esperar la creación de app.log y seguir sus nuevas
+    líneas mediante tail -f. Después definí el contenedor app para generar
+    periódicamente eventos timestamped y escribirlos en
+    /var/log/shared/app.log. Ambos contenedores montan el volumen
+    shared-logs y finalmente validé el manifiesto mediante
+    kubectl apply --dry-run=server.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +42,16 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 5 de Couchbase Server.
+    Práctica 5 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Desplegué el Pod sidecar-demo y comprobé el comportamiento de los
+    sidecar containers nativos. Esperé a que el Pod alcanzara Ready y
+    revisé su estado, dirección IP y nodo asignado. Utilicé kubectl describe
+    para comprobar que log-sidecar aparece dentro de Init Containers aunque
+    permanece ejecutándose junto con app. También utilicé JSONPath para
+    consultar por separado status.containerStatuses y
+    status.initContainerStatuses, verificando los estados y reinicios de
+    ambos procesos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +61,16 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 5 de Couchbase Server.
+    Práctica 5 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Validé que la aplicación y el sidecar comparten información mediante
+    el volumen emptyDir shared-logs. Consulté app.log desde ambos
+    contenedores y comprobé mediante JSONPath que sus volumeMounts hacen
+    referencia al mismo volumen. Después consulté los logs específicos
+    de app para observar los mensajes APP generated y los logs de
+    log-sidecar para comprobar cómo consume los eventos escritos en el
+    archivo. Finalmente utilicé kubectl logs -f durante un periodo limitado
+    para observar nuevos eventos en tiempo real.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +80,18 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 5 de Couchbase Server.
+    Práctica 5 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Provocé deliberadamente un fallo únicamente en log-sidecar sustituyendo
+    tail -f por un comando que termina con exit 1. Antes conservé una copia
+    funcional del manifiesto. Recreé el Pod con el sidecar defectuoso y
+    comprobé mediante JSONPath que app continuaba Ready mientras aumentaba
+    el contador SidecarRestarts. Utilicé kubectl describe y kubectl logs
+    para identificar el mensaje ERROR: sidecar simulation failed.
+    Finalmente restauré el manifiesto funcional, recreé el Pod, confirmé
+    AppReady=true, SidecarRunning=true y SidecarRestarts=0 y eliminé el
+    namespace lab5.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

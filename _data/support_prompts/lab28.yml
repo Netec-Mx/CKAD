@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 28 de Couchbase Server.
+    Práctica 28 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab28, validé kind-ckad y creé lab28.
+    Después construí baseline con un Deployment NGINX, un Service y
+    diag-client. Recorrí una ruta funcional comprobando primero Pods y
+    Service, luego EndpointSlices y finalmente acceso HTTP desde el cliente.
+    Utilicé este escenario para establecer un orden reproducible de
+    troubleshooting antes de modificar cualquier recurso.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 28 de Couchbase Server.
+    Práctica 28 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé inventory como Deployment y Service funcional dentro de lab28
+    y diagnostiqué por qué diag-client no podía resolver inventory-api:
+    ese Service no existía y el nombre correcto era inventory.
+    Después creé lab28-backend con otro Service inventory y analicé por
+    qué un nombre corto desde lab28 no representa al Service del otro
+    namespace. Finalmente utilicé un nombre como
+    inventory.lab28-backend para recuperar el acceso.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 28 de Couchbase Server.
+    Práctica 28 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Construí catalog con Pods etiquetados app=catalog y un Service cuyo
+    selector inicial utilizaba app=catalog-api. El Service y DNS existían,
+    pero EndpointSlice no contenía backends. Localicé el primer tramo
+    defectuoso comparando labels y selector y corregí únicamente el
+    Service. Después confirmé la aparición de endpoints y validé desde
+    diag-client que http://catalog respondía correctamente.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 28 de Couchbase Server.
+    Práctica 28 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Construí payments con NGINX escuchando en 80 y un Service con
+    port 8080 y targetPort inicial 8081. Aunque existían endpoints,
+    la comunicación fallaba por la traducción de puerto incorrecta.
+    Corregí targetPort a 80 y posteriormente introduje una readiness probe
+    defectuosa sobre /healthz. Relacioné Phase Running, condición Ready y
+    EndpointSlice y finalmente corregí la ruta de la probe para recuperar
+    payments:8080 manteniendo readiness habilitada.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,33 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 28 de Couchbase Server.
+    Práctica 28 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Diseñé una arquitectura frontend-client -> api -> database con un único
+    fallo deliberado en el Service database. Verifiqué primero que todos
+    los componentes estuvieran Running o Ready y después probé la ruta
+    por segmentos. Determiné que frontend-client -> api funcionaba y que
+    api -> database fallaba. Revisé port y targetPort del Service,
+    corregí únicamente la traducción hacia el puerto real 9000 y validé
+    nuevamente ambos segmentos y la comunicación completa.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 28 de CKAD.
+
+    Revisé Deployments, Pods, Services y EndpointSlices tanto en lab28
+    como en lab28-backend después de completar todos los diagnósticos.
+    Eliminé ambos namespaces, confirmé que ya no existían y conservé los
+    manifiestos dentro de workspace/lab28. Así dejé limpio el clúster
+    principal después de practicar troubleshooting de DNS, selectors,
+    EndpointSlices, puertos y readiness.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

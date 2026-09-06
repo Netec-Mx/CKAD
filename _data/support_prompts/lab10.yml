@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 10 de Couchbase Server.
+    Práctica 10 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab10, validé el contexto kind-ckad y creé el
+    namespace lab10. Después utilicé kubectl explain para estudiar
+    job.spec.completions y la estructura completa de Job.spec,
+    identificando campos como completions, parallelism, backoffLimit y
+    template. Relacioné estos campos con la ejecución de tareas finitas
+    y con el comportamiento de los Pods administrados por un Job.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 10 de Couchbase Server.
+    Práctica 10 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Generé simple-job.yaml mediante kubectl create job utilizando
+    busybox:1.38.0-musl y un comando que imprime mensajes, ejecuta date
+    y termina. Revisé la imagen, comando y restartPolicy del Pod template,
+    apliqué el manifiesto y esperé explícitamente la condición Complete.
+    Después consulté el Pod asociado mediante el label job-name y recuperé
+    los logs directamente utilizando kubectl logs job/simple-job.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 10 de Couchbase Server.
+    Práctica 10 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé multi-job con completions: 4 y parallelism: 2 para comprobar
+    cómo Kubernetes ejecuta varias unidades de trabajo limitando el número
+    de Pods concurrentes. Esperé que completara las cuatro ejecuciones y
+    revisé sus Pods. Después creé failed-job con backoffLimit: 2 y un
+    comando que ejecuta exit 1 deliberadamente. Esperé hasta que Kubernetes
+    marcara el Job como Failed después de agotar los intentos permitidos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +56,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 10 de Couchbase Server.
+    Práctica 10 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Generé report-cronjob.yaml programado mediante */1 * * * * para
+    ejecutar una tarea cada minuto. Agregué concurrencyPolicy: Forbid,
+    successfulJobsHistoryLimit: 2 y failedJobsHistoryLimit: 1, validé el
+    manifiesto con dry-run server-side y lo desplegué. Después observé
+    cómo el CronJob crea automáticamente objetos Job y cómo cada Job crea
+    su propio Pod. Finalmente consulté un Pod programado y sus logs para
+    verificar la ejecución del comando definido.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,17 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 10 de Couchbase Server.
+    Práctica 10 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Resolví dos retos sin recibir los comandos de implementación.
+    En el primero construí report-job con busybox:1.38.0-musl,
+    tres completions, parallelism máximo dos, restartPolicy Never y un
+    mensaje Reporte CKAD completado. En el segundo creé backup-cron con
+    programación cada cinco minutos, concurrencyPolicy Forbid, límites de
+    historial exitoso y fallido iguales a uno y el mensaje Backup CKAD.
+    Validé las propiedades mediante kubectl y eliminé el namespace lab10
+    solamente después de terminar completamente ambos retos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

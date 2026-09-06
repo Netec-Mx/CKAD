@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 15 de Couchbase Server.
+    Práctica 15 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab15, validé el contexto kind-ckad y creé el
+    namespace lab15. Después estudié el recurso Secret mediante
+    kubectl explain, revisando data y stringData y comprendiendo que los
+    valores almacenados en data aparecen codificados en base64, pero que
+    base64 no representa cifrado. Finalmente generé un Secret local
+    mediante --dry-run=client para observar su representación YAML.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 15 de Couchbase Server.
+    Práctica 15 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé db-secret con DB_USER y DB_PASSWORD mediante literales.
+    Inspeccioné el Secret en YAML para identificar sus claves y decodifiqué
+    únicamente DB_USER para demostrar que base64 permite recuperar el valor
+    original. Después desplegué secret-app, que obtiene
+    APPLICATION_DB_USER mediante secretKeyRef e importa las claves de
+    db-secret mediante envFrom. Finalmente validé la existencia de las
+    variables sin imprimir la contraseña completa.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 15 de Couchbase Server.
+    Práctica 15 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Resolví un reto creando payments-secret con DB_USER, DB_PASSWORD y
+    DB_HOST y un Deployment payments con dos réplicas que consume esas
+    credenciales desde Kubernetes. Validé DB_USER y DB_HOST y confirmé
+    únicamente que DB_PASSWORD estuviera definida. Después roté la
+    contraseña dentro del mismo Secret y apliqué la acción necesaria para
+    recrear los Pods, ya que las variables de entorno existentes no cambian
+    automáticamente cuando el Secret es actualizado.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,16 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 15 de Couchbase Server.
+    Práctica 15 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Resolví un segundo reto creando file-secret con las claves username y
+    password y un Deployment secret-reader que monta el Secret en
+    /etc/credentials. Kubernetes proyectó las claves como los archivos
+    /etc/credentials/username y /etc/credentials/password.
+    Validé el usuario y únicamente la existencia de la contraseña.
+    Posteriormente roté la contraseña sin eliminar inicialmente el Pod y
+    observé el comportamiento eventual de una proyección Secret montada
+    como volumen.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +77,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 15 de Couchbase Server.
+    Práctica 15 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé una última vez los Secrets, Deployments y Pods existentes en
+    lab15 después de terminar las pruebas de consumo y rotación.
+    Posteriormente eliminé el namespace lab15 para retirar todos los
+    recursos Kubernetes del laboratorio y confirmé que ya no existía.
+    Finalmente comprobé que los manifiestos locales permanecían disponibles
+    dentro de workspace/lab15 para utilizarlos como material de revisión.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

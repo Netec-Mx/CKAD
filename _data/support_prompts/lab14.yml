@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 14 de Couchbase Server.
+    Práctica 14 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab14, validé el contexto kind-ckad y creé el
+    namespace lab14. Después estudié el recurso ConfigMap mediante
+    kubectl explain, revisando especialmente data y binaryData.
+    Finalmente generé un ConfigMap local con --dry-run=client para
+    observar cómo Kubernetes representa configuración textual dentro
+    de un manifiesto sin crear todavía el objeto en el clúster.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 14 de Couchbase Server.
+    Práctica 14 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé app-config utilizando los literales APP_ENV=development y
+    LOG_LEVEL=info. También generé app.properties y lo incorporé completo
+    al ConfigMap file-config mediante --from-file. Después desplegué
+    env-app, que obtiene APPLICATION_ENV mediante configMapKeyRef y carga
+    todas las claves de app-config mediante envFrom. Finalmente confirmé
+    dentro del contenedor los valores APPLICATION_ENV, APP_ENV y LOG_LEVEL.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 14 de Couchbase Server.
+    Práctica 14 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Resolví un reto creando api-config con APP_ENV=production,
+    LOG_LEVEL=warning y FEATURE_X=true y un Deployment api con dos
+    réplicas que obtiene todas esas variables desde el ConfigMap.
+    Validé los valores dentro de los contenedores y posteriormente cambié
+    LOG_LEVEL a debug. Comprobé que actualizar el ConfigMap no modifica
+    automáticamente variables de entorno ya cargadas y apliqué la acción
+    necesaria para recrear los contenedores y volver a leer la configuración.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 14 de Couchbase Server.
+    Práctica 14 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Resolví un segundo reto creando reader-config con una clave denominada
+    config.properties y un Deployment config-reader que monta ese ConfigMap
+    como volumen para presentar el archivo en /etc/app/config.properties.
+    Validé inicialmente mode=standard y retries=3. Después actualicé el
+    ConfigMap para utilizar mode=maintenance sin eliminar inicialmente el
+    Pod y observé cómo el contenido proyectado mediante volumen puede
+    actualizarse de forma eventual dentro del contenedor.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 14 de Couchbase Server.
+    Práctica 14 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé los ConfigMaps, Deployments y Pods existentes dentro de lab14
+    antes de realizar la limpieza. Después eliminé completamente el
+    namespace lab14 y confirmé que había desaparecido del clúster.
+    Finalmente comprobé que los archivos locales creados durante la
+    práctica continuaban disponibles dentro de workspace/lab14 como
+    material de estudio.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

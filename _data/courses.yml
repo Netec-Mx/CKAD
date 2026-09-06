@@ -1,219 +1,199 @@
-# _data/courses.yml
-terraform_aws_essentials:
-  title: "NOMBRE_DEL_CURSO_AQUI" # COLOCAR EL NOMBRE DEL CURSO
-  intro: "DESCRIPCIÓN_DEL_CURSO_AQUI"
-  labs:
-
-    - id: lab1 
-      title: "NOMBRE_DE_LA_PRACTICA_1" # NOMBRE DE LA PRACTICA
-      url:  "/lab1/lab1/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
-
-    # ESTRUCTURA DE SUB-PRACTICA OCUPAR SI ES NECESARIO SINO BORRAR
-    # - id: lab61
-    #   number: "6.1"
-    #   title: "Despliegue de servicios en Docker Swarm"
-    #   url:  "/capitulo6/lab61/"
-    #   duration: "60 min"
-    #   desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
-# _data/courses.yml
 kubeckad:
-  title: "NOMBRE_DEL_CURSO_AQUI" # COLOCAR EL NOMBRE DEL CURSO
+  title: "Certified Kubernetes Application Developer" # COLOCAR EL NOMBRE DEL CURSO
   intro: "DESCRIPCIÓN_DEL_CURSO_AQUI"
   labs:
 
-    - id: lab1 
-      title: "NOMBRE_DE_LA_PRACTICA_1" # NOMBRE DE LA PRACTICA
-      url:  "/lab1/lab1/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab1
+      title: "Preparación del entorno CKAD"
+      url: "/lab1/lab1/"
+      duration: "45 min"
+      desc: "Prepara Windows, WSL2, Docker, kubectl y kind, y despliega un clúster Kubernetes multinodo para las prácticas CKAD."
 
-    - id: lab2 
-      title: "NOMBRE_DE_LA_PRACTICA_2" # NOMBRE DE LA PRACTICA
-      url:  "/lab2/lab2/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab2
+      title: "Gestión básica con kubectl y YAML"
+      url: "/lab2/lab2/"
+      duration: "45 min"
+      desc: "Administra recursos Kubernetes con kubectl y YAML mediante comandos, dry-run, apply, JSONPath, labels y selectores."
 
-    - id: lab3 
-      title: "NOMBRE_DE_LA_PRACTICA_3" # NOMBRE DE LA PRACTICA
-      url:  "/lab3/lab3/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab3
+      title: "Construcción y ejecución de una aplicación en Pod"
+      url: "/lab3/lab3/"
+      duration: "45 min"
+      desc: "Construye una imagen web, cárgala en kind y ejecútala en un Pod, validando acceso, logs y actualización de versión."
 
-    - id: lab4 
-      title: "NOMBRE_DE_LA_PRACTICA_4" # NOMBRE DE LA PRACTICA
-      url:  "/lab4/lab4/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab4
+      title: "Diseño de Pod con init container"
+      url: "/lab4/lab4/"
+      duration: "45 min"
+      desc: "Diseña un Pod con init container y emptyDir, valida su inicialización y diagnostica un fallo controlado."
 
-    - id: lab5 
-      title: "NOMBRE_DE_LA_PRACTICA_5" # NOMBRE DE LA PRACTICA
-      url:  "/lab5/lab5/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab5
+      title: "Diseño de Pod con patrón sidecar"
+      url: "/lab5/lab5/"
+      duration: "50 min"
+      desc: "Diseña un Pod con sidecar nativo y emptyDir para procesar logs compartidos y diagnosticar reinicios controlados."
 
-    - id: lab6 
-      title: "NOMBRE_DE_LA_PRACTICA_6" # NOMBRE DE LA PRACTICA
-      url:  "/lab6/lab6/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab6
+      title: "Uso de volúmenes efímeros y persistentes"
+      url: "/lab6/lab6/"
+      duration: "65 min"
+      desc: "Compara emptyDir con PV y PVC, validando el ciclo de vida, binding y persistencia de datos entre diferentes Pods."
 
-    - id: lab7 
-      title: "NOMBRE_DE_LA_PRACTICA_7" # NOMBRE DE LA PRACTICA
-      url:  "/lab7/lab7/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab7
+      title: "Personalización con Kustomize"
+      url: "/lab7/lab7/"
+      duration: "55 min"
+      desc: "Construye una base Kustomize y overlays para dev, prod y QA aplicando prefijos, labels, réplicas, imágenes y ConfigMaps."
 
-    - id: lab8 
-      title: "NOMBRE_DE_LA_PRACTICA_8" # NOMBRE DE LA PRACTICA
-      url:  "/lab8/lab8/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab8
+      title: "Despliegue de aplicación con Deployment"
+      url: "/lab8/lab8/"
+      duration: "45 min"
+      desc: "Administra una aplicación con Deployment, ReplicaSet y Pods practicando escalado, reconciliación y RollingUpdate."
 
-    - id: lab9 
-      title: "NOMBRE_DE_LA_PRACTICA_9" # NOMBRE DE LA PRACTICA
-      url:  "/lab9/lab9/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab9
+      title: "Rolling update y rollback"
+      url: "/lab9/lab9/"
+      duration: "45 min"
+      desc: "Ejecuta RollingUpdates, analiza revisiones, provoca una actualización defectuosa y recupera la aplicación mediante rollback."
 
-    - id: lab10 
-      title: "NOMBRE_DE_LA_PRACTICA_10" # NOMBRE DE LA PRACTICA
-      url:  "/lab10/lab10/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab10
+      title: "Jobs y CronJobs"
+      url: "/lab10/lab10/"
+      duration: "40 min"
+      desc: "Ejecuta Jobs y CronJobs controlando completions, parallelism, reintentos, programación, concurrencia e historial."
 
-    - id: lab11 
-      title: "NOMBRE_DE_LA_PRACTICA_11" # NOMBRE DE LA PRACTICA
-      url:  "/lab11/lab11/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab11
+      title: "Estrategia blue/green"
+      url: "/lab11/lab11/"
+      duration: "40 min"
+      desc: "Implementa Blue y Green con Deployments independientes y conmuta el tráfico mediante un Service estable y sus selectores."
 
-    - id: lab12 
-      title: "NOMBRE_DE_LA_PRACTICA_12" # NOMBRE DE LA PRACTICA
-      url:  "/lab12/lab12/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab12
+      title: "Estrategia canary"
+      url: "/lab12/lab12/"
+      duration: "40 min"
+      desc: "Implementa Stable y Canary detrás de un mismo Service y modifica su exposición relativa ajustando las réplicas."
 
-    - id: lab13 
-      title: "NOMBRE_DE_LA_PRACTICA_13" # NOMBRE DE LA PRACTICA
-      url:  "/lab13/lab13/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab13
+      title: "Despliegue con Helm"
+      url: "/lab13/lab13/"
+      duration: "45 min"
+      desc: "Construye un chart Helm, instala y actualiza una release, consulta su historial y recupera una revisión mediante rollback."
 
-    - id: lab14 
-      title: "NOMBRE_DE_LA_PRACTICA_14" # NOMBRE DE LA PRACTICA
-      url:  "/lab14/lab14/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab14
+      title: "Configuración de aplicaciones con ConfigMaps"
+      url: "/lab14/lab14/"
+      duration: "45 min"
+      desc: "Externaliza configuración con ConfigMaps y consúmela mediante variables de entorno, envFrom y archivos montados."
 
-    - id: lab15 
-      title: "NOMBRE_DE_LA_PRACTICA_15" # NOMBRE DE LA PRACTICA
-      url:  "/lab15/lab15/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab15
+      title: "Manejo de información sensible con Secrets"
+      url: "/lab15/lab15/"
+      duration: "45 min"
+      desc: "Externaliza credenciales con Secrets y consúmelas mediante secretKeyRef, envFrom y archivos proyectados como volumen."
 
-    - id: lab16 
-      title: "NOMBRE_DE_LA_PRACTICA_16" # NOMBRE DE LA PRACTICA
-      url:  "/lab16/lab16/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab16
+      title: "ServiceAccount y permisos mínimos"
+      url: "/lab16/lab16/"
+      duration: "50 min"
+      desc: "Crea identidades con ServiceAccount y aplica RBAC de mínimo privilegio mediante Role, RoleBinding y validaciones can-i."
 
-    - id: lab17 
-      title: "NOMBRE_DE_LA_PRACTICA_17" # NOMBRE DE LA PRACTICA
-      url:  "/lab17/lab17/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab17
+      title: "Control de recursos de aplicaciones"
+      url: "/lab17/lab17/"
+      duration: "55 min"
+      desc: "Configura requests y limits, diagnostica OOMKilled y diferencia las clases QoS BestEffort, Burstable y Guaranteed."
 
-    - id: lab18 
-      title: "NOMBRE_DE_LA_PRACTICA_18" # NOMBRE DE LA PRACTICA
-      url:  "/lab18/lab18/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab18
+      title: "Endurecimiento básico de Pods"
+      url: "/lab18/lab18/"
+      duration: "70 min"
+      desc: "Endurece Pods con non-root, seccomp, capabilities, bloqueo de privilegios y filesystem raíz de solo lectura."
 
-    - id: lab19 
-      title: "NOMBRE_DE_LA_PRACTICA_19" # NOMBRE DE LA PRACTICA
-      url:  "/lab19/lab19/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab19
+      title: "Consumo básico de CRD desde kubectl"
+      url: "/lab19/lab19/"
+      duration: "35 min"
+      desc: "Descubre un CRD desde kubectl, consulta su esquema y crea, modifica y valida Custom Resources namespaced."
 
-    - id: lab20 
-      title: "NOMBRE_DE_LA_PRACTICA_20" # NOMBRE DE LA PRACTICA
-      url:  "/lab20/lab20/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab20
+      title: "Implementación de probes"
+      url: "/lab20/lab20/"
+      duration: "40 min"
+      desc: "Implementa readiness, liveness y startup probes y diagnostica disponibilidad, reinicios y aplicaciones de arranque lento."
 
-    - id: lab21 
-      title: "NOMBRE_DE_LA_PRACTICA_21" # NOMBRE DE LA PRACTICA
-      url:  "/lab21/lab21/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab21
+      title: "Análisis de logs y eventos"
+      url: "/lab21/lab21/"
+      duration: "40 min"
+      desc: "Analiza logs actuales y anteriores, eventos y estados de Pods para diagnosticar reinicios y fallos de aplicaciones."
 
-    - id: lab22 
-      title: "NOMBRE_DE_LA_PRACTICA_22" # NOMBRE DE LA PRACTICA
-      url:  "/lab22/lab22/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab22
+      title: "Depuración de aplicaciones fallidas"
+      url: "/lab22/lab22/"
+      duration: "70 min"
+      desc: "Aplica troubleshooting sistemático para diagnosticar fallos de imagen, procesos, configuración, probes y conectividad."
 
-    - id: lab23 
-      title: "NOMBRE_DE_LA_PRACTICA_23" # NOMBRE DE LA PRACTICA
-      url:  "/lab23/lab23/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab23
+      title: "Monitoreo básico de recursos"
+      url: "/lab23/lab23/"
+      duration: "35 min"
+      desc: "Habilita Metrics Server y analiza CPU y memoria con kubectl top, comparando consumo observado con requests y limits."
 
-    - id: lab24 
-      title: "NOMBRE_DE_LA_PRACTICA_24" # NOMBRE DE LA PRACTICA
-      url:  "/lab24/lab24/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab24
+      title: "Exposición interna con Service ClusterIP"
+      url: "/lab24/lab24/"
+      duration: "35 min"
+      desc: "Publica aplicaciones con ClusterIP y diagnostica DNS, selectors, EndpointSlices, service port y targetPort."
 
-    - id: lab25 
-      title: "NOMBRE_DE_LA_PRACTICA_25" # NOMBRE DE LA PRACTICA
-      url:  "/lab25/lab25/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab25
+      title: "Exposición externa básica"
+      url: "/lab25/lab25/"
+      duration: "30 min"
+      desc: "Expone aplicaciones mediante NodePort y diagnostica selectors, EndpointSlices, port, targetPort y acceso externo."
 
-    - id: lab26 
-      title: "NOMBRE_DE_LA_PRACTICA_26" # NOMBRE DE LA PRACTICA
-      url:  "/lab26/lab26/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab26
+      title: "Publicación con Ingress"
+      url: "/lab26/lab26/"
+      duration: "45 min"
+      desc: "Publica aplicaciones con Ingress y Gateway API mediante Traefik, aplicando routing HTTP por host y path."
 
-    - id: lab27 
-      title: "NOMBRE_DE_LA_PRACTICA_27" # NOMBRE DE LA PRACTICA
-      url:  "/lab27/lab27/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab27
+      title: "Restricción de tráfico con NetworkPolicy"
+      url: "/lab27/lab27/"
+      duration: "50 min"
+      desc: "Aplica NetworkPolicy con Calico para implementar default deny y autorizar tráfico por Pod, namespace y puerto."
 
-    - id: lab28 
-      title: "NOMBRE_DE_LA_PRACTICA_28" # NOMBRE DE LA PRACTICA
-      url:  "/lab28/lab28/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab28
+      title: "Troubleshooting de conectividad"
+      url: "/lab28/lab28/"
+      duration: "30 min"
+      desc: "Diagnostica conectividad por capas revisando DNS, Services, selectors, EndpointSlices, puertos, readiness y procesos."
 
-    - id: lab29 
-      title: "NOMBRE_DE_LA_PRACTICA_29" # NOMBRE DE LA PRACTICA
-      url:  "/lab29/lab29/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab29
+      title: "Publicar una aplicación con Argo CD usando manifiestos Kubernetes"
+      url: "/lab29/lab29/"
+      duration: "55 min"
+      desc: "Implementa un flujo GitOps con GitHub y Argo CD, sincronizando manifiestos Kubernetes y actualizando una aplicación desde Git."
 
-    - id: lab30 
-      title: "NOMBRE_DE_LA_PRACTICA_30" # NOMBRE DE LA PRACTICA
-      url:  "/lab30/lab30/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab30
+      title: "Consumir un recurso gestionado con Crossplane de forma básica"
+      url: "/lab30/lab30/"
+      duration: "45 min"
+      desc: "Instala Crossplane y administra una VPC real en AWS desde Kubernetes, validando reconciliación, cambios y eliminación."
 
-    - id: lab31 
-      title: "NOMBRE_DE_LA_PRACTICA_31" # NOMBRE DE LA PRACTICA
-      url:  "/lab31/lab31/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab31
+      title: "Desplegar Kafka básico y validar producer/consumer"
+      url: "/lab31/lab31/"
+      duration: "60 min"
+      desc: "Despliega Kafka con Strimzi, crea un Topic y valida producer, consumer, particiones y Consumer Groups."
 
-    - id: lab32 
-      title: "NOMBRE_DE_LA_PRACTICA_32" # NOMBRE DE LA PRACTICA
-      url:  "/lab32/lab32/"
-      duration: "## min" # AJUSTAR TIEMPO DE LA PRACTICA
-      desc: "DESCRIPCION_CORTA_DE_LA_PRACTICA" # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+    - id: lab32
+      title: "Mini-proyecto integrador CKAD + Argo CD + Kafka + Crossplane"
+      url: "/lab32/lab32/"
+      duration: "35 min"
+      desc: "Integra GitOps, Kubernetes, Argo CD, Kafka y Crossplane para administrar infraestructura, mensajería y workloads."
 
     # ESTRUCTURA DE SUB-PRACTICA OCUPAR SI ES NECESARIO SINO BORRAR
     # - id: lab61

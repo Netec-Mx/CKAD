@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 4 de Couchbase Server.
+    Práctica 4 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé el escenario para trabajar con un init container.
+    Creé workspace/lab4, validé que kubectl utilizara el contexto kind-ckad
+    y creé el namespace lab4. Después preparé el manifiesto init-web.yaml
+    con los metadatos básicos del Pod y un volumen emptyDir denominado
+    web-content. También utilicé kubectl explain para consultar la definición
+    oficial del campo emptyDir y revisé la estructura YAML e indentación.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 4 de Couchbase Server.
+    Práctica 4 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Diseñé el Pod incorporando un init container denominado init-content
+    basado en busybox:1.38.0-musl. Configuré su comando para generar
+    /work-dir/index.html y monté web-content en /work-dir. Después agregué
+    el contenedor principal web basado en NGINX y monté el mismo volumen
+    en /usr/share/nginx/html. Finalmente utilicé kubectl apply
+    --dry-run=server para validar el manifiesto completo antes de crear
+    el recurso real.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 4 de Couchbase Server.
+    Práctica 4 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Desplegué el Pod init-web y observé su proceso de inicialización.
+    Consulté repetidamente el estado para identificar posibles fases
+    Init:0/1 o PodInitializing y esperé hasta que el Pod alcanzara Ready.
+    Después utilicé kubectl describe para revisar Init Containers,
+    Containers, Conditions y Events. También consulté mediante JSONPath
+    el estado de init-content, confirmando Reason=Completed y ExitCode=0,
+    y recuperé sus logs específicos con kubectl logs -c init-content.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 4 de Couchbase Server.
+    Práctica 4 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Validé el intercambio de datos entre el init container y el contenedor
+    principal utilizando el volumen emptyDir web-content. Desde NGINX
+    confirmé la existencia y contenido de index.html y consulté mediante
+    JSONPath el volumeMount activo. Después inicié un port-forward desde
+    localhost:8080 hacia el puerto 80 del Pod, comprobé la respuesta HTTP
+    generada por init-content y revisé los logs de NGINX para confirmar
+    que recibió la solicitud GET.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +76,17 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 4 de Couchbase Server.
+    Práctica 4 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Provocé deliberadamente un fallo de inicialización agregando exit 1
+    al comando de init-content. Conservé primero una copia funcional,
+    recreé el Pod con el manifiesto defectuoso y observé estados como
+    Init:Error o Init:CrashLoopBackOff. Utilicé kubectl describe y los logs
+    específicos de init-content para diagnosticar por qué el contenedor
+    principal no iniciaba. Finalmente restauré el manifiesto funcional,
+    recreé el Pod, confirmé que alcanzara Running y eliminé el namespace
+    lab4.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

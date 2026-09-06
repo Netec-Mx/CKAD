@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 27 de Couchbase Server.
+    Práctica 27 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab27 y confirmé inicialmente kind-ckad.
+    Después creé un clúster temporal ckad-netpol con tres nodos,
+    Kubernetes 1.36.1, disableDefaultCNI=true y Pod CIDR
+    192.168.0.0/16. Instalé Calico 3.32.1 mediante sus CRDs,
+    Tigera Operator y custom resources. Finalmente esperé que todos los
+    nodos alcanzaran Ready y comprobé los componentes de calico-system,
+    manteniendo intacto el clúster principal.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 27 de Couchbase Server.
+    Práctica 27 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Construí lab27-app con web, un Service y dos clientes:
+    allowed-client y blocked-client. Primero comprobé que ambos tenían
+    conectividad sin políticas. Después apliqué default deny de Ingress
+    y confirmé que ambos quedaron bloqueados. Finalmente agregué una
+    NetworkPolicy adicional que permite tráfico hacia app=web únicamente
+    desde Pods con access=allowed, demostrando el comportamiento aditivo
+    de las políticas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +41,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 27 de Couchbase Server.
+    Práctica 27 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé lab27-client con label team=trusted y lab27-untrusted con
+    team=untrusted, desplegando un cliente en cada namespace.
+    Observé que una regla basada solo en podSelector no autoriza
+    automáticamente Pods de otros namespaces. Después agregué una política
+    hacia app=web basada en namespaceSelector team=trusted y comprobé que
+    trusted-client podía acceder mientras untrusted-client seguía bloqueado.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 27 de Couchbase Server.
+    Práctica 27 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Creé backend con dos réplicas y los clientes frontend-client con
+    role=frontend y monitor-client con role=monitor. Verifiqué primero
+    conectividad sin aislamiento. Después implementé una NetworkPolicy que
+    selecciona app=backend y permite únicamente TCP/80 desde Pods con
+    role=frontend. Confirmé que frontend-client conservaba acceso y
+    monitor-client quedaba bloqueado y analicé por qué la política no
+    afectaba a otros Pods no seleccionados.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +76,34 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 27 de Couchbase Server.
+    Práctica 27 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Diseñé una arquitectura segmentada en lab27-prod con frontend,
+    backend y database. Antes de aplicar políticas comprobé que los flujos
+    frontend-backend, backend-database y frontend-database funcionaban.
+    Después construí políticas para permitir únicamente
+    frontend -> backend:8080 y backend -> database:5432,
+    bloqueando frontend -> database y clientes no autorizados hacia
+    backend. Finalmente expliqué selectors, puertos y comportamiento
+    aditivo de NetworkPolicy.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 27 de CKAD.
+
+    Revisé las NetworkPolicies existentes en el clúster temporal y después
+    eliminé ckad-netpol completo, retirando Calico y todos los recursos de
+    la práctica. Regresé explícitamente al contexto kind-ckad y comprobé
+    que ckad-control-plane, ckad-worker y ckad-worker2 permanecían Ready.
+    Los archivos locales, incluido kind-netpol.yaml, se conservaron en
+    workspace/lab27.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

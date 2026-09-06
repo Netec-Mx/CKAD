@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 12 de Couchbase Server.
+    Práctica 12 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab12, validé el contexto kind-ckad y creé el
+    namespace lab12. Después revisé Service.spec.selector y
+    Deployment.spec.selector para comprender cómo Stable y Canary pueden
+    pertenecer al mismo Service mediante app=web, mientras cada Deployment
+    conserva su propio selector mediante track=stable o track=canary.
+    Finalmente creé un Pod cliente para realizar pruebas repetidas contra
+    el mismo endpoint web.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,15 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 12 de Couchbase Server.
+    Práctica 12 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Desplegué web-stable con cuatro réplicas identificadas mediante
+    app=web y track=stable y creé un Service web que selecciona únicamente
+    app=web. Después incorporé web-canary con una réplica identificada
+    mediante app=web y track=canary. Al compartir app=web, Stable y
+    Canary quedaron como backends del mismo Service. Ejecuté múltiples
+    solicitudes y observé respuestas VERSION STABLE y VERSION CANARY,
+    sin asumir una distribución porcentual exacta.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +41,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 12 de Couchbase Server.
+    Práctica 12 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Resolví un reto aumentando web-canary de una a dos réplicas mientras
+    web-stable permanecía con cuatro. Conservé el único Service web y su
+    selector app=web. Después confirmé que existían seis Pods Ready,
+    cuatro Stable y dos Canary, generé una nueva muestra de solicitudes
+    y revisé los EndpointSlices asociados al Service para relacionar los
+    Pods seleccionados con los backends de red disponibles.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +58,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 12 de Couchbase Server.
+    Práctica 12 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Promoví Canary de forma relativa dejando web-canary con cuatro
+    réplicas y web-stable con dos, conservando ambas versiones detrás del
+    mismo Service web. Observé nuevamente las respuestas sin interpretar
+    la relación de réplicas como una garantía exacta de tráfico.
+    Posteriormente simulé un incidente y recuperé Stable como versión
+    predominante dejando cuatro réplicas Stable y una Canary, sin eliminar
+    Canary ni modificar el nombre o selector general del Service.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +76,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 12 de Couchbase Server.
+    Práctica 12 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Después de completar las pruebas de introducción, incremento,
+    promoción y recuperación Canary, eliminé el namespace lab12.
+    Confirmé que el namespace dejó de existir y conservé localmente
+    stable.yaml, canary.yaml y los demás archivos creados dentro de
+    workspace/lab12 para utilizarlos posteriormente como material de
+    revisión.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

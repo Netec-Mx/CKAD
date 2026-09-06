@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 3 de Couchbase Server.
+    Práctica 3 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé una aplicación web mínima y su definición de contenedor.
+    Creé workspace/lab3/app, generé un archivo index.html que identifica
+    la aplicación CKAD Lab 3 y la versión v1 y revisé su contenido.
+    Después construí un Dockerfile basado en nginx:1.31.4-alpine que copia
+    index.html al directorio de contenido estático de NGINX y documenta
+    el puerto 80 mediante EXPOSE.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 3 de Couchbase Server.
+    Práctica 3 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Construí la imagen ckad-lab3:v1 utilizando Docker y revisé sus
+    metadatos, arquitectura y sistema operativo. Después ejecuté
+    temporalmente la imagen como un contenedor Docker denominado
+    lab3-local, publiqué el puerto 80 del contenedor en localhost:8080
+    y utilicé curl para comprobar que la página respondía con Version: v1.
+    Finalmente eliminé el contenedor temporal antes de utilizar Kubernetes.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 3 de Couchbase Server.
+    Práctica 3 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Incorporé la imagen local ckad-lab3:v1 al clúster kind ckad.
+    Verifiqué la existencia del clúster, exporté la imagen mediante
+    docker save y la importé con ctr en el runtime containerd de
+    ckad-control-plane, ckad-worker y ckad-worker2. Después confirmé la
+    imagen con crictl, creé el namespace lab3 y generé pod.yaml para
+    ckad-web, configurando imagePullPolicy: IfNotPresent para utilizar
+    las imágenes cargadas localmente.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 3 de Couchbase Server.
+    Práctica 3 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Desplegué el Pod ckad-web mediante pod.yaml y esperé a que alcanzara
+    la condición Ready. Consulté su ubicación, dirección IP, imagen,
+    imagePullPolicy, condiciones y eventos utilizando kubectl get y
+    kubectl describe. Después consulté los logs del contenedor y utilicé
+    kubectl port-forward para conectar localhost:8080 con el puerto 80
+    del Pod, comprobando mediante curl que Kubernetes servía Version: v1.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,16 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 3 de Couchbase Server.
+    Práctica 3 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Modifiqué index.html para cambiar la aplicación de Version: v1 a
+    Version: v2 y construí la imagen ckad-lab3:v2. Importé la nueva imagen
+    en todos los nodos kind y actualicé pod.yaml para utilizar el tag v2.
+    Debido a las restricciones de actualización de un Pod individual,
+    eliminé y recreé ckad-web, esperé su condición Ready, confirmé mediante
+    JSONPath la imagen utilizada y validé desde el contenedor que la página
+    mostraba Version: v2. Finalmente eliminé el namespace lab3.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

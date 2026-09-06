@@ -5,9 +5,13 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 17 de Couchbase Server.
+    Práctica 17 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab17, validé el contexto kind-ckad y creé el
+    namespace lab17. Después estudié resources.requests y resources.limits
+    mediante kubectl explain y creé qos-demo sin configuración explícita
+    de CPU ni memoria. Finalmente consulté status.qosClass y comprobé
+    que Kubernetes lo clasificó como BestEffort.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +21,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 17 de Couchbase Server.
+    Práctica 17 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Resolví un reto creando el Deployment api con dos réplicas y recursos
+    explícitos por contenedor: CPU request 100m, CPU limit 300m, memory
+    request 64Mi y memory limit 128Mi. Después consulté el Pod template
+    almacenado en Kubernetes para verificar los valores efectivos y
+    confirmé que los Pods fueron clasificados como Burstable porque los
+    requests y limits no son iguales.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +38,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 17 de Couchbase Server.
+    Práctica 17 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé cpu-burner con un proceso intensivo y límites explícitos de CPU,
+    comprobando que el contenedor podía permanecer Running aunque su consumo
+    estuviera restringido. Después construí memory-hog con Python para
+    intentar reservar aproximadamente 128 MiB bajo un límite de 64 MiB.
+    Observé reinicios y utilicé lastState.terminated.reason para confirmar
+    que Kubernetes registró OOMKilled.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +55,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 17 de Couchbase Server.
+    Práctica 17 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Corregí memory-hog aumentando el memory request a 128Mi y el limit a
+    256Mi, manteniendo el mismo proceso y configuración de CPU. Comprobé
+    que el nuevo Pod permaneciera estable. Después creé critical-api con
+    CPU request y limit iguales a 200m y memory request y limit iguales
+    a 128Mi, verificando finalmente que Kubernetes le asignó la clase
+    QoS Guaranteed.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +72,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 17 de Couchbase Server.
+    Práctica 17 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé los Deployments y Pods utilizados durante las pruebas de
+    dimensionamiento, CPU, memoria y QoS. Después eliminé el namespace
+    lab17 únicamente tras terminar el diagnóstico de OOMKilled y las
+    validaciones de BestEffort, Burstable y Guaranteed. Finalmente
+    confirmé que los archivos locales permanecían disponibles dentro
+    de workspace/lab17.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

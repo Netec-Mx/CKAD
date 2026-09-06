@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 16 de Couchbase Server.
+    Práctica 16 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab16, validé el contexto kind-ckad y creé el
+    namespace lab16. Después comprobé la existencia del ServiceAccount
+    default, estudié la estructura de Role.rules y utilicé
+    kubectl auth can-i con impersonación para comprobar si la identidad
+    system:serviceaccount:lab16:default podía listar Pods. Así distinguí
+    identidad mediante ServiceAccount de autorización mediante RBAC.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 16 de Couchbase Server.
+    Práctica 16 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Resolví un reto creando inventory-sa y concediéndole únicamente
+    permisos namespaced de lectura sobre Pods. Construí los recursos RBAC
+    necesarios para permitir get y list sin otorgar create, update, patch
+    o delete. Después utilicé kubectl auth can-i con impersonación para
+    comprobar tanto las operaciones permitidas como las que debían
+    continuar expresamente denegadas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 16 de Couchbase Server.
+    Práctica 16 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé un Pod denominado inventory-client basado en BusyBox y lo asocié
+    explícitamente al ServiceAccount inventory-sa mediante
+    serviceAccountName. Comprobé desde el objeto activo que el Pod no
+    utilizaba el ServiceAccount default y validé nuevamente que la identidad
+    podía listar Pods pero continuaba sin permiso para eliminarlos.
+    Así comprobé que asociar una identidad a un workload no concede permisos
+    adicionales por sí mismo.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 16 de Couchbase Server.
+    Práctica 16 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Simulé una auditoría de mínimo privilegio donde inventory-sa dejó de
+    necesitar acceso a Pods y debía conservar únicamente get y list sobre
+    ConfigMaps dentro de lab16. Corregí la autorización existente sin
+    sustituir el ServiceAccount y comprobé que podía leer ConfigMaps,
+    pero no eliminarlos, consultar Secrets ni listar Pods. También validé
+    que esos permisos no se extendieran al namespace default.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,14 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 16 de Couchbase Server.
+    Práctica 16 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé una última vez ServiceAccounts, Roles, RoleBindings y Pods del
+    namespace lab16 para observar la relación completa entre identidad,
+    autorización y workload. Después eliminé el namespace y confirmé que
+    había desaparecido. Finalmente conservé los manifiestos locales dentro
+    de workspace/lab16 para revisar posteriormente la solución RBAC.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

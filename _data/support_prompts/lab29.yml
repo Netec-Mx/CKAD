@@ -5,9 +5,13 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 29 de Couchbase Server.
+    Práctica 29 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Validé Git, preparé mi cuenta GitHub y creé el repositorio público
+    ckad-argocd-lab29 inicializado con README. Después creé
+    workspace/lab29, cloné el repositorio mediante HTTPS y quedé ubicado
+    dentro de su copia local. El repositorio funcionará como fuente de
+    verdad para el flujo GitOps que posteriormente administrará Argo CD.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +21,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 29 de Couchbase Server.
+    Práctica 29 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé el directorio manifests y definí una aplicación mediante tres
+    recursos Kubernetes: un ConfigMap con una página HTML Version: v1,
+    un Deployment NGINX de dos réplicas que monta ese contenido y un
+    Service ClusterIP. Después utilicé kubectl apply --dry-run=client
+    para validar los manifiestos sin desplegarlos realmente, porque Argo CD
+    debe ser quien cree los recursos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +38,13 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 29 de Couchbase Server.
+    Práctica 29 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Revisé git status, agregué manifests al staging area y comprobé que
+    los tres archivos estaban preparados para commit. Después creé el
+    commit inicial y ejecuté git push origin main. Finalmente confirmé
+    desde GitHub que configmap.yaml, deployment.yaml y service.yaml ya
+    estaban publicados y disponibles para ser consumidos por Argo CD.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +54,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 29 de Couchbase Server.
+    Práctica 29 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Validé nuevamente el contexto kind-ckad, creé el namespace argocd e
+    instalé Argo CD v3.5.0 mediante server-side apply. Después inspeccioné
+    sus recursos, esperé los rollouts de argocd-server y
+    argocd-repo-server y confirmé que los Pods principales estaban
+    Running. Finalmente verifiqué el CRD applications.argoproj.io,
+    comprendiendo que una Application de Argo CD es un Custom Resource.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +71,66 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 29 de Couchbase Server.
+    Práctica 29 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Recuperé la contraseña inicial de admin, revisé el Service
+    argocd-server y abrí un port-forward local hacia el puerto 443.
+    Después accedí a https://localhost:8080, inicié sesión y creé la
+    Application ckad-gitops-demo con Sync Policy Manual, Repository URL
+    apuntando a GitHub, Revision HEAD, Path manifests, destino al clúster
+    interno y namespace lab29-app con creación automática.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 29 de CKAD.
+
+    Abrí ckad-gitops-demo en Argo CD, revisé los recursos detectados desde
+    Git y ejecuté una sincronización manual. Esperé hasta observar
+    Sync Status Synced y Health Status Healthy. Después utilicé kubectl
+    para confirmar los recursos de lab29-app y ejecuté una prueba HTTP
+    mediante un Pod temporal, verificando que la aplicación mostrara
+    Version: v1 y Managed by Argo CD.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea7:
+  title: "Explicar la Tarea 7 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 7 de la
+    Práctica 29 de CKAD.
+
+    Modifiqué únicamente Git cambiando Version: v1 por Version: v2 dentro
+    de configmap.yaml. Agregué el cambio, creé un nuevo commit y lo
+    publiqué en main. Argo CD detectó que Git y Kubernetes ya no coincidían
+    y mostró OutOfSync. Después ejecuté una nueva sincronización y validé
+    mediante una petición HTTP que la aplicación había convergido a
+    Version: v2 sin editar directamente el ConfigMap del clúster.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea8:
+  title: "Explicar la Tarea 8 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 8 de la
+    Práctica 29 de CKAD.
+
+    Eliminé la Application ckad-gitops-demo desde Argo CD utilizando
+    Cascade para retirar los recursos administrados. Verifiqué desde
+    kubectl que ya no permanecieran workloads activos de la aplicación.
+    Después confirmé que Argo CD seguía operativo en el namespace argocd
+    y revisé el historial Git para conservar evidencia del commit inicial
+    y de la actualización a v2.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

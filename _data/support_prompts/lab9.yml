@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 9 de Couchbase Server.
+    Práctica 9 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab9, validé el contexto kind-ckad y creé el
+    namespace lab9. Después generé deployment.yaml para un Deployment web
+    con cuatro réplicas basado en nginx:1.31.4-alpine3.24-slim y lo
+    desplegué. Finalmente consulté mediante JSONPath su estrategia de
+    actualización y los valores de maxSurge y maxUnavailable para comprender
+    cómo RollingUpdate controla disponibilidad y capacidad temporal durante
+    una actualización.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 9 de Couchbase Server.
+    Práctica 9 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Registré la imagen inicial del Deployment y utilicé kubectl set image
+    para actualizar web a nginx:1.31.4-alpine3.24. Esperé a que el
+    RollingUpdate terminara y después inspeccioné los Pods y ReplicaSets
+    resultantes. Finalmente confirmé mediante JSONPath que las cuatro
+    réplicas activas ejecutaban la imagen nueva y observé que el ReplicaSet
+    anterior permanecía normalmente con cero réplicas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +40,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 9 de Couchbase Server.
+    Práctica 9 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Analicé el historial de rollout del Deployment web utilizando
+    kubectl rollout history. Consulté individualmente las revisiones 1 y 2
+    para comparar sus plantillas e imágenes y después listé los ReplicaSets
+    mostrando la anotación deployment.kubernetes.io/revision.
+    Finalmente consulté la revisión actual almacenada en el Deployment
+    para relacionar historial, ReplicaSets y versión activa.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +57,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 9 de Couchbase Server.
+    Práctica 9 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Introduje deliberadamente la imagen inexistente
+    nginx:lab9-image-does-not-exist para provocar un rollout defectuoso.
+    Observé Pods con estados ErrImagePull o ImagePullBackOff y utilicé
+    kubectl describe deployment para identificar la falta de progreso y
+    los eventos asociados. Después ejecuté kubectl rollout undo para
+    regresar a la revisión funcional anterior y esperé hasta que el
+    Deployment recuperara completamente su disponibilidad.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +75,17 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 9 de Couchbase Server.
+    Práctica 9 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Resolví un reto de rollout y rollback sin recibir comandos de
+    implementación. Debía mantener cuatro réplicas, actualizar web a
+    nginx:1.31.4-alpine3.24-slim, completar correctamente el RollingUpdate
+    y conservar el historial. Después enfrenté un incidente donde una
+    actualización posterior quedó defectuosa y tuve que recuperar la última
+    revisión funcional utilizando el mecanismo adecuado de rollback.
+    Finalmente validé el historial y eliminé el namespace lab9 únicamente
+    después de terminar todas las comprobaciones.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

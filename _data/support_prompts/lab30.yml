@@ -5,9 +5,13 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 30 de Couchbase Server.
+    Práctica 30 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab30, confirmé el contexto kind-ckad y comprobé
+    Helm y AWS CLI. Después inicié o validé el acceso a AWS y utilicé
+    aws sts get-caller-identity para determinar la identidad activa que
+    será utilizada durante el laboratorio. Esta validación es importante
+    porque la práctica crea una VPC real en AWS desde Kubernetes.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +21,13 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 30 de Couchbase Server.
+    Práctica 30 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Agregué el repositorio Helm estable de Crossplane, actualicé su índice
+    y comprobé las versiones disponibles. Después instalé Crossplane
+    v2.3.4 en crossplane-system, esperé el rollout de su Deployment y
+    confirmé que crossplane y crossplane-rbac-manager estuvieran Running.
+    Así preparé Kubernetes como plano de control para recursos externos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +37,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 30 de Couchbase Server.
+    Práctica 30 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Creé un recurso Provider que referencia
+    xpkg.upbound.io/upbound/provider-aws-ec2:v2.7.1 y lo apliqué al
+    clúster. Esperé la condición Healthy y comprobé mediante
+    kubectl get providers que quedara instalado y saludable.
+    Finalmente validé mediante api-resources que Kubernetes reconociera
+    el recurso VPC del grupo ec2.aws.m.upbound.io.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +54,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 30 de Couchbase Server.
+    Práctica 30 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Verifiqué la existencia del archivo ~/.aws/credentials sin mostrar
+    su contenido y validé nuevamente mi identidad AWS. Después creé
+    aws-secret dentro de crossplane-system a partir de ese archivo y
+    definí un ClusterProviderConfig default que referencia el Secret.
+    De esta forma el provider obtiene autenticación sin incluir Access Key
+    o Secret Access Key directamente dentro de los manifiestos.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +71,65 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 30 de Couchbase Server.
+    Práctica 30 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Creé el namespace lab30 y definí un Managed Resource VPC con nombre
+    ckad-crossplane-lab30, región us-west-2, CIDR 10.30.0.0/16,
+    enableDnsSupport=true y enableDnsHostnames=false. Después validé el
+    manifiesto con dry-run y lo apliqué. Crossplane inició la creación
+    real en AWS y esperé explícitamente hasta que la VPC alcanzara
+    condición Ready.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 30 de CKAD.
+
+    Modifiqué enableDnsHostnames de false a true manteniendo el mismo
+    recurso y CIDR. Apliqué nuevamente vpc.yaml y Crossplane comparó el
+    estado deseado con la VPC observada en AWS. Después obtuve el ID externo
+    desde status.atProvider.id y utilicé AWS CLI para confirmar que
+    EnableDnsHostnames había cambiado realmente a true.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea7:
+  title: "Explicar la Tarea 7 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 7 de la
+    Práctica 30 de CKAD.
+
+    Consulté directamente la VPC mediante AWS CLI y también la localicé
+    en AWS Management Console. Después inspeccioné el Managed Resource
+    completo con kubectl get -o yaml y kubectl describe. Relacioné
+    spec.forProvider con el estado deseado, status.atProvider con el
+    estado observado del recurso externo y status.conditions con el
+    proceso continuo de reconciliación de Crossplane.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.
+
+tarea8:
+  title: "Explicar la Tarea 8 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 8 de la
+    Práctica 30 de CKAD.
+
+    Eliminé la VPC mediante kubectl delete -f vpc.yaml para que Crossplane
+    administrara también la eliminación externa. Esperé que desapareciera
+    el Managed Resource y utilicé AWS CLI con el ID guardado para comprobar
+    que la VPC ya no existía. Finalmente eliminé el namespace lab30 y
+    confirmé que Crossplane continuaba Running en crossplane-system para
+    reutilizarse posteriormente.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

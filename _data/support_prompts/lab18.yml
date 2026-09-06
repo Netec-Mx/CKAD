@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 18 de Couchbase Server.
+    Práctica 18 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab18, validé el contexto kind-ckad y creé el
+    namespace lab18. Después estudié securityContext tanto a nivel de Pod
+    como de contenedor y revisé seccompProfile. Construí nonroot-demo con
+    runAsNonRoot=true, UID 1000, GID 3000 y
+    allowPrivilegeEscalation=false. Finalmente ejecuté id dentro del
+    contenedor para comprobar que el proceso no utilizaba UID 0.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 18 de Couchbase Server.
+    Práctica 18 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé api-secure con BusyBox y una identidad explícita no root:
+    UID 10001 y GID 3000. Después reforcé el contenedor declarando
+    privileged=false y allowPrivilegeEscalation=false sin perder los
+    controles de identidad existentes. Consulté el securityContext activo
+    desde Kubernetes y volví a ejecutar id para comprobar que el hardening
+    no modificó el UID ni el GID solicitados.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 18 de Couchbase Server.
+    Práctica 18 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Continué endureciendo api-secure eliminando todas las Linux capabilities
+    mediante capabilities.drop ALL. Después configuré
+    readOnlyRootFilesystem=true, proporcioné /tmp como ruta escribible
+    mediante un volumen emptyDir y apliqué seccompProfile RuntimeDefault.
+    Validé que /tmp permitiera escritura y que una escritura directa sobre
+    el root filesystem fuera rechazada.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +56,15 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 18 de Couchbase Server.
+    Práctica 18 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Audité legacy-api, un Pod deliberadamente inseguro configurado como
+    privileged, con escalación permitida y UID 0. Identifiqué los controles
+    faltantes y lo corregí para utilizar UID 10001, GID 3000,
+    runAsNonRoot=true, privileged=false, allowPrivilegeEscalation=false,
+    drop ALL, readOnlyRootFilesystem=true, /tmp mediante emptyDir y
+    seccomp RuntimeDefault. Finalmente validé identidad, escritura
+    controlada y todos los campos del objeto activo.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +74,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 18 de Couchbase Server.
+    Práctica 18 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Revisé los Pods del namespace lab18 después de terminar todas las
+    validaciones de hardening. Posteriormente eliminé el namespace y
+    confirmé que ya no existía. Finalmente conservé nonroot-demo.yaml,
+    legacy-api.yaml y los demás manifiestos locales dentro de
+    workspace/lab18 para comparar las configuraciones iniciales y
+    endurecidas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

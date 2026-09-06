@@ -5,9 +5,15 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 22 de Couchbase Server.
+    Práctica 22 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab22, validé el contexto kind-ckad y creé el
+    namespace lab22. Después construí guided-failure, un Pod que registra
+    un error y termina con código 1. Apliqué un flujo sistemático de
+    troubleshooting: observar el síntoma con kubectl get, inspeccionar el
+    recurso con describe, revisar logs, consultar reason y exitCode,
+    identificar la causa raíz, corregir únicamente el comportamiento
+    defectuoso y validar que el Pod recuperado alcanzara Ready.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +23,16 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 22 de Couchbase Server.
+    Práctica 22 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Diagnostiqué frontend, un Deployment de dos réplicas que utilizaba la
+    imagen inexistente nginx:lab22-version-does-not-exist. Utilicé estado
+    y eventos para identificar ErrImagePull o ImagePullBackOff y corregí
+    únicamente el tag de imagen. Después analicé worker, cuyo proceso
+    terminaba repetidamente después de registrar
+    ERROR queue configuration invalid. Utilicé reinicios, estado anterior
+    y logs previos para determinar la causa y corregí el comportamiento
+    manteniendo el Deployment existente.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +42,15 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 22 de Couchbase Server.
+    Práctica 22 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Diagnostiqué config-api, donde el Deployment solicitaba la key
+    APP_ENVIRONMENT pero el ConfigMap publicaba APP_ENV. Revisé eventos,
+    configuración activa y keys disponibles hasta localizar la referencia
+    incorrecta y corregí solamente esa dependencia. Después analicé
+    web-health, cuyo NGINX estaba Running pero no Ready debido a una
+    readiness probe sobre /healthz. Corregí la ruta manteniendo la probe
+    y confirmé que el Pod alcanzara 1/1 Ready.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +60,16 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 22 de Couchbase Server.
+    Práctica 22 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Analicé una arquitectura multicapa con un Deployment backend,
+    un Service backend y frontend-client. Los Pods estaban Running y el
+    Service existía, pero la comunicación fallaba. Comparé los labels de
+    los Pods, el selector del Service y sus EndpointSlices y encontré que
+    el Service utilizaba app=backend-api mientras los Pods tenían
+    app=backend. Corregí únicamente el selector y validé tanto los
+    endpoints como una solicitud HTTP desde frontend-client hacia
+    http://backend.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +79,15 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 22 de Couchbase Server.
+    Práctica 22 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Realicé una revisión final de Deployments, Pods, Services y ConfigMaps
+    después de completar todos los escenarios de troubleshooting.
+    Eliminé el namespace lab22 únicamente cuando ya no necesitaba conservar
+    logs, eventos ni estados como evidencia y confirmé su desaparición.
+    Los manifiestos locales se conservaron dentro de workspace/lab22 para
+    comparar posteriormente las versiones defectuosas y corregidas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
-

@@ -5,9 +5,14 @@ tarea1:
   title: "Explicar la Tarea 1 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 1 de la
-    Práctica 23 de Couchbase Server.
+    Práctica 23 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_1_AQUI.
+    Preparé workspace/lab23, validé kind-ckad y creé el namespace lab23.
+    Después instalé Metrics Server v0.9.0 y agregué
+    --kubelet-insecure-tls para adaptar su conexión a los kubelets del
+    entorno kind local. Esperé el rollout del Deployment y comprobé
+    mediante kubectl top nodes que la Metrics API podía devolver CPU y
+    memoria de ckad-control-plane, ckad-worker y ckad-worker2.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -17,9 +22,14 @@ tarea2:
   title: "Explicar la Tarea 2 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 2 de la
-    Práctica 23 de Couchbase Server.
+    Práctica 23 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_2_AQUI.
+    Creé idle-app con dos réplicas prácticamente inactivas y web-app con
+    dos réplicas NGINX. Utilicé estos workloads como línea base y consulté
+    su consumo mediante kubectl top pods. También revisé kubectl top nodes
+    para comparar los workloads con el consumo agregado de cada nodo,
+    comprendiendo que las métricas de nodo incluyen componentes del sistema
+    y de Kubernetes además de los Pods de lab23.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -29,9 +39,14 @@ tarea3:
   title: "Explicar la Tarea 3 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 3 de la
-    Práctica 23 de Couchbase Server.
+    Práctica 23 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_3_AQUI.
+    Construí cpu-load con un proceso intensivo y recursos explícitos:
+    CPU request 100m, CPU limit 500m, memory request 32Mi y memory limit
+    64Mi. Esperé una nueva muestra de Metrics Server y utilicé
+    kubectl top pods y --sort-by=cpu para comprobar que cpu-load destacaba
+    frente a los workloads inactivos. Después consulté resources desde el
+    Pod y comparé configuración declarada contra consumo observado.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -41,9 +56,14 @@ tarea4:
   title: "Explicar la Tarea 4 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 4 de la
-    Práctica 23 de Couchbase Server.
+    Práctica 23 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_4_AQUI.
+    Creé memory-load con Python para reservar aproximadamente 120 MiB,
+    manteniendo el proceso activo con memory request 64Mi y limit 256Mi.
+    El objetivo fue generar consumo observable sin provocar OOMKilled.
+    Después esperé una muestra, ordené los Pods por memoria y comparé el
+    consumo real con los requests y limits configurados, comprendiendo que
+    los valores de kubectl top son observaciones y no cantidades fijas.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
@@ -53,11 +73,32 @@ tarea5:
   title: "Explicar la Tarea 5 con IA"
   prompt: >-
     Explícame expertamente qué hice en la Tarea 5 de la
-    Práctica 23 de Couchbase Server.
+    Práctica 23 de CKAD.
 
-    CONTEXTO_DE_LA_TAREA_5_AQUI.
+    Analicé todas las métricas del namespace para identificar cuál workload
+    destacaba por CPU y cuál por memoria. Utilicé evidencia ordenada o
+    filtrada para concluir que cpu-load sobresalía en CPU y memory-load
+    en memoria. Después relacioné esos valores con requests y limits y
+    determiné que un consumo alto no implica automáticamente una falla
+    cuando es intencional, estable y no existen OOMKilled ni reinicios.
 
     Explica el propósito de cada comando, configuración o procedimiento,
     cómo interpretar las salidas esperadas, cómo validar que la tarea se
     completó correctamente y qué errores comunes podrían presentarse.
 
+tarea6:
+  title: "Explicar la Tarea 6 con IA"
+  prompt: >-
+    Explícame expertamente qué hice en la Tarea 6 de la
+    Práctica 23 de CKAD.
+
+    Revisé los Pods y Deployments utilizados para las comparaciones y
+    eliminé el namespace lab23 cuando ya no necesitaba consultar sus
+    métricas. Confirmé que el namespace había desaparecido y conservé
+    los manifiestos locales dentro de workspace/lab23. Metrics Server
+    permaneció instalado en kube-system porque forma parte de la
+    infraestructura compartida utilizada por el resto del curso.
+
+    Explica el propósito de cada comando, configuración o procedimiento,
+    cómo interpretar las salidas esperadas, cómo validar que la tarea se
+    completó correctamente y qué errores comunes podrían presentarse.

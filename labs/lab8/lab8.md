@@ -100,10 +100,6 @@ Utilizarás las capacidades de descubrimiento de kubectl para reconocer el recur
   > **Nota:** Los Deployments pertenecen al grupo de API `apps` y son recursos namespaced.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl api-resources | grep '^deployments'
-  ```
-
   > **Salida esperada:** Se muestra `deployments`, su nombre corto `deploy`, la versión `apps/v1`, alcance namespaced y kind `Deployment`.
   {: .lab-note .output .compact}
 
@@ -112,10 +108,6 @@ Utilizarás las capacidades de descubrimiento de kubectl para reconocer el recur
   > **Importante:** El controlador intenta mantener el número de réplicas indicado en `spec.replicas`; esa reconciliación se comprobará posteriormente.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl explain deployment.spec.replicas
-  ```
-
   > **Salida esperada:** kubectl muestra la descripción y tipo del campo `replicas`.
   {: .lab-note .output .compact}
 
@@ -123,10 +115,6 @@ Utilizarás las capacidades de descubrimiento de kubectl para reconocer el recur
 
   > **Nota:** En `apps/v1`, el selector del Deployment debe coincidir con los labels definidos dentro de la plantilla de Pods.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl explain deployment.spec --recursive | head -n 45
-  ```
 
   > **Salida esperada:** Se muestran campos como `replicas`, `selector`, `strategy` y `template` dentro de la especificación.
   {: .lab-note .output .compact}
@@ -147,14 +135,10 @@ Generarás una definición inicial de Deployment con kubectl, revisarás y compl
 
 Utilizarás `--dry-run=client` para obtener una definición base y después ajustarás réplicas, labels y puerto sin escribir manualmente toda la estructura desde cero.
 
-- {% include step_label.html %} Genera el manifiesto `deployment.yaml` para un Deployment denominado `web` utilizando la imagen NGINX indicada, sin crear todavía ningún recurso en el clúster.
+- {% include step_label.html %} Genera el manifiesto `deployment.yaml` para un Deployment denominado `web` utilizando la imagen NGINX `nginx:1.31.4-alpine3.24-slim`, sin crear todavía ningún recurso en el clúster.
 
   > **Nota:** Generar YAML mediante kubectl permite ahorrar tiempo y reduce errores de estructura durante actividades prácticas.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl create deployment web --image=nginx:1.31.4-alpine3.24-slim --replicas=3 -n lab8 --dry-run=client -o yaml > deployment.yaml
-  ```
 
   > **Salida esperada:** Se crea localmente `deployment.yaml` y no aparece todavía ningún Deployment `web` en el clúster.
   {: .lab-note .output .compact}
@@ -164,10 +148,6 @@ Utilizarás `--dry-run=client` para obtener una definición base y después ajus
   > **Importante:** Comprueba especialmente que `spec.selector.matchLabels` coincide con `spec.template.metadata.labels`.
   {: .lab-note .important .compact}
 
-  ```bash
-  code deployment.yaml
-  ```
-
   > **Salida esperada:** Visual Studio Code abre el archivo `deployment.yaml` almacenado en `workspace/lab8`.
   {: .lab-note .output .compact}
 
@@ -175,10 +155,6 @@ Utilizarás `--dry-run=client` para obtener una definición base y después ajus
 
   > **Advertencia:** `containerPort` debe quedar dentro del elemento del contenedor. Una indentación incorrecta puede provocar un error de validación.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl apply --dry-run=server -f deployment.yaml
-  ```
 
   > **Salida esperada:** Kubernetes responde con un resultado equivalente a `deployment.apps/web created (server dry run)`.
   {: .lab-note .output .compact}
@@ -192,10 +168,6 @@ Aplicarás el manifiesto y revisarás cada nivel de la relación Deployment → 
   > **Importante:** `kubectl apply` registra el estado deseado del Deployment; el controlador será responsable de crear los objetos subordinados.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f deployment.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web created`.
   {: .lab-note .output .compact}
 
@@ -204,10 +176,6 @@ Aplicarás el manifiesto y revisarás cada nivel de la relación Deployment → 
   > **Nota:** `rollout status` observa el progreso del Deployment sin requerir tiempos arbitrarios de espera.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl rollout status deployment/web -n lab8 --timeout=60s
-  ```
-
   > **Salida esperada:** kubectl informa que el Deployment `web` completó satisfactoriamente su rollout.
   {: .lab-note .output .compact}
 
@@ -215,10 +183,6 @@ Aplicarás el manifiesto y revisarás cada nivel de la relación Deployment → 
 
   > **Nota:** El Deployment administra ReplicaSets y estos mantienen el conjunto de Pods requerido por el estado deseado.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get deployment,replicaset,pods -n lab8
-  ```
 
   > **Salida esperada:** Se muestra `deployment.apps/web`, un ReplicaSet asociado y tres Pods en estado `Running`.
   {: .lab-note .output .compact}
@@ -243,10 +207,6 @@ Consultarás primero el estado actual, modificarás únicamente el número de r�
   > **Nota:** Registrar el estado previo permite comparar claramente el efecto que produce una operación de escalado.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get deployment web -n lab8
-  ```
-
   > **Salida esperada:** El Deployment muestra tres réplicas deseadas y, después del rollout inicial, tres réplicas disponibles.
   {: .lab-note .output .compact}
 
@@ -255,10 +215,6 @@ Consultarás primero el estado actual, modificarás únicamente el número de r�
   > **Importante:** `kubectl scale` modifica el tamaño deseado del Deployment; no necesitas crear manualmente un cuarto Pod.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl scale deployment/web -n lab8 --replicas=4
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web scaled`.
   {: .lab-note .output .compact}
 
@@ -266,10 +222,6 @@ Consultarás primero el estado actual, modificarás únicamente el número de r�
 
   > **Nota:** Los nombres de los Pods incluyen un hash del ReplicaSet y un sufijo generado automáticamente.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get pods -n lab8 -l app=web
-  ```
 
   > **Salida esperada:** Se muestran cuatro Pods administrados por el Deployment y todos terminan alcanzando estado `Running`.
   {: .lab-note .output .compact}
@@ -283,10 +235,6 @@ Identificarás uno de los Pods existentes, lo eliminarás deliberadamente y obse
   > **Nota:** Anota uno de los nombres mostrados; en el siguiente paso lo utilizarás para eliminar únicamente esa réplica.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get pods -n lab8 -l app=web
-  ```
-
   > **Salida esperada:** Se muestran cuatro nombres de Pod pertenecientes al Deployment `web`.
   {: .lab-note .output .compact}
 
@@ -295,10 +243,6 @@ Identificarás uno de los Pods existentes, lo eliminarás deliberadamente y obse
   > **Advertencia:** Sustituye `<NOMBRE_DEL_POD>` por un Pod perteneciente exclusivamente a `web`. No elimines el Deployment.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl delete pod <NOMBRE_DEL_POD> -n lab8
-  ```
-
   > **Salida esperada:** Kubernetes confirma la eliminación del Pod seleccionado.
   {: .lab-note .output .compact}
 
@@ -306,10 +250,6 @@ Identificarás uno de los Pods existentes, lo eliminarás deliberadamente y obse
 
   > **Importante:** El nuevo Pod es consecuencia de la reconciliación realizada por el ReplicaSet; no fue creado manualmente.
   {: .lab-note .important .compact}
-
-  ```bash
-  kubectl get pods -n lab8 -l app=web
-  ```
 
   > **Salida esperada:** El conjunto vuelve a contener cuatro Pods; uno de los nombres es diferente al observado antes de la eliminación.
   {: .lab-note .output .compact}
@@ -334,10 +274,6 @@ Consultarás la imagen actual, aplicarás un cambio controlado sobre la plantill
   > **Nota:** Verificar el valor actual evita cambiar accidentalmente un contenedor distinto cuando un workload contiene varias imágenes.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get deployment web -n lab8 -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
-  ```
-
   > **Salida esperada:** Se muestra `nginx:1.31.4-alpine3.24-slim`.
   {: .lab-note .output .compact}
 
@@ -346,10 +282,6 @@ Consultarás la imagen actual, aplicarás un cambio controlado sobre la plantill
   > **Importante:** Cambiar la plantilla de Pods provoca un nuevo rollout. En esta práctica utilizarás `nginx:1.31.4-alpine3.24`, también perteneciente a la misma versión explícita de NGINX.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl set image deployment/web nginx=nginx:1.31.4-alpine3.24 -n lab8
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web image updated`.
   {: .lab-note .output .compact}
 
@@ -357,10 +289,6 @@ Consultarás la imagen actual, aplicarás un cambio controlado sobre la plantill
 
   > **Advertencia:** Si el rollout excede el timeout, no elimines el Deployment; utiliza `kubectl describe` y los eventos para investigar el problema.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl rollout status deployment/web -n lab8 --timeout=60s
-  ```
 
   > **Salida esperada:** kubectl informa que `deployment "web" successfully rolled out`.
   {: .lab-note .output .compact}
@@ -374,10 +302,6 @@ Revisarás ReplicaSets, historial e imagen activa mediante operaciones separadas
   > **Nota:** Los ReplicaSets anteriores suelen conservarse con cero réplicas para mantener historial de revisiones y permitir operaciones posteriores de rollback.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get replicasets -n lab8
-  ```
-
   > **Salida esperada:** Se observan al menos dos ReplicaSets asociados con `web`; uno mantiene las réplicas activas y el anterior permanece con cero réplicas.
   {: .lab-note .output .compact}
 
@@ -386,10 +310,6 @@ Revisarás ReplicaSets, historial e imagen activa mediante operaciones separadas
   > **Importante:** El historial pertenece al Deployment y se conserva mediante sus ReplicaSets anteriores mientras no sean eliminados por la política de historial.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl rollout history deployment/web -n lab8
-  ```
-
   > **Salida esperada:** Se muestran al menos dos números de revisión para `deployment.apps/web`.
   {: .lab-note .output .compact}
 
@@ -397,10 +317,6 @@ Revisarás ReplicaSets, historial e imagen activa mediante operaciones separadas
 
   > **Nota:** Esta consulta inspecciona el estado real de los Pods y permite confirmar que ya utilizan la nueva variante de imagen.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get pods -n lab8 -l app=web -o jsonpath='{range .items[*]}{.metadata.name}{" -> "}{.spec.containers[0].image}{"\n"}{end}'
-  ```
 
   > **Salida esperada:** Los cuatro Pods muestran `nginx:1.31.4-alpine3.24`.
   {: .lab-note .output .compact}

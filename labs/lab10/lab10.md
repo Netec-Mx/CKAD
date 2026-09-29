@@ -138,10 +138,6 @@ Generarás un manifiesto base mediante kubectl, revisarás las propiedades relev
   > **Nota:** `--dry-run=client -o yaml` es útil para producir rápidamente una estructura válida que después puede revisarse o modificarse antes de enviarla al API Server.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl create job simple-job --image=busybox:1.38.0-musl -n lab10 --dry-run=client -o yaml -- sh -c 'echo "Inicio del Job"; date; echo "Trabajo completado"' > simple-job.yaml
-  ```
-
   > **Salida esperada:** Se crea el archivo local `simple-job.yaml` y todavía no existe `job.batch/simple-job` en Kubernetes.
   {: .lab-note .output .compact}
 
@@ -150,10 +146,6 @@ Generarás un manifiesto base mediante kubectl, revisarás las propiedades relev
   > **Importante:** Un Job admite `restartPolicy: Never` u `OnFailure`. A diferencia de workloads de larga duración, no utiliza `Always` porque la tarea debe poder finalizar.
   {: .lab-note .important .compact}
 
-  ```bash
-  grep -E 'image:|restartPolicy:|command:|args:' simple-job.yaml
-  ```
-
   > **Salida esperada:** Se identifica `busybox:1.38.0-musl`, el comando generado y una política de reinicio válida para Job.
   {: .lab-note .output .compact}
 
@@ -161,10 +153,6 @@ Generarás un manifiesto base mediante kubectl, revisarás las propiedades relev
 
   > **Nota:** El usuario crea el objeto Job; el Pod subordinado es generado automáticamente por el controlador a partir de `spec.template`.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl apply -f simple-job.yaml
-  ```
 
   > **Salida esperada:** Kubernetes responde `job.batch/simple-job created`.
   {: .lab-note .output .compact}
@@ -178,10 +166,6 @@ Esperarás explícitamente la condición de finalización y después inspecciona
   > **Importante:** `kubectl wait` sincroniza la práctica con el estado real del controlador y evita utilizar pausas arbitrarias mediante `sleep`.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl wait --for=condition=complete job/simple-job -n lab10 --timeout=60s
-  ```
-
   > **Salida esperada:** kubectl confirma que `job.batch/simple-job` alcanzó la condición solicitada.
   {: .lab-note .output .compact}
 
@@ -190,10 +174,6 @@ Esperarás explícitamente la condición de finalización y después inspecciona
   > **Nota:** El Pod terminado se conserva mientras exista el Job, lo que permite revisar posteriormente información de ejecución, estado y logs.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get pods -n lab10 -l job-name=simple-job
-  ```
-
   > **Salida esperada:** Se muestra un Pod asociado con `simple-job` y su estado es `Completed`.
   {: .lab-note .output .compact}
 
@@ -201,10 +181,6 @@ Esperarás explícitamente la condición de finalización y después inspecciona
 
   > **Nota:** kubectl permite solicitar logs utilizando directamente el recurso `job/simple-job`, sin necesidad de copiar primero el nombre generado del Pod.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl logs job/simple-job -n lab10
-  ```
 
   > **Salida esperada:** Se muestran el mensaje `Inicio del Job`, una fecha generada por `date` y `Trabajo completado`.
   {: .lab-note .output .compact}
@@ -229,29 +205,6 @@ Crearás un Job que requiere cuatro finalizaciones exitosas y permite como máxi
   > **Nota:** `completions: 4` define el total requerido y `parallelism: 2` permite que Kubernetes procese hasta dos Pods simultáneamente hasta alcanzar esas cuatro finalizaciones.
   {: .lab-note .info .compact}
 
-  ```bash
-  cat > multi-job.yaml <<'EOF'
-  apiVersion: batch/v1
-  kind: Job
-  metadata:
-    name: multi-job
-    namespace: lab10
-  spec:
-    completions: 4
-    parallelism: 2
-    template:
-      spec:
-        restartPolicy: Never
-        containers:
-          - name: worker
-            image: busybox:1.38.0-musl
-            command:
-              - sh
-              - -c
-              - 'echo "Procesando unidad en $(hostname)"; sleep 5'
-  EOF
-  ```
-
   > **Salida esperada:** Se crea localmente `multi-job.yaml` con cuatro completions, parallelism dos y `restartPolicy: Never`.
   {: .lab-note .output .compact}
 
@@ -259,10 +212,6 @@ Crearás un Job que requiere cuatro finalizaciones exitosas y permite como máxi
 
   > **Importante:** No necesitas crear cuatro Pods manualmente; el controlador del Job crea nuevas ejecuciones conforme hacen falta hasta alcanzar el número de completions.
   {: .lab-note .important .compact}
-
-  ```bash
-  kubectl apply -f multi-job.yaml
-  ```
 
   > **Salida esperada:** Kubernetes responde `job.batch/multi-job created`.
   {: .lab-note .output .compact}
@@ -272,10 +221,6 @@ Crearás un Job que requiere cuatro finalizaciones exitosas y permite como máxi
   > **Nota:** Aunque el Job requiere cuatro completions, solo puede mantener hasta dos Pods activos simultáneamente por el valor de `parallelism`.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl wait --for=condition=complete job/multi-job -n lab10 --timeout=90s
-  ```
-
   > **Salida esperada:** kubectl confirma que `multi-job` alcanzó la condición `Complete`.
   {: .lab-note .output .compact}
 
@@ -283,10 +228,6 @@ Crearás un Job que requiere cuatro finalizaciones exitosas y permite como máxi
 
   > **Nota:** Una vez terminadas todas las ejecuciones, los Pods completados pueden permanecer visibles mientras exista el Job.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get job,pods -n lab10 -l job-name=multi-job
-  ```
 
   > **Salida esperada:** El Job refleja cuatro completions exitosas y se observan los Pods terminados que participaron en la ejecución.
   {: .lab-note .output .compact}
@@ -300,28 +241,6 @@ Crearás un segundo Job cuyo comando falla deliberadamente y limitarás los inte
   > **Advertencia:** El fallo es intencional. No corrijas `exit 1`; necesitas conservarlo para observar el comportamiento de reintentos del Job.
   {: .lab-note .warning .compact}
 
-  ```bash
-  cat > failed-job.yaml <<'EOF'
-  apiVersion: batch/v1
-  kind: Job
-  metadata:
-    name: failed-job
-    namespace: lab10
-  spec:
-    backoffLimit: 2
-    template:
-      spec:
-        restartPolicy: Never
-        containers:
-          - name: worker
-            image: busybox:1.38.0-musl
-            command:
-              - sh
-              - -c
-              - 'echo "Fallo controlado"; exit 1'
-  EOF
-  ```
-
   > **Salida esperada:** Se crea `failed-job.yaml` con `backoffLimit: 2`, `restartPolicy: Never` y un comando que finaliza con error.
   {: .lab-note .output .compact}
 
@@ -330,10 +249,6 @@ Crearás un segundo Job cuyo comando falla deliberadamente y limitarás los inte
   > **Importante:** Kubernetes puede espaciar los nuevos intentos mediante backoff; el fallo no implica que todos los Pods aparezcan de manera instantánea.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f failed-job.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `job.batch/failed-job created`.
   {: .lab-note .output .compact}
 
@@ -341,10 +256,6 @@ Crearás un segundo Job cuyo comando falla deliberadamente y limitarás los inte
 
   > **Nota:** La condición `Failed` confirma que el controlador agotó la política de reintentos y dejó de intentar completar el trabajo.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl wait --for=condition=failed job/failed-job -n lab10 --timeout=90s
-  ```
 
   > **Salida esperada:** kubectl confirma que `job.batch/failed-job` alcanzó la condición `Failed`.
   {: .lab-note .output .compact}
@@ -369,10 +280,6 @@ Generarás un manifiesto inicial y agregarás propiedades de administración que
   > **Nota:** La expresión `*/1 * * * *` ejecuta el CronJob cada minuto y permite observar una ejecución durante el tiempo disponible de la práctica.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl create cronjob report-cronjob --image=busybox:1.38.0-musl --schedule='*/1 * * * *' -n lab10 --dry-run=client -o yaml -- sh -c 'echo "Reporte programado"; date' > report-cronjob.yaml
-  ```
-
   > **Salida esperada:** Se crea localmente `report-cronjob.yaml` con la programación `*/1 * * * *`.
   {: .lab-note .output .compact}
 
@@ -381,10 +288,6 @@ Generarás un manifiesto inicial y agregarás propiedades de administración que
   > **Importante:** `Forbid` evita que una nueva ejecución del mismo CronJob comience mientras una anterior continúa activa; los límites de historial controlan cuántos Jobs terminados conserva el controlador.
   {: .lab-note .important .compact}
 
-  ```bash
-  code report-cronjob.yaml
-  ```
-
   > **Salida esperada:** Visual Studio Code abre `report-cronjob.yaml` para permitir incorporar las tres propiedades solicitadas dentro de `spec`.
   {: .lab-note .output .compact}
 
@@ -392,10 +295,6 @@ Generarás un manifiesto inicial y agregarás propiedades de administración que
 
   > **Advertencia:** Revisa la indentación si la validación falla; `concurrencyPolicy` y los límites de historial pertenecen directamente a `CronJob.spec`, no a `jobTemplate.spec`.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl apply --dry-run=server -f report-cronjob.yaml
-  ```
 
   > **Salida esperada:** Kubernetes devuelve un resultado equivalente a `cronjob.batch/report-cronjob created (server dry run)`.
   {: .lab-note .output .compact}
@@ -433,10 +332,6 @@ Crearás el CronJob, observarás su configuración activa y esperarás a que el 
   > **Importante:** Dependiendo del segundo exacto en que creaste el CronJob, la primera ejecución puede tardar hasta aproximadamente un minuto en aparecer.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl get jobs -n lab10 --watch
-  ```
-
   > **Salida esperada:** Aparece un Job generado automáticamente con un nombre similar a `report-cronjob-########` y alcanza una finalización exitosa.
   {: .lab-note .output .compact}
 
@@ -445,10 +340,6 @@ Crearás el CronJob, observarás su configuración activa y esperarás a que el 
   > **Nota:** El nombre del Pod incorpora el nombre del Job que lo creó, permitiendo reconocer visualmente la relación entre los tres niveles.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get pods -n lab10 --sort-by=.metadata.creationTimestamp
-  ```
-
   > **Salida esperada:** Se muestra al menos un Pod cuyo nombre comienza con `report-cronjob` y cuyo estado final es `Completed`.
   {: .lab-note .output .compact}
 
@@ -456,10 +347,6 @@ Crearás el CronJob, observarás su configuración activa y esperarás a que el 
 
   > **Nota:** Sustituye `<POD_CRONJOB>` por el nombre de un Pod cuyo prefijo sea `report-cronjob`; no utilices un Pod perteneciente a los Jobs anteriores.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl logs <POD_CRONJOB> -n lab10
-  ```
 
   > **Salida esperada:** Se muestran `Reporte programado` y la fecha correspondiente a la ejecución.
   {: .lab-note .output .compact}

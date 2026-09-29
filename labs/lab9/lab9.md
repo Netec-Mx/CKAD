@@ -97,10 +97,6 @@ Generarás un Deployment con varias réplicas y examinarás los parámetros que 
   > **Nota:** Utilizar varias réplicas permite observar con mayor claridad el reemplazo progresivo durante una actualización.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl create deployment web --image=nginx:1.31.4-alpine3.24-slim --replicas=4 -n lab9 --dry-run=client -o yaml > deployment.yaml
-  ```
-
   > **Salida esperada:** Se crea `deployment.yaml` sin crear todavía el Deployment en el clúster.
   {: .lab-note .output .compact}
 
@@ -109,10 +105,6 @@ Generarás un Deployment con varias réplicas y examinarás los parámetros que 
   > **Importante:** El Deployment se convertirá en la revisión base desde la que se realizarán las actualizaciones posteriores.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f deployment.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web created`.
   {: .lab-note .output .compact}
 
@@ -120,10 +112,6 @@ Generarás un Deployment con varias réplicas y examinarás los parámetros que 
 
   > **Nota:** RollingUpdate controla cuántos Pods adicionales pueden crearse temporalmente y cuántos pueden quedar no disponibles durante la actualización.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get deployment web -n lab9 -o jsonpath='Strategy={.spec.strategy.type} MaxSurge={.spec.strategy.rollingUpdate.maxSurge} MaxUnavailable={.spec.strategy.rollingUpdate.maxUnavailable}{"\n"}'
-  ```
 
   > **Salida esperada:** Se muestra `Strategy=RollingUpdate` y los valores configurados para `MaxSurge` y `MaxUnavailable`.
   {: .lab-note .output .compact}
@@ -149,10 +137,6 @@ Registrarás la versión actual, modificarás la imagen y observarás el progres
   > **Nota:** Registrar el valor previo facilita comprobar posteriormente que la actualización realmente cambió la plantilla.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get deployment web -n lab9 -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
-  ```
-
   > **Salida esperada:** Se muestra `nginx:1.31.4-alpine3.24-slim`.
   {: .lab-note .output .compact}
 
@@ -161,10 +145,6 @@ Registrarás la versión actual, modificarás la imagen y observarás el progres
   > **Importante:** Un cambio en `spec.template` genera un nuevo rollout y un nuevo ReplicaSet.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl set image deployment/web nginx=nginx:1.31.4-alpine3.24 -n lab9
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web image updated`.
   {: .lab-note .output .compact}
 
@@ -172,10 +152,6 @@ Registrarás la versión actual, modificarás la imagen y observarás el progres
 
   > **Advertencia:** Si el rollout excede el timeout, no elimines el Deployment; continúa con diagnóstico.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl rollout status deployment/web -n lab9 --timeout=60s
-  ```
 
   > **Salida esperada:** kubectl informa que el Deployment `web` completó correctamente el rollout.
   {: .lab-note .output .compact}
@@ -189,10 +165,6 @@ Comprobarás los Pods y ReplicaSets resultantes y confirmarás que la versión n
   > **Nota:** Los Pods activos deben corresponder al ReplicaSet generado por la revisión nueva.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get pods -n lab9 -l app=web
-  ```
-
   > **Salida esperada:** Se muestran cuatro Pods en estado `Running`.
   {: .lab-note .output .compact}
 
@@ -201,10 +173,6 @@ Comprobarás los Pods y ReplicaSets resultantes y confirmarás que la versión n
   > **Importante:** El ReplicaSet anterior suele permanecer con cero réplicas para conservar historial.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl get replicasets -n lab9
-  ```
-
   > **Salida esperada:** Se muestran al menos dos ReplicaSets asociados con `web`; uno mantiene cuatro réplicas y el anterior cero.
   {: .lab-note .output .compact}
 
@@ -212,10 +180,6 @@ Comprobarás los Pods y ReplicaSets resultantes y confirmarás que la versión n
 
   > **Nota:** Esta comprobación confirma el estado real de las réplicas, no únicamente la configuración del Deployment.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get pods -n lab9 -l app=web -o jsonpath='{range .items[*]}{.metadata.name}{" -> "}{.spec.containers[0].image}{"\n"}{end}'
-  ```
 
   > **Salida esperada:** Los cuatro Pods muestran `nginx:1.31.4-alpine3.24`.
   {: .lab-note .output .compact}
@@ -240,10 +204,6 @@ Utilizarás los comandos específicos de rollout para identificar las revisiones
   > **Nota:** Kubernetes registra revisiones cuando cambia la plantilla de Pods del Deployment.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl rollout history deployment/web -n lab9
-  ```
-
   > **Salida esperada:** Se muestran al menos dos revisiones disponibles.
   {: .lab-note .output .compact}
 
@@ -252,10 +212,6 @@ Utilizarás los comandos específicos de rollout para identificar las revisiones
   > **Importante:** El número de revisión permite recuperar información de una versión previa concreta.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl rollout history deployment/web -n lab9 --revision=1
-  ```
-
   > **Salida esperada:** La revisión muestra información del contenedor y la imagen original.
   {: .lab-note .output .compact}
 
@@ -263,10 +219,6 @@ Utilizarás los comandos específicos de rollout para identificar las revisiones
 
   > **Nota:** La revisión nueva debe reflejar el cambio realizado mediante `kubectl set image`.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl rollout history deployment/web -n lab9 --revision=2
-  ```
 
   > **Salida esperada:** Se muestra la imagen correspondiente a la segunda revisión.
   {: .lab-note .output .compact}
@@ -280,10 +232,6 @@ Examinarás la revisión almacenada en cada ReplicaSet y comprobarás qué versi
   > **Importante:** La anotación `deployment.kubernetes.io/revision` permite relacionar cada ReplicaSet con el historial del Deployment.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl get rs -n lab9 -o custom-columns='NAME:.metadata.name,REVISION:.metadata.annotations.deployment\.kubernetes\.io/revision,DESIRED:.spec.replicas'
-  ```
-
   > **Salida esperada:** Se muestran ReplicaSets con revisiones diferentes y sus cantidades deseadas.
   {: .lab-note .output .compact}
 
@@ -291,10 +239,6 @@ Examinarás la revisión almacenada en cada ReplicaSet y comprobarás qué versi
 
   > **Nota:** La revisión activa corresponde al ReplicaSet que mantiene las réplicas actuales del workload.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl get deployment web -n lab9 -o jsonpath='CurrentRevision={.metadata.annotations.deployment\.kubernetes\.io/revision}{"\n"}'
-  ```
 
   > **Salida esperada:** Se muestra la revisión actual del Deployment.
   {: .lab-note .output .compact}
@@ -319,10 +263,6 @@ Cambiarás la imagen a un tag inválido y utilizarás estado, Pods y eventos par
   > **Advertencia:** Este cambio es intencional y provocará errores de descarga de imagen en los Pods nuevos.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl set image deployment/web nginx=nginx:lab9-image-does-not-exist -n lab9
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web image updated`.
   {: .lab-note .output .compact}
 
@@ -331,10 +271,6 @@ Cambiarás la imagen a un tag inválido y utilizarás estado, Pods y eventos par
   > **Nota:** El estado puede evolucionar entre `ErrImagePull` e `ImagePullBackOff`.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get pods -n lab9
-  ```
-
   > **Salida esperada:** Al menos un Pod de la nueva revisión presenta un estado relacionado con error de descarga de imagen.
   {: .lab-note .output .compact}
 
@@ -342,10 +278,6 @@ Cambiarás la imagen a un tag inválido y utilizarás estado, Pods y eventos par
 
   > **Importante:** Los eventos aportan evidencia concreta sobre errores de pull y permiten diferenciar este problema de fallos de scheduling o configuración.
   {: .lab-note .important .compact}
-
-  ```bash
-  kubectl describe deployment web -n lab9
-  ```
 
   > **Salida esperada:** La descripción muestra la imagen defectuosa, disponibilidad incompleta y eventos relacionados con la nueva revisión.
   {: .lab-note .output .compact}
@@ -359,10 +291,6 @@ Utilizarás el mecanismo oficial de rollback del Deployment y verificarás que l
   > **Importante:** `kubectl rollout undo` restaura la plantilla correspondiente a la revisión previa sin necesidad de editar manualmente la imagen.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl rollout undo deployment/web -n lab9
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web rolled back`.
   {: .lab-note .output .compact}
 
@@ -370,10 +298,6 @@ Utilizarás el mecanismo oficial de rollback del Deployment y verificarás que l
 
   > **Nota:** El rollback también genera actividad de reconciliación hasta que el estado deseado vuelve a quedar satisfecho.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl rollout status deployment/web -n lab9 --timeout=60s
-  ```
 
   > **Salida esperada:** kubectl informa que el Deployment completó correctamente el rollout después de la reversión.
   {: .lab-note .output .compact}

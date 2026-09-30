@@ -154,17 +154,6 @@ Crearás los cuatro archivos esenciales del ejemplo y utilizarás objetos predef
   > **Nota:** `version` identifica la versión del chart, mientras `appVersion` puede documentar la versión de la aplicación empaquetada; no deben confundirse con la revisión de una release instalada.
   {: .lab-note .info .compact}
 
-  ```bash
-  cat > web-chart/Chart.yaml <<'EOF_CHART'
-  apiVersion: v2
-  name: web-chart
-  description: Chart mínimo para la Práctica 13
-  type: application
-  version: 0.1.0
-  appVersion: "1.31.4"
-  EOF_CHART
-  ```
-
   > **Salida esperada:** Se crea `web-chart/Chart.yaml` con nombre `web-chart` y versión `0.1.0`.
   {: .lab-note .output .compact}
 
@@ -173,21 +162,6 @@ Crearás los cuatro archivos esenciales del ejemplo y utilizarás objetos predef
   > **Importante:** Los valores se concentran fuera de los manifiestos para permitir que una misma plantilla produzca configuraciones diferentes durante una instalación o un upgrade.
   {: .lab-note .important .compact}
 
-  ```bash
-  cat > web-chart/values.yaml <<'EOF_VALUES'
-  replicaCount: 2
-
-  image:
-    repository: nginx
-    tag: 1.31.4-alpine3.24-slim
-    pullPolicy: IfNotPresent
-
-  service:
-    type: ClusterIP
-    port: 80
-  EOF_VALUES
-  ```
-
   > **Salida esperada:** Se crea `web-chart/values.yaml` con dos réplicas, la imagen NGINX inicial y un Service ClusterIP en el puerto 80.
   {: .lab-note .output .compact}
 
@@ -195,38 +169,6 @@ Crearás los cuatro archivos esenciales del ejemplo y utilizarás objetos predef
 
   > **Nota:** `.Release.Name` cambia según la instancia instalada y `.Values` obtiene configuración desde los valores del chart o desde overrides proporcionados por el usuario.
   {: .lab-note .info .compact}
-
-  {%raw%}
-  ```bash
-  cat > web-chart/templates/deployment.yaml <<'EOF_DEPLOY'
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: {{ .Release.Name }}-web
-    labels:
-      app.kubernetes.io/name: {{ .Chart.Name }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  spec:
-    replicas: {{ .Values.replicaCount }}
-    selector:
-      matchLabels:
-        app.kubernetes.io/name: {{ .Chart.Name }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    template:
-      metadata:
-        labels:
-          app.kubernetes.io/name: {{ .Chart.Name }}
-          app.kubernetes.io/instance: {{ .Release.Name }}
-      spec:
-        containers:
-          - name: nginx
-            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-            imagePullPolicy: {{ .Values.image.pullPolicy }}
-            ports:
-              - containerPort: 80
-  EOF_DEPLOY
-  ```
-  {%endraw%}
 
   > **Salida esperada:** Se crea un template de Deployment parametrizado mediante `.Release`, `.Chart` y `.Values`.
   {: .lab-note .output .compact}
@@ -239,28 +181,6 @@ Agregarás el template del Service, renderizarás la salida para inspeccionar el
 
   > **Importante:** El selector del Service utiliza los mismos valores de `name` e `instance` que la plantilla del Pod; esto evita que una release seleccione accidentalmente Pods pertenecientes a otra instalación del mismo chart.
   {: .lab-note .important .compact}
-
-  {%raw%}
-  ```bash
-  cat > web-chart/templates/service.yaml <<'EOF_SERVICE'
-  apiVersion: v1
-  kind: Service
-  metadata:
-    name: {{ .Release.Name }}-web
-    labels:
-      app.kubernetes.io/name: {{ .Chart.Name }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  spec:
-    type: {{ .Values.service.type }}
-    selector:
-      app.kubernetes.io/name: {{ .Chart.Name }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-    ports:
-      - port: {{ .Values.service.port }}
-        targetPort: 80
-  EOF_SERVICE
-  ```
-  {%endraw%}
 
   > **Salida esperada:** Se crea un template de Service cuyo tipo y puerto provienen de `values.yaml`.
   {: .lab-note .output .compact}
@@ -281,10 +201,6 @@ Agregarás el template del Service, renderizarás la salida para inspeccionar el
 
   > **Importante:** El nombre `web-release` identifica la instancia instalada. Posteriores operaciones de upgrade, history, rollback y uninstall se realizarán sobre esta release.
   {: .lab-note .important .compact}
-
-  ```bash
-  helm install web-release ./web-chart -n lab13
-  ```
 
   > **Salida esperada:** Helm muestra `NAME: web-release`, `NAMESPACE: lab13` y un estado de instalación satisfactorio.
   {: .lab-note .output .compact}

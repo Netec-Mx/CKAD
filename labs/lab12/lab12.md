@@ -122,10 +122,6 @@ Consultarás los campos que permiten a un Service seleccionar Pods y prepararás
   > **Nota:** Utilizar siempre el mismo cliente y el mismo nombre DNS permite observar cambios en los backends sin modificar la forma en que el consumidor accede a la aplicación.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl run client -n lab12 --image=busybox:1.38.0-musl --restart=Never --command -- sh -c 'sleep 3600'
-  ```
-
   > **Salida esperada:** Kubernetes responde `pod/client created`.
   {: .lab-note .output .compact}
 
@@ -150,50 +146,6 @@ Definirás en un mismo manifiesto el Deployment Stable y el Service estable. El 
   > **Importante:** Esta diferencia de selectores es intencional. El Deployment debe controlar únicamente Stable, pero el Service debe aceptar cualquier Pod de la aplicación que utilice `app=web`, incluida posteriormente la versión Canary.
   {: .lab-note .important .compact}
 
-  ```bash
-  cat > stable.yaml <<'EOF_STABLE'
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: web-stable
-    namespace: lab12
-  spec:
-    replicas: 4
-    selector:
-      matchLabels:
-        app: web
-        track: stable
-    template:
-      metadata:
-        labels:
-          app: web
-          track: stable
-      spec:
-        containers:
-          - name: nginx
-            image: nginx:1.31.4-alpine3.24-slim
-            imagePullPolicy: IfNotPresent
-            command:
-              - /bin/sh
-              - -c
-              - 'echo "VERSION STABLE" > /usr/share/nginx/html/index.html && exec nginx -g "daemon off;"'
-            ports:
-              - containerPort: 80
-  ---
-  apiVersion: v1
-  kind: Service
-  metadata:
-    name: web
-    namespace: lab12
-  spec:
-    selector:
-      app: web
-    ports:
-      - port: 80
-        targetPort: 80
-  EOF_STABLE
-  ```
-
   > **Salida esperada:** Se crea `stable.yaml` con un Deployment de cuatro réplicas y un Service cuyo selector es únicamente `app=web`.
   {: .lab-note .output .compact}
 
@@ -201,10 +153,6 @@ Definirás en un mismo manifiesto el Deployment Stable y el Service estable. El 
 
   > **Nota:** Aunque el archivo contiene dos objetos Kubernetes, esta operación representa una sola acción declarativa: aplicar el estado definido en el manifiesto.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl apply -f stable.yaml
-  ```
 
   > **Salida esperada:** Kubernetes crea `deployment.apps/web-stable` y `service/web`.
   {: .lab-note .output .compact}
@@ -230,38 +178,6 @@ Crearás un Deployment independiente con una sola réplica Canary. Al compartir 
   > **Nota:** El label `track=canary` separa este Deployment de Stable, pero `app=web` hace que su Pod también coincida con el selector del Service existente.
   {: .lab-note .info .compact}
 
-  ```bash
-  cat > canary.yaml <<'EOF_CANARY'
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: web-canary
-    namespace: lab12
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: web
-        track: canary
-    template:
-      metadata:
-        labels:
-          app: web
-          track: canary
-      spec:
-        containers:
-          - name: nginx
-            image: nginx:1.31.4-alpine3.24-slim
-            imagePullPolicy: IfNotPresent
-            command:
-              - /bin/sh
-              - -c
-              - 'echo "VERSION CANARY" > /usr/share/nginx/html/index.html && exec nginx -g "daemon off;"'
-            ports:
-              - containerPort: 80
-  EOF_CANARY
-  ```
-
   > **Salida esperada:** Se crea `canary.yaml` con un Deployment de una réplica y labels `app=web,track=canary`.
   {: .lab-note .output .compact}
 
@@ -270,10 +186,6 @@ Crearás un Deployment independiente con una sola réplica Canary. Al compartir 
   > **Importante:** Stable y Canary deben coexistir. La estrategia de esta práctica no sustituye inmediatamente la versión anterior, sino que añade un conjunto adicional de endpoints elegibles.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f canary.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web-canary created`.
   {: .lab-note .output .compact}
 
@@ -281,10 +193,6 @@ Crearás un Deployment independiente con una sola réplica Canary. Al compartir 
 
   > **Advertencia:** No esperes una proporción exacta de respuestas. Un Service estándar no implementa pesos porcentuales; con cuatro Pods Stable y uno Canary normalmente observarás Stable con mayor frecuencia, pero cada ejecución puede producir una distribución diferente.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl exec client -n lab12 -- sh -c 'for i in $(seq 1 20); do wget -qO- http://web; done'
-  ```
 
   > **Salida esperada:** Entre las múltiples respuestas pueden aparecer `VERSION STABLE` y `VERSION CANARY`; Stable normalmente aparece con mayor frecuencia, sin que exista una garantía de porcentaje exacto.
   {: .lab-note .output .compact}
@@ -378,10 +286,6 @@ Comprobarás los Pods y endpoints elegibles, generarás una nueva muestra de sol
   > **Importante:** Interpreta esta prueba como una observación, no como una medición garantizada. El Service no ofrece pesos de tráfico configurables en este escenario.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl exec client -n lab12 -- sh -c 'for i in $(seq 1 30); do wget -qO- http://web; done'
-  ```
-
   > **Salida esperada:** Se observan respuestas de Stable y Canary. Canary puede aparecer con mayor frecuencia que en la primera prueba, pero no existe una proporción exacta garantizada.
   {: .lab-note .output .compact}
 
@@ -472,10 +376,6 @@ Simularás la detección de un problema posterior a la promoción. Deberás dism
 
   > **Nota:** Con más réplicas Canary que Stable es razonable observar más respuestas Canary en una muestra amplia, pero el resultado sigue sin representar un porcentaje contractual.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl exec client -n lab12 -- sh -c 'for i in $(seq 1 30); do wget -qO- http://web; done'
-  ```
 
   > **Salida esperada:** Aparecen respuestas `VERSION STABLE` y `VERSION CANARY`; Canary puede aparecer con mayor frecuencia debido a que dispone de más endpoints.
   {: .lab-note .output .compact}

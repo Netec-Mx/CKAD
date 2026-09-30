@@ -125,10 +125,6 @@ Examinarás los campos que conectan un Service con sus Pods y prepararás un cli
   > **Nota:** Mantener un cliente estable permite probar siempre el mismo nombre DNS del Service y comprobar que el backend cambia sin modificar la forma en que el consumidor accede a la aplicación.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl run client -n lab11 --image=busybox:1.38.0-musl --restart=Never --command -- sh -c 'sleep 3600'
-  ```
-
   > **Salida esperada:** Kubernetes responde `pod/client created`.
   {: .lab-note .output .compact}
 
@@ -153,38 +149,6 @@ Definirás el Deployment Blue con tres réplicas y contenido HTTP propio, lo apl
   > **Nota:** El contenedor escribe `VERSION BLUE` en la página inicial antes de iniciar NGINX. Esto permite comprobar funcionalmente qué versión respondió sin construir una imagen personalizada.
   {: .lab-note .info .compact}
 
-  ```bash
-  cat > blue.yaml <<'EOF'
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: web-blue
-    namespace: lab11
-  spec:
-    replicas: 3
-    selector:
-      matchLabels:
-        app: web
-        version: blue
-    template:
-      metadata:
-        labels:
-          app: web
-          version: blue
-      spec:
-        containers:
-          - name: nginx
-            image: nginx:1.31.4-alpine3.24-slim
-            imagePullPolicy: IfNotPresent
-            command:
-              - /bin/sh
-              - -c
-              - 'echo "VERSION BLUE" > /usr/share/nginx/html/index.html && exec nginx -g "daemon off;"'
-            ports:
-              - containerPort: 80
-  EOF
-  ```
-
   > **Salida esperada:** Se crea `blue.yaml` con el Deployment `web-blue`, tres réplicas y los labels `app=web` y `version=blue`.
   {: .lab-note .output .compact}
 
@@ -193,10 +157,6 @@ Definirás el Deployment Blue con tres réplicas y contenido HTTP propio, lo apl
   > **Importante:** El Deployment mantiene su propio selector `app=web,version=blue`; Green utilizará posteriormente otro valor de `version` para evitar cualquier superposición entre controladores.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f blue.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/web-blue created`.
   {: .lab-note .output .compact}
 
@@ -204,10 +164,6 @@ Definirás el Deployment Blue con tres réplicas y contenido HTTP propio, lo apl
 
   > **Nota:** La versión no debe recibir tráfico hasta que sus tres réplicas estén disponibles; `rollout status` comprueba el estado del Deployment sin introducir una pausa arbitraria.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl rollout status deployment/web-blue -n lab11 --timeout=60s
-  ```
 
   > **Salida esperada:** kubectl informa que `deployment "web-blue" successfully rolled out`.
   {: .lab-note .output .compact}
@@ -221,23 +177,6 @@ Definirás un Service cuyo nombre no cambiará durante la práctica. Inicialment
   > **Importante:** El Service utiliza dos condiciones, `app=web` y `version=blue`. El primer label identifica la aplicación y el segundo decide cuál de las versiones desplegadas recibe tráfico.
   {: .lab-note .important .compact}
 
-  ```bash
-  cat > service.yaml <<'EOF'
-  apiVersion: v1
-  kind: Service
-  metadata:
-    name: web
-    namespace: lab11
-  spec:
-    selector:
-      app: web
-      version: blue
-    ports:
-      - port: 80
-        targetPort: 80
-  EOF
-  ```
-
   > **Salida esperada:** Se crea `service.yaml` con un Service `web` que selecciona `app=web,version=blue`.
   {: .lab-note .output .compact}
 
@@ -246,10 +185,6 @@ Definirás un Service cuyo nombre no cambiará durante la práctica. Inicialment
   > **Nota:** El Service conserva su nombre `web` durante todo el escenario. El cambio blue/green se realizará sobre su selector y no creando un segundo endpoint para el consumidor.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl apply -f service.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `service/web created`.
   {: .lab-note .output .compact}
 
@@ -257,10 +192,6 @@ Definirás un Service cuyo nombre no cambiará durante la práctica. Inicialment
 
   > **Importante:** El cliente no conoce nombres de Pods ni de Deployments; utiliza exclusivamente el Service. Este desacoplamiento permite cambiar el backend sin modificar al consumidor.
   {: .lab-note .important .compact}
-
-  ```bash
-  kubectl exec client -n lab11 -- wget -qO- http://web
-  ```
 
   > **Salida esperada:** La respuesta es exactamente `VERSION BLUE`.
   {: .lab-note .output .compact}

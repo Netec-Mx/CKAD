@@ -128,10 +128,6 @@ Consultarás el esquema del recurso y generarás un ejemplo local para reconocer
   > **Advertencia:** El valor mostrado en `data` está codificado en base64 y puede recuperarse fácilmente; no lo interpretes como información cifrada.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl create secret generic demo-secret -n lab15 --from-literal=USERNAME=demo --dry-run=client -o yaml
-  ```
-
   > **Salida esperada:** La salida YAML contiene `kind: Secret`, `metadata.name: demo-secret` y una clave `USERNAME` dentro de `data`.
   {: .lab-note .output .compact}
 
@@ -156,10 +152,6 @@ Crearás credenciales simples, inspeccionarás su representación dentro de Kube
   > **Nota:** `kubectl create secret generic` permite construir un Secret desde literales, archivos u otras fuentes sin escribir manualmente valores base64.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl create secret generic db-secret -n lab15 --from-literal=DB_USER=appuser --from-literal=DB_PASSWORD=Lab15-Secret-2026
-  ```
-
   > **Salida esperada:** Kubernetes responde `secret/db-secret created`.
   {: .lab-note .output .compact}
 
@@ -168,10 +160,6 @@ Crearás credenciales simples, inspeccionarás su representación dentro de Kube
   > **Importante:** Evita copiar o compartir la salida de Secrets reales. En este laboratorio las credenciales son artificiales y se utilizan únicamente con fines didácticos.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl get secret db-secret -n lab15 -o yaml
-  ```
-
   > **Salida esperada:** La salida contiene las claves `DB_USER` y `DB_PASSWORD` dentro de `data`, además de `type: Opaque`.
   {: .lab-note .output .compact}
 
@@ -179,10 +167,6 @@ Crearás credenciales simples, inspeccionarás su representación dentro de Kube
 
   > **Advertencia:** No utilices este procedimiento para imprimir contraseñas reales durante validaciones rutinarias. Aquí se decodifica solo el usuario para demostrar el concepto.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl get secret db-secret -n lab15 -o jsonpath='{.data.DB_USER}' | base64 --decode
-  ```
 
   > **Salida esperada:** El comando muestra `appuser`.
   {: .lab-note .output .compact}
@@ -196,42 +180,6 @@ Crearás una aplicación que obtiene una credencial mediante `secretKeyRef` e im
   > **Nota:** `secretKeyRef` permite seleccionar una clave concreta, mientras `envFrom.secretRef` importa todas las claves válidas del Secret como variables de entorno.
   {: .lab-note .info .compact}
 
-  ```bash
-  cat > secret-app.yaml <<'EOF'
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: secret-app
-    namespace: lab15
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: secret-app
-    template:
-      metadata:
-        labels:
-          app: secret-app
-      spec:
-        containers:
-          - name: app
-            image: busybox:1.38.0-musl
-            command:
-              - sh
-              - -c
-              - 'while true; do sleep 3600; done'
-            env:
-              - name: APPLICATION_DB_USER
-                valueFrom:
-                  secretKeyRef:
-                    name: db-secret
-                    key: DB_USER
-            envFrom:
-              - secretRef:
-                  name: db-secret
-  EOF
-  ```
-
   > **Salida esperada:** Se crea `secret-app.yaml` con referencias a `db-secret` y sin escribir directamente las credenciales dentro de la especificación del contenedor.
   {: .lab-note .output .compact}
 
@@ -240,10 +188,6 @@ Crearás una aplicación que obtiene una credencial mediante `secretKeyRef` e im
   > **Importante:** Una referencia obligatoria a un Secret inexistente impide que el contenedor inicie correctamente; por eso `db-secret` fue creado antes del Deployment.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f secret-app.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/secret-app created`.
   {: .lab-note .output .compact}
 
@@ -251,10 +195,6 @@ Crearás una aplicación que obtiene una credencial mediante `secretKeyRef` e im
 
   > **Nota:** La comprobación confirma el uso del Secret minimizando la exposición innecesaria de información sensible en la terminal.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl exec deployment/secret-app -n lab15 -- sh -c 'echo "APPLICATION_DB_USER=$APPLICATION_DB_USER"; echo "DB_USER=$DB_USER"; test -n "$DB_PASSWORD" && echo "DB_PASSWORD=defined"'
-  ```
 
   > **Salida esperada:** Se muestran `APPLICATION_DB_USER=appuser`, `DB_USER=appuser` y `DB_PASSWORD=defined`.
   {: .lab-note .output .compact}
@@ -325,11 +265,6 @@ Interpretarás los requisitos y elegirás cómo construir el Secret y cómo sumi
   > **Advertencia:** No utilices `-o yaml` sobre el Secret durante esta validación; únicamente necesitas confirmar su existencia y cantidad de claves.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl get secret payments-secret -n lab15
-  kubectl get deployment payments -n lab15
-  ```
-
   > **Salida esperada:** `payments-secret` existe y `payments` muestra `2/2` réplicas disponibles.
   {: .lab-note .output .compact}
 
@@ -341,10 +276,6 @@ Comprobarás que las variables están definidas, actualizarás una contraseña y
 
   > **Nota:** La validación funcional puede confirmar presencia y valores no sensibles sin imprimir una contraseña en claro.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl exec deployment/payments -n lab15 -- sh -c 'echo "DB_USER=$DB_USER"; echo "DB_HOST=$DB_HOST"; test -n "$DB_PASSWORD" && echo "DB_PASSWORD=defined"'
-  ```
 
   > **Salida esperada:** Se muestran `DB_USER=payments`, `DB_HOST=db.internal` y `DB_PASSWORD=defined`.
   {: .lab-note .output .compact}
@@ -374,10 +305,6 @@ Comprobarás que las variables están definidas, actualizarás una contraseña y
 
   > **Advertencia:** Si los Pods conservan su antigüedad original, revisa si realmente fueron recreados después de actualizar el Secret.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl get pods -n lab15 -l app=payments
-  ```
 
   > **Salida esperada:** Se muestran dos Pods Ready correspondientes al Deployment `payments`, recreados después de la rotación del Secret.
   {: .lab-note .output .compact}
@@ -447,10 +374,6 @@ Crearás un Secret y un Deployment sin comandos de implementación proporcionado
   > **Advertencia:** No ejecutes `cat /etc/credentials/password` durante la validación rutinaria. Basta con comprobar que el archivo existe y contiene datos.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl exec deployment/secret-reader -n lab15 -- sh -c 'echo -n "username="; cat /etc/credentials/username; echo; test -s /etc/credentials/password && echo "password=defined"'
-  ```
-
   > **Salida esperada:** Se muestra `username=fileuser` y `password=defined`.
   {: .lab-note .output .compact}
 
@@ -483,10 +406,6 @@ Modificarás la credencial almacenada sin recrear inicialmente el Pod y observar
   > **Importante:** La actualización del volumen es eventual y no debe considerarse instantánea. Además, una aplicación real tendría que volver a leer el archivo para adoptar el nuevo contenido.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl exec deployment/secret-reader -n lab15 -- sh -c 'ls -l /etc/credentials/password; test -s /etc/credentials/password && echo "password=defined"'
-  ```
-
   > **Salida esperada:** El archivo continúa presente y con contenido; la proyección puede reflejar posteriormente la versión actualizada del Secret.
   {: .lab-note .output .compact}
 
@@ -494,10 +413,6 @@ Modificarás la credencial almacenada sin recrear inicialmente el Pod y observar
 
   > **Advertencia:** No continúes con la Tarea 5 si necesitas corregir referencias, volúmenes, rutas o rotaciones. La limpieza eliminará todo el escenario activo.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl get secret,deployment,pods -n lab15
-  ```
 
   > **Salida esperada:** Se muestran `db-secret`, `payments-secret`, `file-secret`, `secret-app`, `payments` y `secret-reader`, con los Deployments disponibles.
   {: .lab-note .output .compact}
@@ -522,10 +437,6 @@ Realizarás una última inspección, eliminarás el namespace completo y confirm
   > **Nota:** Esta comprobación final permite relacionar los Secrets con los Deployments y Pods que los consumieron antes de destruir el escenario.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl get secret,deployment,pods -n lab15
-  ```
-
   > **Salida esperada:** Se muestran los Secrets y workloads utilizados durante la sección guiada y los retos.
   {: .lab-note .output .compact}
 
@@ -545,10 +456,6 @@ Realizarás una última inspección, eliminarás el namespace completo y confirm
 
   > **Importante:** La ausencia de salida indica que `--ignore-not-found` no encontró el namespace, que es el resultado esperado después de eliminarlo.
   {: .lab-note .important .compact}
-
-  ```bash
-  kubectl get namespace lab15 --ignore-not-found
-  ```
 
   > **Salida esperada:** El comando no muestra ningún namespace denominado `lab15`.
   {: .lab-note .output .compact}

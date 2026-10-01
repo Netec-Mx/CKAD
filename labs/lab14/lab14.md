@@ -83,10 +83,6 @@ Crearás el directorio local, comprobarás el contexto Kubernetes y prepararás 
   > **Advertencia:** Si `lab14` ya existe por una ejecución anterior, revisa su contenido antes de continuar para evitar reutilizar accidentalmente ConfigMaps antiguos.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl create namespace lab14
-  ```
-
   > **Salida esperada:** Kubernetes responde `namespace/lab14 created`.
   {: .lab-note .output .compact}
 
@@ -126,10 +122,6 @@ Consultarás el esquema del recurso y generarás un ejemplo local para reconocer
   > **Nota:** La generación declarativa permite obtener rápidamente una estructura válida que después puede guardarse, revisarse o reutilizarse.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl create configmap demo-config -n lab14 --from-literal=APP_ENV=development --dry-run=client -o yaml
-  ```
-
   > **Salida esperada:** La salida YAML contiene `kind: ConfigMap`, `metadata.name: demo-config` y `data.APP_ENV: development`.
   {: .lab-note .output .compact}
 
@@ -154,10 +146,6 @@ Construirás dos ConfigMaps utilizando fuentes diferentes para comprobar que Kub
   > **Nota:** `--from-literal` resulta útil para valores pequeños y puntuales que no necesitan mantenerse previamente dentro de un archivo.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl create configmap app-config -n lab14 --from-literal=APP_ENV=development --from-literal=LOG_LEVEL=info
-  ```
-
   > **Salida esperada:** Kubernetes responde `configmap/app-config created`.
   {: .lab-note .output .compact}
 
@@ -166,14 +154,6 @@ Construirás dos ConfigMaps utilizando fuentes diferentes para comprobar que Kub
   > **Importante:** Cuando se utiliza `--from-file`, el nombre del archivo puede convertirse en la clave del ConfigMap y su contenido completo se almacena como valor.
   {: .lab-note .important .compact}
 
-  ```bash
-  cat > app.properties <<'EOF'
-  feature.enabled=true
-  timeout.seconds=30
-  message=Configuracion desde archivo
-  EOF
-  ```
-
   > **Salida esperada:** Se crea `app.properties` con tres propiedades de configuración.
   {: .lab-note .output .compact}
 
@@ -181,10 +161,6 @@ Construirás dos ConfigMaps utilizando fuentes diferentes para comprobar que Kub
 
   > **Nota:** Este patrón resulta útil cuando una aplicación espera consumir archivos completos en lugar de variables individuales.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl create configmap file-config -n lab14 --from-file=app.properties
-  ```
 
   > **Salida esperada:** Kubernetes responde `configmap/file-config created`.
   {: .lab-note .output .compact}
@@ -198,42 +174,6 @@ Crearás un Deployment que obtenga una clave mediante `configMapKeyRef` y poster
   > **Nota:** `configMapKeyRef` permite mapear una clave concreta del ConfigMap hacia una variable con el nombre que defina el contenedor.
   {: .lab-note .info .compact}
 
-  ```bash
-  cat > env-app.yaml <<'EOF'
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: env-app
-    namespace: lab14
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: env-app
-    template:
-      metadata:
-        labels:
-          app: env-app
-      spec:
-        containers:
-          - name: app
-            image: busybox:1.38.0-musl
-            command:
-              - sh
-              - -c
-              - 'while true; do sleep 3600; done'
-            env:
-              - name: APPLICATION_ENV
-                valueFrom:
-                  configMapKeyRef:
-                    name: app-config
-                    key: APP_ENV
-            envFrom:
-              - configMapRef:
-                  name: app-config
-  EOF
-  ```
-
   > **Salida esperada:** Se crea `env-app.yaml` con una referencia individual `configMapKeyRef` y una referencia completa mediante `envFrom`.
   {: .lab-note .output .compact}
 
@@ -242,10 +182,6 @@ Crearás un Deployment que obtenga una clave mediante `configMapKeyRef` y poster
   > **Importante:** El ConfigMap debe existir antes de que el Pod intente utilizar una referencia obligatoria; si falta, el contenedor no podrá iniciar correctamente.
   {: .lab-note .important .compact}
 
-  ```bash
-  kubectl apply -f env-app.yaml
-  ```
-
   > **Salida esperada:** Kubernetes responde `deployment.apps/env-app created`.
   {: .lab-note .output .compact}
 
@@ -253,10 +189,6 @@ Crearás un Deployment que obtenga una clave mediante `configMapKeyRef` y poster
 
   > **Nota:** `APPLICATION_ENV` proviene de `configMapKeyRef`, mientras `APP_ENV` y `LOG_LEVEL` conservan directamente los nombres de las claves importadas mediante `envFrom`.
   {: .lab-note .info .compact}
-
-  ```bash
-  kubectl exec deployment/env-app -n lab14 -- sh -c 'echo "APPLICATION_ENV=$APPLICATION_ENV"; echo "APP_ENV=$APP_ENV"; echo "LOG_LEVEL=$LOG_LEVEL"'
-  ```
 
   > **Salida esperada:** Se muestran `APPLICATION_ENV=development`, `APP_ENV=development` y `LOG_LEVEL=info`.
   {: .lab-note .output .compact}
@@ -344,10 +276,6 @@ Comprobarás los valores reales dentro del proceso, actualizarás el ConfigMap y
   > **Nota:** Este paso valida el comportamiento efectivo del contenedor, no únicamente la presencia de claves dentro del objeto ConfigMap.
   {: .lab-note .info .compact}
 
-  ```bash
-  kubectl exec deployment/api -n lab14 -- sh -c 'echo "APP_ENV=$APP_ENV"; echo "LOG_LEVEL=$LOG_LEVEL"; echo "FEATURE_X=$FEATURE_X"'
-  ```
-
   > **Salida esperada:** Se muestran `APP_ENV=production`, `LOG_LEVEL=warning` y `FEATURE_X=true`.
   {: .lab-note .output .compact}
 
@@ -376,10 +304,6 @@ Comprobarás los valores reales dentro del proceso, actualizarás el ConfigMap y
 
   > **Advertencia:** Si todavía aparece `warning`, revisa si estás consultando un Pod anterior o si el workload aún no ha recreado sus contenedores.
   {: .lab-note .warning .compact}
-
-  ```bash
-  kubectl exec deployment/api -n lab14 -- sh -c 'echo "LOG_LEVEL=$LOG_LEVEL"'
-  ```
 
   > **Salida esperada:** El contenedor consultado muestra `LOG_LEVEL=debug`.
   {: .lab-note .output .compact}
@@ -450,10 +374,6 @@ Crearás la configuración y el Deployment sin comandos de implementación propo
   > **Advertencia:** Si el archivo no existe, revisa por tu cuenta la relación entre `volumes`, `volumeMounts`, nombre del ConfigMap y ruta de montaje.
   {: .lab-note .warning .compact}
 
-  ```bash
-  kubectl exec deployment/config-reader -n lab14 -- cat /etc/app/config.properties
-  ```
-
   > **Salida esperada:** Se muestran `mode=standard` y `retries=3`.
   {: .lab-note .output .compact}
 
@@ -483,10 +403,6 @@ Modificarás el ConfigMap sin recrear inicialmente el Pod y comprobarás que los
 
   > **Importante:** Kubernetes actualiza las proyecciones de ConfigMap de forma eventual. La aplicación también debe volver a leer el archivo para aprovechar el cambio; montar el volumen no obliga a un proceso a recargar su configuración interna.
   {: .lab-note .important .compact}
-
-  ```bash
-  kubectl exec deployment/config-reader -n lab14 -- cat /etc/app/config.properties
-  ```
 
   > **Salida esperada:** Después de la actualización eventual del volumen, el archivo muestra `mode=maintenance` y `retries=3`.
   {: .lab-note .output .compact}
